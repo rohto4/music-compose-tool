@@ -18,6 +18,12 @@ export interface KawaiiPhraseKit {
   layerMotion: 'air' | 'pulse' | 'sync' | 'rise' | 'dense';
 }
 
+export interface KawaiiPhraseKitRecommendation {
+  kit: KawaiiPhraseKit;
+  score: number;
+  reasons: readonly string[];
+}
+
 export const KAWAII_PHRASE_KITS: readonly KawaiiPhraseKit[] = [
   { id: 'cloud-intro', label: 'Cloud Intro', section: 'Intro', character: '浮遊・透明', description: '長いPadと低いSubの上でHarpを間引き、メロディを置く余白を残す。', tags: ['Kawaii Future Bass', 'low energy', 'intro'], progressionId: 'pop-axis', chordRhythm: 'hold', patterns: { bass: 'sub-glue', arp: 'quarter-chime', drum: 'kick-rest' }, instruments: { chord: 'chord-soft-wide-pad', bass: 'bass-round-sub', arp: 'arp-cloud-harp', drum: 'drum-velvet-punch', pad: 'pad-pastel-air', synth: 'synth-music-box' }, layerMotion: 'air' },
   { id: 'candy-verse', label: 'Candy Verse', section: 'Verse', character: '軽快・会話', description: 'Pizzicatoと裏拍Sparkleを小さく掛け合い、主旋律の入口を作る。', tags: ['Kawaii Pop', 'mid energy', 'verse'], progressionId: 'singer-songwriter', chordRhythm: 'pulse', patterns: { bass: 'fifth-answer', arp: 'offbeat-sparkle', drum: 'two-step' }, instruments: { chord: 'chord-pizzicato-ensemble', bass: 'bass-bubble-pluck', arp: 'arp-music-box-rain', drum: 'drum-dusk-garage', pad: 'pad-velvet-chorus', synth: 'synth-pizzicato-silk' }, layerMotion: 'pulse' },
@@ -29,6 +35,88 @@ export const KAWAII_PHRASE_KITS: readonly KawaiiPhraseKit[] = [
 
 const PHRASE_TICKS = 16 * 480;
 const NOTE_PREFIX = 'phrase-kit|v1|';
+const MOOD_KIT_MATCHES: Readonly<Record<string, readonly string[]>> = {
+  '前向き': ['prism-drop', 'candy-verse', 'hyper-finale'],
+  hopeful: ['prism-drop', 'candy-verse', 'hyper-finale'],
+  'きらきら': ['candy-verse', 'cloud-intro', 'prism-drop'],
+  sparkling: ['candy-verse', 'cloud-intro', 'prism-drop'],
+  'かわいい': ['candy-verse', 'cloud-intro', 'prism-drop'],
+  '爽やか': ['cloud-intro', 'candy-verse'],
+  'わくわく': ['soda-build', 'prism-drop', 'hyper-finale'],
+  '元気': ['prism-drop', 'hyper-finale', 'soda-build'],
+  energetic: ['prism-drop', 'hyper-finale', 'soda-build'],
+  'エモーショナル': ['bubble-break', 'prism-drop'],
+  '切ない': ['bubble-break', 'cloud-intro'],
+  '幻想的': ['cloud-intro', 'bubble-break'],
+  '落ち着く': ['cloud-intro', 'bubble-break'],
+};
+
+function targetSection(project: Project, phraseIndex: number) {
+  const targetBar = phraseIndex * 4;
+  return project.arrangement.sections.find((section) => section.startBar <= targetBar && targetBar < section.startBar + section.bars);
+}
+
+function sectionFit(project: Project, phraseIndex: number, kit: KawaiiPhraseKit): { score: number; reason: string | null } {
+  const section = targetSection(project, phraseIndex);
+  if (!section) return { score: 0, reason: null };
+  const sectionName = section.role === 'drop' && project.arrangement.sections.filter((candidate) => candidate.role === 'drop').at(-1)?.id === section.id
+    ? 'Final Drop'
+    : section.role[0]?.toUpperCase() + section.role.slice(1);
+  if (kit.section === sectionName) return { score: 6, reason: `${section.label}の役割に一致` };
+  if (section.role === 'drop' && (kit.section === 'Drop' || kit.section === 'Final Drop')) return { score: 4, reason: `${section.label}向けの高energy` };
+  if (section.role === 'bridge' && (kit.section === 'Build' || kit.section === 'Break')) return { score: 2, reason: 'Bridgeの転換に適合' };
+  if (section.role === 'outro' && (kit.section === 'Break' || kit.section === 'Final Drop')) return { score: 2, reason: 'Outroの終止感に適合' };
+  return { score: 0, reason: null };
+}
+
+function chordFit(project: Project, phraseIndex: number, kit: KawaiiPhraseKit): { score: number; reason: string | null } {
+  const lane = targetLane(project, 'chord');
+  const start = phraseIndex * PHRASE_TICKS;
+  const current = lane?.blocks
+    .filter((block) => block.startTick >= start && block.startTick < start + PHRASE_TICKS && parseChordPatternAssetId(block.assetId))
+    .sort((left, right) => left.startTick - right.startTick) ?? [];
+  if (current.length === 0) return { score: 0, reason: null };
+  const template = chordProgressionTemplateById(kit.progressionId);
+  if (template && template.mode === chordKeyMode(project.musicalGrid.key)) {
+    const expected = createChordProgressionTemplateBlocks(template, phraseIndex, kit.chordRhythm);
+    if (current.length === expected.length && current.every((block, index) => block.assetId === expected[index]?.assetId)) {
+      return { score: 4, reason: '現在のコード進行と一致' };
+    }
+  }
+  const matchingRhythms = current.filter((block) => parseChordPatternAssetId(block.assetId)?.rhythmId === kit.chordRhythm).length;
+  return matchingRhythms >= Math.ceil(current.length / 2)
+    ? { score: 1, reason: '現在のコード演奏shapeに適合' }
+    : { score: 0, reason: null };
+}
+
+export function recommendKawaiiPhraseKits(project: Project, phraseIndex: number): readonly KawaiiPhraseKitRecommendation[] {
+  const moods = project.creativeIntent.mood.map((mood) => mood.trim()).filter(Boolean);
+  const chordInstrumentId = project.tracks.find((track) => track.role === 'chord')?.instrumentId;
+  return KAWAII_PHRASE_KITS.map((kit, catalogIndex) => {
+    const reasons: string[] = [];
+    let score = 0;
+    const section = sectionFit(project, phraseIndex, kit);
+    score += section.score;
+    if (section.reason) reasons.push(section.reason);
+    const matchingMood = moods.find((mood) => MOOD_KIT_MATCHES[mood]?.includes(kit.id));
+    if (matchingMood) {
+      const preference = MOOD_KIT_MATCHES[matchingMood]?.indexOf(kit.id) ?? 2;
+      score += Math.max(1, 3 - preference);
+      reasons.push(`Mood「${matchingMood}」に適合`);
+    }
+    const chord = chordFit(project, phraseIndex, kit);
+    score += chord.score;
+    if (chord.reason) reasons.push(chord.reason);
+    if (chordInstrumentId && kit.instruments.chord === chordInstrumentId) {
+      score += 2;
+      reasons.push('現在のコード音色と一致');
+    }
+    if (reasons.length === 0) reasons.push(`${kit.character}の${kit.section}候補`);
+    return { kit, score, reasons, catalogIndex };
+  })
+    .sort((left, right) => right.score - left.score || left.catalogIndex - right.catalogIndex)
+    .map(({ kit, score, reasons }) => ({ kit, score, reasons }));
+}
 
 export function kawaiiPhraseKitById(id: string): KawaiiPhraseKit | undefined {
   return KAWAII_PHRASE_KITS.find((kit) => kit.id === id);

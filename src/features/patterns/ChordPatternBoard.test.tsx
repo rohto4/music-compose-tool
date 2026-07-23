@@ -212,5 +212,11 @@ describe('ChordPatternBoard', () => {
     expect(document.querySelector<HTMLElement>('[data-pattern-panel="tones"]')?.hidden).toBe(false);
     expect(screen.queryByRole('button', { name: /^ALL/ })).toBeNull();
     expect(screen.getByRole('button', { name: /^CHORD/ })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'フレーズ4を挿入先にする' }));
+    await user.click(screen.getByRole('button', { name: '伴奏' }));
+    const recommendedCards = Array.from(document.querySelectorAll<HTMLElement>('.phrase-kit-card'));
+    expect(recommendedCards[0]?.querySelector('strong')?.textContent).toBe('Soda Build');
+    expect(recommendedCards[0]?.textContent).toContain('おすすめ 1');
+    expect(recommendedCards[0]?.textContent).toContain('Buildの役割に一致');
   });
 });

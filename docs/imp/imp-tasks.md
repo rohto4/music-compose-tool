@@ -2,7 +2,7 @@
 
 ## FLOW-002: 制作画面を曲・展開・詳細編集の3段へ一本化する
 
-- 状態: 2026-07-24 着手。
+- 状態: 2026-07-24 component実装・型検査・対象test完了。`01 曲の設計 / 02 展開を整える / 03 詳細の編集`、設計完了indicator、2 Mood / Key / Tempo、曲の流れ、共有INSERT TARGET、5つのINSERT SOURCE tab、8分音符矢印、role別Audio Paletteを同じProjectへ接続した。02の伴奏候補は対象section、Mood、現在コード進行、コード音色を決定論的にscoreし、上位2件と一致理由を表示する。必須実装完了後のChromium / responsive screenshot待ち。
 - 目的: `ラフ制作 / カスタマイズ`の二重切替を撤去し、`01 曲の設計 → 02 展開を整える → 03 詳細の編集`の順序が一目で分かる単一navigationへする。02には現在のコードパッド・音色・コード進行・音のピースを置き、旧Arrangement専用tabは外して既存DAWを03へ置く。
 - 02内の情報設計: 全sectionを縦へ積み、section自体を上へ並べ替える方式から変更する。`PHRASE 01`等の挿入先stripとコード譜はINSERT TARGETとして常時上部へ表示する。その下のINSERT SOURCEだけを`コード・音色 / コードセット / 伴奏 / FX・Fill / 音色割当`の横並びtabで一面ずつ切り替える。コードpadと「コードを鳴らす音色」は同じ面へ置く。Audio Paletteの`ALL`は外し、role別tabだけで高さを抑える。
 - コード長UI: 4 / 8は4小節内のコード数であることを明示して横並びにする。各コード長のselectを左右矢印による8分音符単位の伸縮へ置き換え、AUTOが残りを吸収して4小節を維持する。短いstepはコード名をellipsisで省略し、拍数変更でcardを崩さない。

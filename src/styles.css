@@ -348,6 +348,7 @@ input:disabled, select:disabled, textarea:disabled { border-color: var(--color-c
 .phrase-kit-card > div:first-child span { color: var(--color-mint); font: 800 .55rem var(--font-label); letter-spacing: .07em; text-transform: uppercase; }
 .phrase-kit-card > div:first-child strong { font: 900 .95rem var(--font-display); }
 .phrase-kit-card p { min-height: 2.3em; margin: 0; color: var(--color-muted); font-size: .65rem; line-height: 1.35; }
+.phrase-kit-card .phrase-kit-fit { min-height: 2.1em; padding-left: .45rem; border-left: 3px solid var(--color-mint); color: color-mix(in srgb, var(--color-mint) 78%, var(--color-ink)); font: 800 .58rem var(--font-label); line-height: 1.35; }
 .phrase-kit-card button { min-height: 2.25rem; margin-top: auto; border: var(--rule-hair) solid var(--color-action); background: var(--color-action-soft); color: var(--color-action); font-size: .64rem; font-weight: 900; }
 .phrase-kit-card button:hover:not(:disabled) { background: var(--color-action); color: var(--color-action-ink); }
 .progression-sources { padding: .45rem .75rem; border: var(--rule-hair) solid var(--color-rule-strong); border-top: 0; background: var(--color-paper-2); color: var(--color-muted); font-size: .63rem; }
@@ -1212,6 +1213,7 @@ html[data-theme="friendly-signal"] .creative-brief-panel { border-left-color: va
 .progression-template-card.insertable-item { --insert-accent: var(--color-mint); }
 .progression-template-card.insertable-item[data-mode="minor"] { --insert-accent: var(--color-lavender); }
 .phrase-kit-card.insertable-item { --insert-accent: var(--color-accent-2); }
+.phrase-kit-card.insertable-item[data-recommended="true"] { --insert-accent: var(--color-mint); }
 .role-pattern-role[data-role="bass"] .insertable-item { --insert-accent: var(--color-mint); }
 .role-pattern-role[data-role="arp"] .insertable-item { --insert-accent: var(--color-lavender); }
 .role-pattern-role[data-role="drum"] .insertable-item { --insert-accent: var(--color-accent-2); }

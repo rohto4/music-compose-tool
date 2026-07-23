@@ -18,6 +18,7 @@ import {
   defaultChordStepBeats,
   maxEditableChordStepBeats,
   normalizeChordStepBeats,
+  recommendKawaiiPhraseKits,
   appliedRolePatternId,
   appliedKawaiiPhraseKitId,
   generateRolePatternNotes,
@@ -151,6 +152,10 @@ export function ChordPatternBoard({ project, engine, now, onCommand, playing = f
   const insertSerialRef = useRef(0);
   const aiStarter = project.generationCandidates.find((candidate) => candidate.id.startsWith('ai-starter-') && candidate.status === 'succeeded');
   const catalog = useMemo(() => chordPadCatalog(project.musicalGrid.key), [project.musicalGrid.key]);
+  const phraseKitRecommendations = useMemo(
+    () => recommendKawaiiPhraseKits(project, selectedLocation.phraseIndex),
+    [project, selectedLocation.phraseIndex],
+  );
   const familyTimbres = BUILT_IN_TONAL_ASSETS.filter((asset) => asset.category === voiceFamily);
   const toggleFullPreview = onTogglePlayback ?? (() => { void engine.playProject(project); });
 
@@ -558,12 +563,13 @@ export function ChordPatternBoard({ project, engine, now, onCommand, playing = f
 
       <section className="phrase-kit-browser" data-pattern-panel="accompaniment" hidden={activeWorkspaceTab !== 'accompaniment'} aria-labelledby="phrase-kit-title">
         <header><div><h3 className="visually-hidden" id="phrase-kit-title">伴奏フレーズを挿入</h3><span className="insert-shelf-mark"><span>FULL PHRASE</span><strong>コード＋6レイヤー</strong></span></div><strong>PHRASE {String(selectedLocation.phraseIndex + 1).padStart(2, '0')}</strong></header>
-        <div className="phrase-kit-grid">{KAWAII_PHRASE_KITS.map((kit) => {
+        <div className="phrase-kit-grid">{phraseKitRecommendations.map(({ kit, reasons }, rank) => {
           const compatible = chordKeyMode(project.musicalGrid.key) === 'major';
           const applied = appliedKawaiiPhraseKitId(project, selectedLocation.phraseIndex) === kit.id;
           return <article
             className="phrase-kit-card insertable-item"
             data-applied={applied}
+            data-recommended={rank < 2}
             data-insertable="true"
             data-dragging={draggingSource === `phrase-kit:${kit.id}`}
             draggable={compatible}
@@ -571,8 +577,9 @@ export function ChordPatternBoard({ project, engine, now, onCommand, playing = f
             onDragEnd={finishInsertDrag}
             key={kit.id}
           >
-            <div><span>{kit.section} · {kit.character}</span><strong>{kit.label}</strong></div>
+            <div><span>{rank < 2 ? `おすすめ ${rank + 1}` : kit.section} · {kit.character}</span><strong>{kit.label}</strong></div>
             <p>{kit.description}</p>
+            <small className="phrase-kit-fit">{reasons.slice(0, 2).join(' · ')}</small>
             <div className="phrase-kit-tags">{kit.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
             <small>{kit.chordRhythm.toUpperCase()} · {kit.patterns.bass} / {kit.patterns.arp} / {kit.patterns.drum}</small>
             <button type="button" disabled={!compatible} aria-pressed={applied} aria-label={`${kit.label}をフレーズ${selectedLocation.phraseIndex + 1}へ挿入`} onClick={() => applyPhraseKit(kit.id, kit.label)}>{!compatible ? 'Major keyで使用' : applied ? '適用中' : '4小節へ挿入'}</button>

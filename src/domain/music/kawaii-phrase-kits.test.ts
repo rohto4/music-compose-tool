@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createProject } from './project-factory';
-import { KAWAII_PHRASE_KITS, applyKawaiiPhraseKit } from './kawaii-phrase-kits';
+import { KAWAII_PHRASE_KITS, applyKawaiiPhraseKit, recommendKawaiiPhraseKits } from './kawaii-phrase-kits';
 import { createProjectHistory, executeProjectCommand, undoProject } from './project-history';
 
 function mainNotes(project: ReturnType<typeof createProject>, role: 'melody' | 'bass' | 'arp' | 'drum' | 'pad' | 'synth') {
@@ -49,5 +49,24 @@ describe('Kawaii phrase kits', () => {
     expect(mainNotes(history.present, 'pad').length).toBeGreaterThan(0);
     const undone = undoProject(history, '2026-07-23T00:02:00.000Z');
     expect(undone.present.tracks).toEqual(before.tracks);
+  });
+
+  it('ranks accompaniment by the target section, moods, current chords, and chord timbre', () => {
+    const project = createProject({ projectId: 'phrase-recommend', title: 'Recommendations', now: '2026-07-24T00:00:00.000Z', entryMode: 'patchboard', key: 'D major', mood: ['元気', 'わくわく'] });
+    const dropPhraseIndex = 5;
+    const beforeApply = recommendKawaiiPhraseKits(project, dropPhraseIndex);
+
+    expect(beforeApply[0]?.kit.id).toBe('prism-drop');
+    expect(beforeApply[0]?.reasons).toEqual(expect.arrayContaining([
+      'Drop Aの役割に一致',
+      'Mood「元気」に適合',
+      '現在のコード音色と一致',
+    ]));
+
+    applyKawaiiPhraseKit(project, 'prism-drop', dropPhraseIndex);
+    const afterApply = recommendKawaiiPhraseKits(project, dropPhraseIndex);
+    expect(afterApply[0]?.kit.id).toBe('prism-drop');
+    expect(afterApply[0]?.reasons).toContain('現在のコード進行と一致');
+    expect(afterApply.every((recommendation) => recommendation.reasons.length > 0)).toBe(true);
   });
 });
