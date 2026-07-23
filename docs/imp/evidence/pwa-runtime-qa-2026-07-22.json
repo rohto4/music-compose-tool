@@ -1,0 +1,26 @@
+{
+  "fixture": "pwa-production-preview-runtime",
+  "date": "2026-07-22",
+  "browser": "Chromium Chrome channel",
+  "baseUrl": "http://127.0.0.1:4174/",
+  "http": 200,
+  "manifest": {
+    "id": "/",
+    "startUrl": "/",
+    "scope": "/",
+    "display": "standalone",
+    "icon": "/patchtone-icon.svg"
+  },
+  "serviceWorker": {
+    "supported": true,
+    "appRegistrationCalls": ["/sw.js", "/sw.js"],
+    "appRegistrationErrors": [],
+    "manualRegistration": false,
+    "autoRegistered": true,
+    "controller": true,
+    "scope": "http://127.0.0.1:4174/",
+    "shellCache": true,
+    "cacheName": "patchtone-shell-v1"
+  },
+  "installPrompt": "external-device-gate"
+}

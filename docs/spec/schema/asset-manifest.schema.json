@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://music-compose-tool.invalid/schema/asset-manifest.schema.json",
+  "title": "Music Compose Tool Asset Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assetId", "origin", "media", "integrity", "storage", "license", "sharePolicy"],
+  "properties": {
+    "assetId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "origin": { "enum": ["generated", "user-upload", "user-owned-export", "template-pack"] },
+    "displayName": { "type": "string", "maxLength": 160 },
+    "sourceProduct": { "type": ["string", "null"], "maxLength": 160 },
+    "sourceUrl": { "type": ["string", "null"], "format": "uri" },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "format", "durationSeconds"],
+      "properties": {
+        "kind": { "enum": ["audio", "midi", "note-events", "embedding"] },
+        "format": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "durationSeconds": { "type": ["number", "null"], "minimum": 0 },
+        "sampleRate": { "type": ["integer", "null"], "minimum": 8000, "maximum": 384000 },
+        "channels": { "type": ["integer", "null"], "minimum": 1, "maximum": 32 },
+        "bpm": { "type": ["number", "null"], "minimum": 30, "maximum": 300 },
+        "key": { "type": ["string", "null"], "maxLength": 32 }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "bytes"],
+      "properties": {
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["embedded", "external-reference", "remote-temporary", "missing"] },
+        "relativePath": { "type": ["string", "null"], "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).*$" },
+        "opaqueArtifactId": { "type": ["string", "null"], "maxLength": 256 }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basis", "redistribution", "commercialUse", "derivativeUse", "aiProcessing"],
+      "properties": {
+        "basis": { "enum": ["model-output", "user-asserted-owned", "licensed-pack", "unknown"] },
+        "licenseId": { "type": ["string", "null"], "maxLength": 160 },
+        "licenseTextUrl": { "type": ["string", "null"], "format": "uri" },
+        "termsDigest": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "redistribution": { "enum": ["allowed", "render-only", "forbidden", "unknown"] },
+        "commercialUse": { "enum": ["allowed", "forbidden", "unknown", "not-evaluated"] },
+        "derivativeUse": { "enum": ["allowed", "forbidden", "unknown", "not-evaluated"] },
+        "aiProcessing": { "enum": ["allowed", "forbidden", "unknown", "not-evaluated"] },
+        "recordedAt": { "type": "string", "format": "date-time" },
+        "attributionText": { "type": ["string", "null"], "maxLength": 1000 },
+        "notes": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "generation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "model": { "type": "string", "maxLength": 160 },
+        "modelRevision": { "type": "string", "maxLength": 160 },
+        "seed": { "type": ["integer", "null"] },
+        "promptDigest": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "sharePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["renderAllowed", "bundleAllowed", "publicShareAllowed", "aiProcessingAllowed"],
+      "properties": {
+        "renderAllowed": { "type": "boolean" },
+        "bundleAllowed": { "type": "boolean" },
+        "publicShareAllowed": { "type": "boolean" },
+        "aiProcessingAllowed": { "type": "boolean" },
+        "requiresAttribution": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}

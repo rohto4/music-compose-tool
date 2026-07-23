@@ -1,0 +1,79 @@
+{
+  "baseUrl": "http://127.0.0.1:4175",
+  "results": [
+    {
+      "width": 1440,
+      "home": {
+        "viewport": 1440,
+        "scrollWidth": 1440,
+        "bodyBackground": "lab(0.524622 0.066489 -2.24004)",
+        "paperToken": "lab(.524622% .066489 -2.24004)",
+        "actionToken": "lab(81.9904% 2.34959 73.3331)",
+        "actionColor": "lab(81.9904 2.34959 73.3331)",
+        "actionMutedColor": "lab(53.9893 1.43602 49.6656)",
+        "primaryBackground": "lab(81.9904 2.34959 73.3331)",
+        "secondaryBorder": "lab(53.9893 1.43602 49.6656)",
+        "radiusCard": "0",
+        "radiusInput": "0"
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "width": 768,
+      "home": {
+        "viewport": 768,
+        "scrollWidth": 768,
+        "bodyBackground": "lab(0.524622 0.066489 -2.24004)",
+        "paperToken": "lab(.524622% .066489 -2.24004)",
+        "actionToken": "lab(81.9904% 2.34959 73.3331)",
+        "actionColor": "lab(81.9904 2.34959 73.3331)",
+        "actionMutedColor": "lab(53.9893 1.43602 49.6656)",
+        "primaryBackground": "lab(81.9904 2.34959 73.3331)",
+        "secondaryBorder": "lab(53.9893 1.43602 49.6656)",
+        "radiusCard": "0",
+        "radiusInput": "0"
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "width": 375,
+      "home": {
+        "viewport": 375,
+        "scrollWidth": 375,
+        "bodyBackground": "lab(0.524622 0.066489 -2.24004)",
+        "paperToken": "lab(.524622% .066489 -2.24004)",
+        "actionToken": "lab(81.9904% 2.34959 73.3331)",
+        "actionColor": "lab(81.9904 2.34959 73.3331)",
+        "actionMutedColor": "lab(53.9893 1.43602 49.6656)",
+        "primaryBackground": "lab(81.9904 2.34959 73.3331)",
+        "secondaryBorder": "lab(53.9893 1.43602 49.6656)",
+        "radiusCard": "0",
+        "radiusInput": "0"
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    },
+    {
+      "width": 1440,
+      "editor": {
+        "canvasBackground": "lab(0.131683 0.136681 -1.12139)",
+        "rollBackground": "lab(0.131683 0.136681 -1.12139)",
+        "editorBlackToken": "lab(.131683% .136681 -1.12139)",
+        "editorGridToken": "lab(8.10605% -.600144 -15.6086)",
+        "actionToken": "lab(81.9904% 2.34959 73.3331)",
+        "trackAddBorder": "lab(53.9893 1.43602 49.6656)",
+        "deleteBorder": "lab(66.9057 56.5265 32.7669)",
+        "deleteErrorToken": "lab(66.9057% 56.5265 32.7669)",
+        "radiusCard": "0",
+        "radiusInput": "0",
+        "scrollWidth": 1440,
+        "viewport": 1440
+      },
+      "consoleErrors": [],
+      "requestFailures": []
+    }
+  ],
+  "failures": []
+}

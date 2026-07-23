@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Patchtone">
+  <rect width="512" height="512" fill="#0b1119"/>
+  <path d="M72 72h368v368H72z" fill="#34213f" stroke="#edf5ff" stroke-width="24"/>
+  <path d="M160 314V198l192-54v116" fill="none" stroke="#edf5ff" stroke-width="28" stroke-linejoin="round"/>
+  <circle cx="132" cy="330" r="52" fill="#64d5f4" stroke="#edf5ff" stroke-width="24"/>
+  <circle cx="324" cy="276" r="52" fill="#78e7c6" stroke="#edf5ff" stroke-width="24"/>
+</svg>

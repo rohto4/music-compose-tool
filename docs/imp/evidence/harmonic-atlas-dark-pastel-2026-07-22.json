@@ -1,0 +1,47 @@
+{
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "documentOverflowX": 0,
+  "board": {
+    "top": 324,
+    "right": 1728,
+    "bottom": 921,
+    "left": 192,
+    "width": 1536,
+    "height": 597
+  },
+  "harmonicMap": {
+    "top": 646,
+    "right": 1726,
+    "bottom": 887,
+    "left": 194,
+    "width": 1532,
+    "height": 241
+  },
+  "firstPad": {
+    "top": 756,
+    "right": 414,
+    "bottom": 815,
+    "left": 205,
+    "width": 209,
+    "height": 58
+  },
+  "lastPad": {
+    "top": 821,
+    "right": 847,
+    "bottom": 879,
+    "left": 639,
+    "width": 209,
+    "height": 58
+  },
+  "chordPads": 14,
+  "voiceSelectors": 9,
+  "voiceFamilies": 6,
+  "surface": {
+    "paper": "oklch(19% 0.04 276)",
+    "paper2": "oklch(23% 0.045 270)",
+    "editor": "oklch(12% 0.03 270)"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "formatVersion": "0.1.0",
+  "projectId": "project-invalid-note",
+  "title": "Invalid pitch fixture",
+  "revision": 1,
+  "savedRevision": 2,
+  "creativeIntent": {
+    "genre": "cute-future-bass",
+    "mood": ["sparkling"],
+    "targetDurationSeconds": 90
+  },
+  "musicalGrid": { "ppq": 480, "bpm": 150, "meter": "4/4", "key": "D major" },
+  "arrangement": {
+    "sourceAssetId": null,
+    "sections": [
+      { "id": "section-1", "role": "intro", "startBar": 0, "bars": 8, "energyStart": 0.1, "energyEnd": 0.3 }
+    ]
+  },
+  "melody": {
+    "source": "humming",
+    "notes": [
+      {
+        "id": "note-invalid",
+        "pitch": 128,
+        "startTick": 0,
+        "durationTick": 0,
+        "velocity": 96,
+        "source": "humming",
+        "userEdited": false
+      }
+    ]
+  },
+  "tracks": [],
+  "assetRefs": [],
+  "generationCandidates": []
+}

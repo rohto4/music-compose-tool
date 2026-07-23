@@ -1,0 +1,43 @@
+{
+  "date": "2026-07-22",
+  "issue": {
+    "observed": "入力オーディオバッファはモノラルではありません！チャンネル数は2です。1であるべきです。",
+    "boundary": "Basic Pitch browser transcription",
+    "rootCause": "A microphone or browser may ignore the requested channelCount of 1, and the decoded stereo AudioBuffer was passed to Basic Pitch without normalization."
+  },
+  "fix": {
+    "algorithm": "Average every decoded channel for each frame and clamp the result to [-1, 1].",
+    "wav": {
+      "format": "PCM16",
+      "channels": 1,
+      "blockAlign": 2
+    },
+    "defenseInDepth": [
+      "audioBlobToWav always emits mono for microphone, imported humming, voice memo, and AI source/reference audio.",
+      "BasicPitchTranscriber creates a one-channel AudioBuffer immediately before evaluateModel."
+    ]
+  },
+  "verification": {
+    "unit": {
+      "command": "npm.cmd run check",
+      "files": 15,
+      "tests": 60,
+      "status": "passed"
+    },
+    "targetedAiLayerE2e": {
+      "tests": 1,
+      "status": "passed",
+      "sourceInputChannels": 2,
+      "referenceInputChannels": 2,
+      "gatewaySourceChannels": 1,
+      "gatewayReferenceChannels": 1
+    },
+    "fullChromiumE2e": {
+      "command": "npm.cmd run test:e2e",
+      "tests": 7,
+      "status": "passed",
+      "includes": "stereo humming file to bundled Basic Pitch notes"
+    }
+  },
+  "remainingGate": "The user must retry the physical microphone path; this is the user brush-up gate and does not reduce the local automated proof."
+}

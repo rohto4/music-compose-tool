@@ -1,0 +1,172 @@
+{
+  "themeMetrics": {
+    "dark-pastel": {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "overflowX": 0,
+      "board": {
+        "x": 512,
+        "y": 0,
+        "width": 1536,
+        "height": 9363
+      },
+      "score": {
+        "x": 514,
+        "y": 2,
+        "width": 1532,
+        "height": 458
+      },
+      "atlas": {
+        "x": 514,
+        "y": 521,
+        "width": 1532,
+        "height": 244
+      },
+      "prompt": {
+        "x": 514,
+        "y": 9258,
+        "width": 1532,
+        "height": 103
+      },
+      "rolePatterns": {
+        "x": 514,
+        "y": 2812,
+        "width": 1532,
+        "height": 944
+      },
+      "phraseCount": 4,
+      "chordCount": 14,
+      "rolePatternCount": 42,
+      "minChordWidth": 209,
+      "atlasOverflowX": 0,
+      "rolePatternOverflowX": 0,
+      "unnamedButtons": 0,
+      "theme": "dark-pastel",
+      "colorScheme": "dark"
+    },
+    "vanilla-pastel": {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "overflowX": 0,
+      "board": {
+        "x": 512,
+        "y": 0,
+        "width": 1536,
+        "height": 9363
+      },
+      "score": {
+        "x": 514,
+        "y": 2,
+        "width": 1532,
+        "height": 458
+      },
+      "atlas": {
+        "x": 514,
+        "y": 521,
+        "width": 1532,
+        "height": 244
+      },
+      "prompt": {
+        "x": 514,
+        "y": 9258,
+        "width": 1532,
+        "height": 103
+      },
+      "rolePatterns": {
+        "x": 514,
+        "y": 2812,
+        "width": 1532,
+        "height": 944
+      },
+      "phraseCount": 4,
+      "chordCount": 14,
+      "rolePatternCount": 42,
+      "minChordWidth": 209,
+      "atlasOverflowX": 0,
+      "rolePatternOverflowX": 0,
+      "unnamedButtons": 0,
+      "theme": "vanilla-pastel",
+      "colorScheme": "light"
+    },
+    "friendly-signal": {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "overflowX": 0,
+      "board": {
+        "x": 512,
+        "y": 0,
+        "width": 1536,
+        "height": 9363
+      },
+      "score": {
+        "x": 514,
+        "y": 2,
+        "width": 1532,
+        "height": 458
+      },
+      "atlas": {
+        "x": 514,
+        "y": 521,
+        "width": 1532,
+        "height": 244
+      },
+      "prompt": {
+        "x": 514,
+        "y": 9258,
+        "width": 1532,
+        "height": 103
+      },
+      "rolePatterns": {
+        "x": 514,
+        "y": 2812,
+        "width": 1532,
+        "height": 944
+      },
+      "phraseCount": 4,
+      "chordCount": 14,
+      "rolePatternCount": 42,
+      "minChordWidth": 209,
+      "atlasOverflowX": 0,
+      "rolePatternOverflowX": 0,
+      "unnamedButtons": 0,
+      "theme": "friendly-signal",
+      "colorScheme": "dark"
+    }
+  },
+  "breakpointMetrics": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "overflowX": 0,
+      "rolePatternCount": 42,
+      "rolePatternOverflowX": 0
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "overflowX": 0,
+      "rolePatternCount": 42,
+      "rolePatternOverflowX": 0
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflowX": 0,
+      "rolePatternCount": 42,
+      "rolePatternOverflowX": 0
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "overflowX": 0,
+      "rolePatternCount": 42,
+      "rolePatternOverflowX": 0
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "assetId": "asset-invalid-path",
+  "origin": "user-upload",
+  "media": { "kind": "audio", "format": "wav", "durationSeconds": 1 },
+  "integrity": {
+    "sha256": "e94f2fdd741fba7a3b631b2101ce5ce866d56fb55c2f12102ba66c3536cb81c4",
+    "bytes": 96044
+  },
+  "storage": { "kind": "embedded", "relativePath": "../outside.wav" },
+  "license": {
+    "basis": "unknown",
+    "redistribution": "unknown",
+    "commercialUse": "not-evaluated"
+  },
+  "sharePolicy": { "renderAllowed": false, "bundleAllowed": false }
+}

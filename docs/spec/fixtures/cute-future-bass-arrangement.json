@@ -1,0 +1,38 @@
+{
+  "formatVersion": "0.1.0",
+  "assetId": "arr-cute-fb-001",
+  "label": "Sparkle Arc 32",
+  "genre": "cute-future-bass",
+  "lengthBars": 32,
+  "sections": [
+    {
+      "role": "intro",
+      "bars": 8,
+      "energyStart": 0.15,
+      "energyEnd": 0.35,
+      "transition": "riser"
+    },
+    {
+      "role": "build",
+      "bars": 8,
+      "energyStart": 0.35,
+      "energyEnd": 0.75,
+      "transition": "silence-cut"
+    },
+    {
+      "role": "drop",
+      "bars": 16,
+      "energyStart": 0.9,
+      "energyEnd": 0.82,
+      "transition": "impact"
+    }
+  ],
+  "slots": [
+    { "role": "melody", "required": true, "tags": ["humming-seed", "bright"] },
+    { "role": "chord", "required": true, "tags": ["major", "sidechain"] },
+    { "role": "drum", "required": true, "tags": ["punchy", "half-time-option"] },
+    { "role": "bass", "required": true, "tags": ["soft-sub"] },
+    { "role": "synth", "required": false, "tags": ["sparkle", "vocal-chop-like"] },
+    { "role": "fx", "required": false, "tags": ["riser", "impact"] }
+  ]
+}

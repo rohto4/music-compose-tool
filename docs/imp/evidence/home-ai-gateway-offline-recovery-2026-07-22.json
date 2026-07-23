@@ -1,0 +1,41 @@
+{
+  "date": "2026-07-22",
+  "issue": {
+    "observedUi": "追加レイヤーを適用できませんでした: Home AI gateway returned malformed JSON.",
+    "directGateway": "connection refused on 127.0.0.1:17321",
+    "viteProxy": {
+      "status": 502,
+      "contentType": "text/plain",
+      "body": ""
+    },
+    "rootCause": "The Home AI gateway process was not running. Vite returned an empty non-JSON 502 and the browser client misclassified it as malformed model JSON."
+  },
+  "fix": {
+    "proxy": "Normalize proxy failures to JSON gateway-unavailable responses.",
+    "client": "Normalize network refusal and non-JSON 5xx responses while keeping malformed 2xx distinct.",
+    "ui": "Show an offline and retryable state while preserving editable accompaniment tracks.",
+    "launcher": "npm.cmd run gateway:ace validates the approved local Python, guarded DiT-only runner, and checkpoints before loopback startup."
+  },
+  "runtimeAfterRecovery": {
+    "pid": 59016,
+    "listen": "127.0.0.1:17321",
+    "directHealth": 200,
+    "proxyHealth": 200,
+    "fullTrackBackend": "ace-step-1.5-dit-only",
+    "modelState": "unloaded",
+    "queueDepth": 0,
+    "measuredPeakReservedMiB": 9624,
+    "hardCapMiB": 10240,
+    "idleGpuUsedMiBApprox": 2439
+  },
+  "verification": {
+    "focusedClientTests": "8/8 passed",
+    "offlineE2e": "1/1 passed",
+    "vitest": "15 files / 62 tests passed",
+    "gatewaySmoke": "passed",
+    "build": "passed",
+    "chromiumFhd": "8/8 passed",
+    "eslintWarnings": 0
+  },
+  "remainingGate": "Retry the user's current melody and listen to the generated layer before moving the feature from AI-verified star 3 to user-verified star 4."
+}

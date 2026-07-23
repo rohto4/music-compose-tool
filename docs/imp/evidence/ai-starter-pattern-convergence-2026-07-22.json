@@ -1,0 +1,67 @@
+{
+  "date": "2026-07-22",
+  "scope": "AI Starter, three-entry MIDI convergence, timbre library, hover and drag feedback",
+  "status": "local-ai-verified-user-review-pending",
+  "entryModes": ["ai-starter", "pattern-board", "humming-studio-experimental"],
+  "symbolicFoundationRoles": ["melody", "chord", "drum", "bass", "pad", "arp", "synth"],
+  "timbres": {
+    "total": 41,
+    "tonalProfiles": 31,
+    "categories": {
+      "chord": 9,
+      "bass": 5,
+      "lead": 4,
+      "synth": 4,
+      "pad": 5,
+      "arp": 4,
+      "drum": 2,
+      "percussion": 2,
+      "fx": 3,
+      "transition": 3
+    },
+    "uniqueProfileFingerprints": 31,
+    "externalSamplesAdded": false
+  },
+  "convergence": {
+    "partialChordPatternOverridePreservesUncoveredGeneratedBars": true,
+    "patternBlocksMaterializeToManualNoteEvents": true,
+    "materializedBlocksRemovedToAvoidDoubleSourceOfTruth": true,
+    "standardMidiFormat": 1,
+    "ppq": 480
+  },
+  "interaction": {
+    "hoverLift": ["start-mode", "pattern-slot", "chord-pad", "timbre", "asset", "arrangement-section", "canvas-note"],
+    "dragStates": ["grabbed", "drop-target", "move", "resize"],
+    "reducedMotion": true,
+    "mobileViewportWidth": 375,
+    "mobileDocumentOverflowPx": 0
+  },
+  "verification": {
+    "check": "pass",
+    "vitestFiles": 20,
+    "vitestTests": 76,
+    "matrixRows": 25,
+    "matrixLocalLinks": 52,
+    "playwrightProject": "chromium-fhd",
+    "playwrightWorkers": 1,
+    "playwrightTests": 10,
+    "playwrightPassed": 10,
+    "playwrightDurationSeconds": 211.2,
+    "darkThemeQa": "pass",
+    "darkThemeViewports": [1440, 768, 375],
+    "pwaRuntimeQa": "pass",
+    "consoleErrors": 0,
+    "requestFailures": 0
+  },
+  "screenshots": [
+    "ai-starter-home-desktop-2026-07-22.png",
+    "ai-starter-timbre-bank-desktop-2026-07-22.png",
+    "ai-starter-midi-mobile-2026-07-22.png"
+  ],
+  "remaining": [
+    "Bass, Arp, and Drum role-follow pattern browser",
+    "User listening review for Future Bass and Future Core fit",
+    "User interaction polish review before star 4",
+    "Studio One actual MIDI import external gate"
+  ]
+}

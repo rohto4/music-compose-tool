@@ -1,0 +1,58 @@
+{
+  "session": "music-compose-tool-brand-2026-07",
+  "outputPath": "G:\\devwork\\music-compose-tool\\docs\\design\\brand-identity",
+  "completedModules": [],
+  "inProgressModule": "10_purpose-why.md",
+  "nextModule": "20_positioning.md",
+  "participants": [
+    "owner"
+  ],
+  "lastUpdated": "2026-07-21T23:55:00+09:00",
+  "progress": {
+    "coreComplete": 17,
+    "corePartial": 3,
+    "currentQuestion": "brand-name-and-start-screen",
+    "currentTopic": "Pastel Patchboard project foundation, range humming, arrangement drag, and whole-song Canvas editor refined; product name remains open"
+  },
+  "designContext": {
+    "audience": {
+      "value": "requesting owner",
+      "state": "answered"
+    },
+    "use": {
+      "value": "create an original cute instrumental BGM from humming and guided assets without requiring music theory",
+      "state": "answered"
+    },
+    "tone": {
+      "value": "cute but not childish, dense but navigable, tactile composition workbench",
+      "state": "provisional-inference"
+    }
+  },
+  "designComparison": {
+    "status": "selected-and-refined",
+    "candidates": [
+      "hallmark",
+      "pastel-patchboard"
+    ],
+    "selected": "pastel-patchboard",
+    "decision": "JUDGE-002",
+    "reason": "fewer unnecessary circles and rounded corners; closer to owner preference",
+    "mainWorkbench": {
+      "largeTitle": false,
+      "phaseControl": "inline module, not fixed header",
+      "stateExamples": "help disclosure",
+      "modelChoice": "capability routed and disclosed, no same-purpose picker",
+      "projectStart": "multi-project shelf with asset-first and humming-first creation",
+      "workspaces": "project setup, assets, arrangement, melody; phase changes default surface and edit granularity",
+      "projectConditions": "duration, mood, key, and BPM live in project creation and setup; AI-specific input is separate",
+      "arrangementRole": "neutral frame shapes with distinct Break and Bridge; template insertion and pointer reorder; track role colours reserved for music layers",
+      "detailEditor": "PPQ 480 whole-song Canvas 2D with viewport culling, note drag, resize, double-click add, and keyboard controls",
+      "assetAudition": "one-tap Web Audio sample phrase in prototype"
+    }
+  },
+  "assumptions": {
+    "brandName": "music-compose-tool (working name)",
+    "participant": "requesting owner",
+    "status": "provisional until user names the product"
+  }
+}

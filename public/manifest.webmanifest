@@ -1,0 +1,21 @@
+{
+  "name": "Patchtone Music Workbench",
+  "short_name": "Patchtone",
+  "description": "鼻歌と音のピースからFuture Bass / Future Coreを作るmusic workbench",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape-primary",
+  "background_color": "#0b1119",
+  "theme_color": "#0b1119",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/patchtone-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

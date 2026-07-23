@@ -1,0 +1,69 @@
+{
+  "viewport": {
+    "width": 2560,
+    "height": 1440
+  },
+  "documentOverflowX": 0,
+  "board": {
+    "top": 308,
+    "right": 2048,
+    "bottom": 9671,
+    "left": 512,
+    "width": 1536,
+    "height": 9363
+  },
+  "harmonicMap": {
+    "top": 829,
+    "right": 2046,
+    "bottom": 1073,
+    "left": 514,
+    "width": 1532,
+    "height": 244
+  },
+  "score": {
+    "top": 310,
+    "right": 2046,
+    "bottom": 768,
+    "left": 514,
+    "width": 1532,
+    "height": 458
+  },
+  "sourceShelf": {
+    "top": 1275,
+    "right": 2046,
+    "bottom": 1797,
+    "left": 514,
+    "width": 1532,
+    "height": 522
+  },
+  "firstPad": {
+    "top": 943,
+    "right": 734,
+    "bottom": 1001,
+    "left": 525,
+    "width": 209,
+    "height": 58
+  },
+  "lastPad": {
+    "top": 1007,
+    "right": 1167,
+    "bottom": 1065,
+    "left": 959,
+    "width": 209,
+    "height": 58
+  },
+  "chordPads": 14,
+  "scoreRows": 2,
+  "scorePhrases": 4,
+  "rolePatterns": 42,
+  "voiceSelectors": 11,
+  "voiceFamilies": 6,
+  "soundBlocks": 24,
+  "insertableCount": 216,
+  "draggableInsertableCount": 216,
+  "surface": {
+    "paper": "oklch(19% 0.04 276)",
+    "paper2": "oklch(23% 0.045 270)",
+    "editor": "oklch(12% 0.03 270)"
+  }
+}

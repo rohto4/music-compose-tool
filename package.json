@@ -1,0 +1,56 @@
+{
+  "name": "patchtone-music-compose-tool",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "predev": "node scripts/sync_basic_pitch_model.mjs",
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "prebuild": "node scripts/sync_basic_pitch_model.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "lint": "eslint .",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:gateway": "node scripts/test_home_ai_gateway.mjs",
+    "test:pwa": "node scripts/run_pwa_qa.mjs",
+    "test:dark": "node scripts/qa_dark_theme.mjs",
+    "validate:progress": "node scripts/validate_phase1_progress.mjs",
+    "validate:matrix": "node scripts/validate_phase1_matrix.mjs",
+    "sync:models": "node scripts/sync_basic_pitch_model.mjs",
+    "gateway": "node tools/home-ai-gateway.mjs",
+    "gateway:ace": "node scripts/start_ace_gateway.mjs",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run test:gateway && npm run build && npm run validate:progress && npm run validate:matrix"
+  },
+  "dependencies": {
+    "@spotify/basic-pitch": "1.0.1",
+    "idb": "8.0.3",
+    "jszip": "3.10.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.61.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "26.1.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "eslint": "10.7.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.3",
+    "fake-indexeddb": "6.2.5",
+    "jsdom": "29.1.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.65.0",
+    "vite": "8.1.5",
+    "vitest": "4.1.10"
+  }
+}

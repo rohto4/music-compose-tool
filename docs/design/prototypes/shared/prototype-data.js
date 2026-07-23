@@ -1,0 +1,198 @@
+window.MUSIC_COMPOSE_PROTOTYPE = Object.freeze({
+  project: {
+    id: "project-sparkle-humming-sketch",
+    title: "Sparkle Humming Sketch",
+    genre: "かわいい Future Bass",
+    durationSeconds: 90,
+    bpm: 150,
+    key: "D Major",
+    mood: "前向き・きらきら",
+    status: "未保存",
+  },
+  phases: [
+    { id: "draft", label: "10分ラフ", role: "音を組む", detail: "大きな音のピースで曲の外枠を作る" },
+    { id: "shape", label: "30分整形", role: "展開と鼻歌", detail: "展開を組み替え、鼻歌を音符へ変える" },
+    { id: "detail", label: "60分仕上げ", role: "音符を磨く", detail: "音程・リズム・長さ・強さをノート単位で仕上げる" },
+  ],
+  sections: [
+    { id: "intro", label: "Intro", bars: 8, tone: "cyan" },
+    { id: "build", label: "Build", bars: 8, tone: "pear" },
+    { id: "drop-a", label: "Drop A", bars: 16, tone: "coral" },
+    { id: "break", label: "Break", bars: 8, tone: "lavender" },
+    { id: "drop-b", label: "Drop B", bars: 16, tone: "coral" },
+    { id: "outro", label: "Outro", bars: 8, tone: "mint" },
+  ],
+  arrangementAssets: [
+    {
+      id: "twin-drop",
+      name: "Twin Drop",
+      summary: "2回のドロップで主役をしっかり見せる",
+      sections: [
+        { id: "intro", label: "Intro", bars: 8, role: "intro", energy: 28, transition: "fade" },
+        { id: "build", label: "Build", bars: 8, role: "build", energy: 58, transition: "riser" },
+        { id: "drop-a", label: "Drop A", bars: 16, role: "drop", energy: 92, transition: "impact" },
+        { id: "break", label: "Break", bars: 8, role: "break", energy: 34, transition: "tape" },
+        { id: "bridge", label: "Bridge", bars: 8, role: "bridge", energy: 48, transition: "bloom" },
+        { id: "drop-b", label: "Drop B", bars: 16, role: "drop", energy: 96, transition: "impact" },
+        { id: "outro", label: "Outro", bars: 8, role: "outro", energy: 22, transition: "fade" },
+      ],
+    },
+    {
+      id: "gentle-rise",
+      name: "Gentle Rise",
+      summary: "小さく始めて最後のドロップへ集める",
+      sections: [
+        { id: "intro-soft", label: "Soft Intro", bars: 8, role: "intro", energy: 18, transition: "fade" },
+        { id: "verse", label: "Verse", bars: 16, role: "verse", energy: 42, transition: "bloom" },
+        { id: "build-long", label: "Long Build", bars: 16, role: "build", energy: 68, transition: "riser" },
+        { id: "drop-main", label: "Main Drop", bars: 16, role: "drop", energy: 96, transition: "impact" },
+        { id: "reply", label: "Reply Bridge", bars: 8, role: "bridge", energy: 52, transition: "bloom" },
+        { id: "outro-soft", label: "Outro", bars: 8, role: "outro", energy: 18, transition: "fade" },
+      ],
+    },
+    {
+      id: "story-break",
+      name: "Story Break",
+      summary: "中盤を静かにして後半の変化を強くする",
+      sections: [
+        { id: "opening", label: "Opening", bars: 8, role: "intro", energy: 26, transition: "fade" },
+        { id: "drop-early", label: "Early Drop", bars: 16, role: "drop", energy: 86, transition: "impact" },
+        { id: "story", label: "Story", bars: 16, role: "break", energy: 30, transition: "bloom" },
+        { id: "bridge-return", label: "Bridge", bars: 8, role: "bridge", energy: 54, transition: "riser" },
+        { id: "rebuild", label: "Rebuild", bars: 8, role: "build", energy: 72, transition: "riser" },
+        { id: "final-drop", label: "Final Drop", bars: 16, role: "drop", energy: 100, transition: "impact" },
+        { id: "ending", label: "Ending", bars: 8, role: "outro", energy: 20, transition: "fade" },
+      ],
+    },
+  ],
+  sectionTemplates: [
+    { id: "intro", label: "Intro", bars: 8, role: "intro", energy: 24, transition: "fade" },
+    { id: "build", label: "Build", bars: 8, role: "build", energy: 62, transition: "riser" },
+    { id: "drop", label: "Drop", bars: 16, role: "drop", energy: 94, transition: "impact" },
+    { id: "break", label: "Break", bars: 8, role: "break", energy: 28, transition: "tape" },
+    { id: "bridge", label: "Bridge", bars: 8, role: "bridge", energy: 50, transition: "bloom" },
+    { id: "outro", label: "Outro", bars: 8, role: "outro", energy: 20, transition: "fade" },
+  ],
+  tracks: [
+    { id: "melody", label: "Melody", blocks: ["Humming seed", "Pearl Lift", "Cloud Bounce", "Soft Reply", "Cloud Bounce+", "Tiny Farewell"] },
+    { id: "chords", label: "Chords", blocks: ["Dawn Steps", "Dawn Steps", "Sky Turn", "Quiet Window", "Sky Turn", "Dawn Steps"] },
+    { id: "drums", label: "Drums", blocks: ["Soft Tick", "Riser Kit", "Candy Punch", "Half-time", "Candy Punch+", "Soft Tick"] },
+    { id: "bass", label: "Bass", blocks: ["Warm Sub", "Warm Sub", "Round Pluck", "None", "Round Pluck+", "Warm Sub"] },
+    { id: "arp", label: "Arp", blocks: ["Dew Steps", "Dew Steps+", "Pixel Ladder", "Sparse Air", "Pixel Ladder+", "Dew Tail"] },
+    { id: "synth", label: "Synth", blocks: ["Glass Dot", "Wide Bloom", "Ribbon Stack", "Air Pad", "Ribbon Stack+", "Glass Dot"] },
+    { id: "pad", label: "Pad", blocks: ["Morning Haze", "Open Sky", "Pastel Bed", "Blue Room", "Pastel Bed+", "Morning Haze"] },
+    { id: "perc", label: "Perc", blocks: ["Tiny Bell", "Snap Lift", "Candy Bits", "Wood Tap", "Candy Bits+", "Tiny Bell"] },
+    { id: "fx", label: "FX", blocks: ["Room Dust", "Up Sweep", "Star Scatter", "Tape Breath", "Star Scatter+", "Soft Tail"] },
+  ],
+  assetGroups: [
+    {
+      id: "chords",
+      label: "コード",
+      assets: [
+        { id: "sky-turn", name: "Sky Turn", meta: "D Major · 8 bars", hint: "明るく持ち上げる" },
+        { id: "dawn-steps", name: "Dawn Steps", meta: "D Major · 8 bars", hint: "穏やかに始める" },
+        { id: "quiet-window", name: "Quiet Window", meta: "B minor · 8 bars", hint: "一度だけ静かにする" },
+      ],
+    },
+    {
+      id: "drums",
+      label: "ドラム",
+      assets: [
+        { id: "candy-punch", name: "Candy Punch", meta: "150 BPM · 16 bars", hint: "ドロップを太くする" },
+        { id: "soft-tick", name: "Soft Tick", meta: "150 BPM · 8 bars", hint: "イントロを軽くする" },
+        { id: "half-time", name: "Half-time", meta: "75/150 BPM · 8 bars", hint: "休憩を作る" },
+      ],
+    },
+    {
+      id: "bass",
+      label: "ベース",
+      assets: [
+        { id: "round-pluck", name: "Round Pluck", meta: "Bass · bouncy", hint: "主役の下を軽く跳ねる" },
+        { id: "warm-sub", name: "Warm Sub", meta: "Sub · smooth", hint: "低音を静かに支える" },
+        { id: "tiny-growl", name: "Tiny Growl", meta: "Bass · textured", hint: "Future Coreの勢いを足す" },
+      ],
+    },
+    {
+      id: "lead",
+      label: "リード",
+      assets: [
+        { id: "pearl-lift", name: "Pearl Lift", meta: "Lead · singing", hint: "鼻歌の輪郭を主役にする" },
+        { id: "cloud-bounce", name: "Cloud Bounce", meta: "Lead · elastic", hint: "跳ねるメロディにする" },
+        { id: "tiny-bell-lead", name: "Tiny Bell Lead", meta: "Lead · delicate", hint: "細い高音で可愛くする" },
+      ],
+    },
+    {
+      id: "synth",
+      label: "シンセ",
+      assets: [
+        { id: "ribbon-stack", name: "Ribbon Stack", meta: "Lead · bright", hint: "広がる主役音" },
+        { id: "glass-dot", name: "Glass Dot", meta: "Pluck · soft", hint: "小さな光を足す" },
+        { id: "air-pad", name: "Air Pad", meta: "Pad · gentle", hint: "空間を埋める" },
+      ],
+    },
+    {
+      id: "pad",
+      label: "パッド",
+      assets: [
+        { id: "pastel-bed", name: "Pastel Bed", meta: "Pad · warm", hint: "コードの隙間を柔らかく埋める" },
+        { id: "blue-room", name: "Blue Room", meta: "Pad · wistful", hint: "少し切ない空気を作る" },
+        { id: "open-sky", name: "Open Sky", meta: "Pad · wide", hint: "ドロップを広く見せる" },
+      ],
+    },
+    {
+      id: "arp",
+      label: "アルペジオ",
+      assets: [
+        { id: "pixel-ladder", name: "Pixel Ladder", meta: "Arp · 1/16", hint: "細かな上昇感を足す" },
+        { id: "dew-steps", name: "Dew Steps", meta: "Arp · 1/8", hint: "イントロを透明に動かす" },
+        { id: "star-stairs", name: "Star Stairs", meta: "Arp · syncopated", hint: "リズムを少し崩す" },
+      ],
+    },
+    {
+      id: "percussion",
+      label: "パーカッション",
+      assets: [
+        { id: "candy-bits", name: "Candy Bits", meta: "Perc · bright", hint: "細かな隙間を埋める" },
+        { id: "wood-tap", name: "Wood Tap", meta: "Perc · dry", hint: "静かな区間に拍を残す" },
+        { id: "tiny-bell", name: "Tiny Bell", meta: "Perc · tonal", hint: "節目に小さな光を置く" },
+      ],
+    },
+    {
+      id: "fx",
+      label: "FX",
+      assets: [
+        { id: "star-scatter", name: "Star Scatter", meta: "Sparkle · short", hint: "きらめきを強くする" },
+        { id: "up-sweep", name: "Up Sweep", meta: "Riser · 2 bars", hint: "次の展開へつなぐ" },
+        { id: "soft-tail", name: "Soft Tail", meta: "Reverb · long", hint: "終わりを柔らかくする" },
+      ],
+    },
+    {
+      id: "transition",
+      label: "つなぎ",
+      assets: [
+        { id: "reverse-bloom", name: "Reverse Bloom", meta: "Transition · 1 bar", hint: "次の区間へ吸い込む" },
+        { id: "soft-impact", name: "Soft Impact", meta: "Impact · short", hint: "展開の頭を明確にする" },
+        { id: "tape-stop", name: "Tape Stop", meta: "Transition · short", hint: "一度止めて変化を作る" },
+      ],
+    },
+  ],
+  melody: [
+    { id: "n1", pitch: "F#4", beat: "1.0", length: "1/2", tick: 0, durationTick: 12, velocity: 88 },
+    { id: "n2", pitch: "A4", beat: "1.5", length: "1/2", tick: 12, durationTick: 12, velocity: 96 },
+    { id: "n3", pitch: "B4", beat: "2.0", length: "1", tick: 24, durationTick: 24, velocity: 108 },
+    { id: "n4", pitch: "A4", beat: "3.0", length: "1/2", tick: 48, durationTick: 12, velocity: 92 },
+    { id: "n5", pitch: "F#4", beat: "3.5", length: "1/2", tick: 60, durationTick: 12, velocity: 84 },
+    { id: "n6", pitch: "E4", beat: "4.0", length: "1", tick: 72, durationTick: 24, velocity: 98 },
+  ],
+  ai: {
+    status: "home-offline",
+    label: "Home AI オフライン",
+    detail: "生成済み候補と非AIアセット編集は続けられます。",
+  },
+  modelRoutes: [
+    { capability: "鼻歌 → 音符", model: "Basic Pitch TS", state: "検証予定", mode: "browser" },
+    { capability: "伴奏候補", model: "ACE-Step 1.5 DiT-only", state: "Home AI オフライン", mode: "home RTX 5080" },
+    { capability: "音の近さ検索", model: "CLAP", state: "未導入", mode: "optional" },
+    { capability: "コード・展開候補", model: "Template / Rule Engine", state: "利用可能", mode: "non-AI" },
+  ],
+});

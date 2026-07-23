@@ -1,0 +1,41 @@
+{
+  "date": "2026-07-22",
+  "scope": "local gateway source-conditioned ACE-Step additional layer",
+  "jobId": "job-7e7db300-d119-4422-ad18-69a6f2b1c165",
+  "status": "succeeded",
+  "backend": "ace-step-1.5-dit-only",
+  "taskType": "complete",
+  "conditioning": {
+    "sourceAudio": true,
+    "referenceAudio": true,
+    "melodyNotes": true,
+    "melodyPreserved": true
+  },
+  "device": "NVIDIA GeForce RTX 5080",
+  "python": "3.12.13",
+  "torch": "2.7.1+cu128",
+  "requestedDurationSeconds": 10,
+  "outputDurationSeconds": 5.12,
+  "sampleRate": 48000,
+  "channels": 2,
+  "peakReservedMiB": 9624,
+  "hardCapMiB": 10240,
+  "artifact": {
+    "httpStatus": 200,
+    "bytes": 1966168,
+    "riff": "RIFF",
+    "wave": "WAVE",
+    "sha256": "87768fafafb5d21edfbb5b62794896ae12fc9e6e9045d2c380b3070e241c1f6e"
+  },
+  "timingSeconds": {
+    "ditInit": 4.614,
+    "generation": 1.542,
+    "total": 6.159
+  },
+  "cleanup": {
+    "sourceAudioDeleted": true,
+    "referenceAudioDeleted": true,
+    "modelUnloadedAfterJob": true
+  },
+  "boundary": "Short local runtime proof only; user listening for Future Bass/Core fit, long-duration behavior, and final melody-following quality remain open. The 1.7B LM profile is prohibited by the 10240 MiB cap."
+}

@@ -1,0 +1,22 @@
+{
+  "fixture": "gateway-full-track-source-audio-complete",
+  "date": "2026-07-22",
+  "status": "succeeded",
+  "conditioning": "source-audio-complete",
+  "sourceAudioIncluded": true,
+  "referenceAudioIncluded": true,
+  "sourceFileRemovedAfterJob": true,
+  "publicJobContainsSourceBase64": false,
+  "artifactHttp": 200,
+  "artifactBytes": 1966168,
+  "durationSeconds": 5.12,
+  "sampleRate": 48000,
+  "channels": 2,
+  "peakReservedMiB": 9622,
+  "hardCapMiB": 10240,
+  "lm": "disabled",
+  "gpu": "NVIDIA GeForce RTX 5080",
+  "sourceInputBytes": 44144,
+  "referenceInputBytes": 44144,
+  "sourceAndReferenceDeletedAfterJob": true
+}

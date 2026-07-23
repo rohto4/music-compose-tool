@@ -1,0 +1,14 @@
+.tmp/
+.cache/
+artifacts/
+*.log
+__pycache__/
+*.pyc
+.runtime/
+.tmp/
+coverage/
+dist/
+node_modules/
+playwright-report/
+test-results/
+*.tsbuildinfo

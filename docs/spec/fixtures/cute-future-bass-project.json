@@ -1,0 +1,110 @@
+{
+  "formatVersion": "0.1.0",
+  "projectId": "project-cute-fb-001",
+  "title": "Sparkle Humming Sketch",
+  "revision": 3,
+  "savedRevision": 2,
+  "createdAt": "2026-07-21T00:00:00Z",
+  "updatedAt": "2026-07-21T00:03:00Z",
+  "creativeIntent": {
+    "genre": "cute-future-bass",
+    "mood": ["hopeful", "sparkling"],
+    "targetDurationSeconds": 90,
+    "freeText": "鼻歌の跳ねる感じを残し、dropで明るく広がる。",
+    "hummingAssetId": "asset-humming-001"
+  },
+  "musicalGrid": {
+    "ppq": 480,
+    "bpm": 150,
+    "meter": "4/4",
+    "key": "D major"
+  },
+  "arrangement": {
+    "sourceAssetId": "arr-cute-fb-001",
+    "sections": [
+      {
+        "id": "section-intro",
+        "role": "intro",
+        "label": "きらめく導入",
+        "startBar": 0,
+        "bars": 8,
+        "energyStart": 0.15,
+        "energyEnd": 0.35,
+        "transitionAssetId": null
+      },
+      {
+        "id": "section-build",
+        "role": "build",
+        "label": "ふくらむ予感",
+        "startBar": 8,
+        "bars": 8,
+        "energyStart": 0.35,
+        "energyEnd": 0.75,
+        "transitionAssetId": null
+      },
+      {
+        "id": "section-drop",
+        "role": "drop",
+        "label": "カラフルなDrop",
+        "startBar": 16,
+        "bars": 16,
+        "energyStart": 0.9,
+        "energyEnd": 0.82,
+        "transitionAssetId": null
+      }
+    ]
+  },
+  "melody": {
+    "source": "humming",
+    "notes": [
+      {
+        "id": "note-001",
+        "pitch": 66,
+        "startTick": 0,
+        "durationTick": 480,
+        "velocity": 96,
+        "source": "humming",
+        "confidence": 0.92,
+        "userEdited": false,
+        "lockPitch": true,
+        "lockTiming": true
+      },
+      {
+        "id": "note-002",
+        "pitch": 69,
+        "startTick": 480,
+        "durationTick": 240,
+        "velocity": 88,
+        "source": "humming",
+        "confidence": 0.84,
+        "userEdited": true,
+        "lockPitch": true,
+        "lockTiming": true
+      }
+    ]
+  },
+  "tracks": [
+    {
+      "id": "track-melody",
+      "role": "melody",
+      "name": "Humming Melody",
+      "muted": false,
+      "blocks": []
+    }
+  ],
+  "assetRefs": ["asset-humming-001"],
+  "generationCandidates": [
+    {
+      "id": "candidate-accompaniment-001",
+      "capability": "accompaniment",
+      "status": "queued",
+      "model": null,
+      "modelRevision": null,
+      "seed": 4217,
+      "outputAssetId": null,
+      "inputAssetIds": ["asset-humming-001"],
+      "intentTrace": ["melody:pitch-locked", "melody:timing-locked", "genre:cute-future-bass", "key:D-major"],
+      "createdAt": "2026-07-21T00:03:00Z"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patchtone Phase 1 星取り表</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: oklch(98% .006 250);
+      --paper-2: oklch(95% .012 250);
+      --ink: oklch(23% .025 255);
+      --muted: oklch(45% .03 255);
+      --rule: oklch(72% .04 255);
+      --strong: oklch(38% .06 255);
+      --accent: oklch(78% .09 320);
+      --cyan: oklch(82% .09 220);
+      --mint: oklch(83% .09 155);
+      --warn: oklch(75% .13 70);
+      font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid oklch(42% .16 260); outline-offset: 3px; }
+    .shell { width: min(100% - 2rem, 108rem); margin-inline: auto; padding-block: 1rem 4rem; }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; padding-block: .75rem 1.25rem; border-bottom: 3px solid var(--ink); }
+    h1, h2, p { margin: 0; }
+    h1 { font-size: clamp(1.45rem, 3vw, 2.4rem); line-height: 1.05; }
+    .eyebrow { margin-bottom: .35rem; color: var(--muted); font: 700 .75rem "Cascadia Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .updated { color: var(--muted); font-size: .82rem; text-align: right; }
+    .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 2px solid var(--strong); }
+    .metric { min-height: 7.5rem; padding: 1rem; border-right: 1px solid var(--rule); background: var(--paper-2); }
+    .metric:last-child { border-right: 0; }
+    .metric span { display: block; color: var(--muted); font-size: .78rem; font-weight: 700; }
+    .metric strong { display: block; margin-top: .35rem; font-size: clamp(1.35rem, 2.4vw, 2rem); }
+    .metric small { display: block; margin-top: .4rem; color: var(--muted); }
+    .scorebar { height: .5rem; margin-top: .7rem; border: 1px solid var(--strong); background: var(--paper); }
+    .scorebar > i { display: block; width: var(--score); height: 100%; background: var(--accent); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; padding-block: 1rem .75rem; }
+    .toolbar strong { margin-right: .5rem; }
+    .filter { min-height: 2.5rem; padding: .45rem .7rem; border: 1px solid var(--strong); border-radius: 0; background: var(--paper); font-weight: 700; cursor: pointer; }
+    .filter[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    .table-wrap { overflow-x: auto; border: 2px solid var(--ink); }
+    table { width: 100%; min-width: 74rem; border-collapse: collapse; background: var(--paper); }
+    th, td { padding: .7rem .65rem; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+    th { position: sticky; top: 0; z-index: 1; background: var(--ink); color: var(--paper); font-size: .78rem; letter-spacing: .04em; }
+    tbody tr:hover { background: var(--paper-2); }
+    .mark { width: 2.25rem; font-size: 1.25rem; text-align: center; }
+    .id { font: 700 .83rem "Cascadia Mono", monospace; white-space: nowrap; }
+    .weight { text-align: right; font-variant-numeric: tabular-nums; }
+    .status { display: inline-block; padding: .2rem .45rem; border: 1px solid currentColor; font: 700 .72rem "Cascadia Mono", monospace; }
+    tr[data-status="active"] .status { background: var(--cyan); }
+    tr[data-status="verified"] .status { background: var(--mint); }
+    tr[data-status="external"] .status { background: var(--warn); }
+    .next { color: var(--muted); }
+    section { margin-top: 1.5rem; }
+    section h2 { padding-bottom: .45rem; border-bottom: 2px solid var(--ink); font-size: 1.15rem; }
+    .path { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin-top: .75rem; border: 2px solid var(--ink); }
+    .step { min-height: 6.7rem; padding: .75rem; border-right: 1px solid var(--rule); }
+    .step:last-child { border-right: 0; }
+    .step b { display: block; margin-bottom: .35rem; }
+    .step span { color: var(--muted); font-size: .8rem; }
+    .step.active { background: var(--cyan); }
+    .gates { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 2px solid var(--ink); border-top: 0; }
+    .gate { padding: .8rem; border-right: 1px solid var(--rule); }
+    .gate:last-child { border-right: 0; }
+    .gate b { display: block; }
+    .gate span { display: block; margin-top: .25rem; color: var(--muted); font-size: .8rem; }
+    footer { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-top: 1.5rem; padding-top: .75rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .8rem; }
+    [hidden] { display: none !important; }
+    @media (max-width: 64rem) {
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric:nth-child(2) { border-right: 0; }
+      .metric:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+      .path { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .step { border-bottom: 1px solid var(--rule); }
+      .gates { grid-template-columns: 1fr 1fr; }
+      .gate:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+    }
+    @media (max-width: 40rem) {
+      .shell { width: min(100% - 1rem, 108rem); }
+      header { grid-template-columns: 1fr; }
+      .updated { text-align: left; }
+      .summary, .path, .gates { grid-template-columns: 1fr; }
+      .metric, .step, .gate { border-right: 0; border-bottom: 1px solid var(--rule); }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">Patchtone / Phase 1 production</p>
+        <h1>実際に音楽を作れるまでの星取り表</h1>
+      </div>
+      <p class="updated">更新 2026-07-22 JST<br>正本: phase1-progress.md</p>
+    </header>
+
+    <div class="summary" aria-label="進捗概要">
+      <div class="metric"><span>Phase 0</span><strong>★ Verified</strong><small>要件・設計・local model実測</small></div>
+      <div class="metric"><span>Phase 1 local verified score</span><strong id="score">100 / 100</strong><div class="scorebar" aria-hidden="true"><i id="score-fill" style="--score:100%"></i></div></div>
+      <div class="metric"><span>現在</span><strong>P1-QA / external gates</strong><small>local delivery gateは完了、実機・実アカウントは別管理</small></div>
+      <div class="metric"><span>明朝デモ</span><strong>◐ Active</strong><small>音を作る最短経路を優先</small></div>
+    </div>
+
+    <div class="toolbar" aria-label="状態フィルター">
+      <strong>表示</strong>
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">すべて</button>
+      <button class="filter" type="button" data-filter="active" aria-pressed="false">作業中</button>
+      <button class="filter" type="button" data-filter="ready" aria-pressed="false">着手可能</button>
+      <button class="filter" type="button" data-filter="pending" aria-pressed="false">依存待ち</button>
+      <button class="filter" type="button" data-filter="verified" aria-pressed="false">完了</button>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Phase 1 unit一覧" tabindex="0">
+      <table>
+        <thead><tr><th>星</th><th>ID</th><th>W</th><th>状態</th><th>完成するとできること</th><th>依存</th><th>次の証拠</th></tr></thead>
+        <tbody>
+          <tr data-unit-id="P1-FND" data-status="verified" data-weight="5"><td class="mark">★</td><td class="id">P1-FND</td><td class="weight">5</td><td><span class="status">verified</span></td><td>production React appが起動する</td><td>Phase 0</td><td class="next">install / typecheck / build / smoke pass</td></tr>
+          <tr data-unit-id="P1-DOM" data-status="verified" data-weight="6"><td class="mark">★</td><td class="id">P1-DOM</td><td class="weight">6</td><td><span class="status">verified</span></td><td>music projectの正本とundoが安定する</td><td>P1-FND</td><td class="next">7 contract / migration tests pass</td></tr>
+          <tr data-unit-id="P1-PRJ" data-status="verified" data-weight="6"><td class="mark">★</td><td class="id">P1-PRJ</td><td class="weight">6</td><td><span class="status">verified</span></td><td>複数project・設定を手動保存・持ち運べる</td><td>P1-DOM</td><td class="next">settings + save / reload / export / import pass</td></tr>
+          <tr data-unit-id="P1-AUD" data-status="verified" data-weight="8"><td class="mark">★</td><td class="id">P1-AUD</td><td class="weight">8</td><td><span class="status">verified</span></td><td>実際に音が鳴りWAV / MP3を足し、audio layerを編集できる</td><td>P1-DOM</td><td class="next">audition / decode / reload / clip edit pass</td></tr>
+          <tr data-unit-id="P1-ARR" data-status="verified" data-weight="6"><td class="mark">★</td><td class="id">P1-ARR</td><td class="weight">6</td><td><span class="status">verified</span></td><td>展開アセット・音のピース・main/sub laneを組める</td><td>P1-DOM</td><td class="next">candidate select / drag / keyboard / undo / block pass</td></tr>
+          <tr data-unit-id="P1-HAR" data-status="verified" data-weight="8"><td class="mark">★</td><td class="id">P1-HAR</td><td class="weight">8</td><td><span class="status">verified</span></td><td>melodyを守る伴奏が自動で付く</td><td>P1-AUD, ARR</td><td class="next">melody-lock / editable track pass</td></tr>
+          <tr data-unit-id="P1-DAW" data-status="verified" data-weight="11"><td class="mark">★</td><td class="id">P1-DAW</td><td class="weight">11</td><td><span class="status">verified</span></td><td>Canvas全曲ピアノロールのTrack / Main-Sub Lane・note / 音声clip・複数編集・note inspector</td><td>P1-DOM, ARR</td><td class="next">Chromium FHD DAW journey / unit pass</td></tr>
+          <tr data-unit-id="P1-MIX" data-status="verified" data-weight="7"><td class="mark">★</td><td class="id">P1-MIX</td><td class="weight">7</td><td><span class="status">verified</span></td><td>mixer・音色交換・FX・automation・range-loopを再生 / WAVへ反映</td><td>P1-AUD, DAW</td><td class="next">FX / instrument / loop plan・OfflineAudio render・UI journey pass</td></tr>
+          <tr data-unit-id="P1-MIC" data-status="verified" data-weight="8"><td class="mark">★</td><td class="id">P1-MIC</td><td class="weight">8</td><td><span class="status">verified</span></td><td>鼻歌を録り、比較し、音符へ変えられる</td><td>P1-DOM, AUD</td><td class="next">fake media / real model / take compare pass</td></tr>
+          <tr data-unit-id="P1-INT" data-status="verified" data-weight="6"><td class="mark">★</td><td class="id">P1-INT</td><td class="weight">6</td><td><span class="status">verified</span></td><td>Humming Studioで一曲を作り自然言語・voice memoで整えられる</td><td>P1-PRJ, MIC, HAR</td><td class="next">intent / voice memo / reference / refine / handoff E2E pass</td></tr>
+          <tr data-unit-id="P1-AI" data-status="verified" data-weight="8"><td class="mark">★</td><td class="id">P1-AI</td><td class="weight">8</td><td><span class="status">verified</span></td><td>local gateway、10GiB cap、symbolic fallback、鼻歌条件付きACE追加layer</td><td>P1-INT, HAR</td><td class="next">gateway `complete` task source＋reference 5.12秒 / 9,622MiB + browser fixture pass</td></tr>
+          <tr data-unit-id="P1-EXP" data-status="verified" data-weight="8"><td class="mark">★</td><td class="id">P1-EXP</td><td class="weight">8</td><td><span class="status">verified</span></td><td>master WAV / audio-only STEMS zip / MIDI / project</td><td>P1-AUD, MIX, PRJ</td><td class="next">Chromium FHD non-silent download envelope + parser fixtures pass</td></tr>
+          <tr data-unit-id="P1-MIDI" data-status="verified" data-weight="4"><td class="mark">★</td><td class="id">P1-MIDI</td><td class="weight">4</td><td><span class="status">verified</span></td><td>Web MIDI接続入口とnote追加</td><td>P1-AUD, DAW</td><td class="next">fake device note-on/off + duration E2E pass（実機はexternal）</td></tr>
+          <tr data-unit-id="P1-PWA" data-status="verified" data-weight="3"><td class="mark">★</td><td class="id">P1-PWA</td><td class="weight">3</td><td><span class="status">verified</span></td><td>PWA / responsive / a11y</td><td>UI units</td><td class="next">production preview manifest / app自動登録 / service worker / cache + viewport QA pass（install実機はexternal、証跡 <code>docs/imp/evidence/pwa-runtime-qa-2026-07-22.json</code>）</td></tr>
+          <tr data-unit-id="P1-SHR" data-status="verified" data-weight="2"><td class="mark">★</td><td class="id">P1-SHR</td><td class="weight">2</td><td><span class="status">verified</span></td><td>X / Misskey share intent + explicit Misskey post adapter</td><td>P1-EXP, PRJ</td><td class="next">fake HTTP + Chromium post journey pass（実instance/X OAuthはexternal）</td></tr>
+          <tr data-unit-id="P1-QA" data-status="verified" data-weight="4"><td class="mark">★</td><td class="id">P1-QA</td><td class="weight">4</td><td><span class="status">verified</span></td><td>失敗時も壊れず、完了を証明できる</td><td>all</td><td class="next">check / 7 E2E / PWA preview pass。実MIDI / actual投稿 / PWA install境界を一覧化</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section aria-labelledby="morning-title">
+      <h2 id="morning-title">明朝に「なんとなく音楽が作れる」最短経路</h2>
+      <div class="path">
+        <div class="step"><b>★ Scaffold</b><span>production appを開く</span></div>
+        <div class="step"><b>★ Project</b><span>作成・保存・再読込</span></div>
+        <div class="step"><b>★ Sound</b><span>音を選び再生する</span></div>
+        <div class="step"><b>★ Flow</b><span>展開を組み替える</span></div>
+        <div class="step"><b>★ Accompaniment</b><span>melodyへ伴奏を付ける</span></div>
+        <div class="step"><b>★ Edit</b><span>音符を追加・移動・長さ変更</span></div>
+        <div class="step"><b>★ Save</b><span>保存しWAVにする</span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="gates-title">
+      <h2 id="gates-title">local実装を止めない外部gate</h2>
+      <div class="gates">
+        <div class="gate"><b>Misskey actual post</b><span>adapterは実装。live確認はinstance / token / test文面が必要。</span></div>
+        <div class="gate"><b>X actual post</b><span>share intentを先行。direct APIはOAuth credentialが必要。</span></div>
+        <div class="gate"><b>Web MIDI</b><span>fake deviceでcontract確認。actual keyboardは後から確認可能。</span></div>
+        <div class="gate"><b>Studio One asset</b><span>WAV / MP3 bounceを保証。専用formatは個別license確認後。</span></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Scoreはverified unitだけを加算。作業量の自己申告では更新しません。</span>
+      <span><a href="./phase1-blueprint.md">Blueprint</a> · <a href="./phase1-progress.md">Markdown正本</a> · <a href="./phase1-feature-progress-matrix.html">機能別マトリクス</a> · <a href="./imp-tasks.md">Active tasks</a></span>
+    </footer>
+  </main>
+  <script>
+    const rows = [...document.querySelectorAll('[data-unit-id]')];
+    const total = rows.reduce((sum, row) => sum + Number(row.dataset.weight), 0);
+    const verified = rows.filter((row) => row.dataset.status === 'verified').reduce((sum, row) => sum + Number(row.dataset.weight), 0);
+    document.querySelector('#score').textContent = `${verified} / ${total}`;
+    document.querySelector('#score-fill').style.setProperty('--score', `${verified / total * 100}%`);
+    for (const button of document.querySelectorAll('.filter')) {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+        for (const candidate of document.querySelectorAll('.filter')) candidate.setAttribute('aria-pressed', String(candidate === button));
+        for (const row of rows) row.hidden = filter !== 'all' && row.dataset.status !== filter;
+      });
+    }
+  </script>
+</body>
+</html>

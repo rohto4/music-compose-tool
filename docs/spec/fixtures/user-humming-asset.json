@@ -1,0 +1,46 @@
+{
+  "assetId": "asset-humming-001",
+  "origin": "user-upload",
+  "displayName": "humming-seed.wav",
+  "sourceProduct": null,
+  "sourceUrl": null,
+  "media": {
+    "kind": "audio",
+    "format": "wav",
+    "durationSeconds": 4.8,
+    "sampleRate": 48000,
+    "channels": 1,
+    "bpm": null,
+    "key": null
+  },
+  "integrity": {
+    "sha256": "e94f2fdd741fba7a3b631b2101ce5ce866d56fb55c2f12102ba66c3536cb81c4",
+    "bytes": 460844
+  },
+  "storage": {
+    "kind": "external-reference",
+    "relativePath": null,
+    "opaqueArtifactId": null
+  },
+  "license": {
+    "basis": "user-asserted-owned",
+    "licenseId": null,
+    "licenseTextUrl": null,
+    "termsDigest": null,
+    "redistribution": "unknown",
+    "commercialUse": "not-evaluated",
+    "derivativeUse": "allowed",
+    "aiProcessing": "allowed",
+    "recordedAt": "2026-07-21T00:00:00Z",
+    "attributionText": null,
+    "notes": "本人が録音した鼻歌。元音声の共有可否はproject share時に再確認する。"
+  },
+  "generation": null,
+  "sharePolicy": {
+    "renderAllowed": true,
+    "bundleAllowed": false,
+    "publicShareAllowed": true,
+    "aiProcessingAllowed": true,
+    "requiresAttribution": false
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://music-compose-tool.invalid/schema/project-manifest.schema.json",
+  "title": "Music Compose Tool Project Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "formatVersion",
+    "projectId",
+    "title",
+    "revision",
+    "creativeIntent",
+    "musicalGrid",
+    "arrangement",
+    "melody",
+    "tracks",
+    "assetRefs",
+    "generationCandidates"
+  ],
+  "properties": {
+    "formatVersion": { "const": "0.1.0" },
+    "projectId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "revision": { "type": "integer", "minimum": 0 },
+    "savedRevision": { "type": ["integer", "null"], "minimum": 0 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "creativeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["genre", "mood", "targetDurationSeconds"],
+      "properties": {
+        "genre": { "enum": ["cute-future-bass", "cute-future-core"] },
+        "mood": { "type": "array", "items": { "type": "string", "maxLength": 64 }, "maxItems": 8 },
+        "targetDurationSeconds": { "type": "number", "minimum": 10, "maximum": 600 },
+        "freeText": { "type": "string", "maxLength": 2000 },
+        "hummingAssetId": { "type": ["string", "null"] }
+      }
+    },
+    "musicalGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ppq", "bpm", "meter", "key"],
+      "properties": {
+        "ppq": { "const": 480 },
+        "bpm": { "type": "number", "minimum": 30, "maximum": 300 },
+        "meter": { "enum": ["2/4", "3/4", "4/4", "6/8"] },
+        "key": { "type": "string", "minLength": 1, "maxLength": 32 }
+      }
+    },
+    "arrangement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceAssetId", "sections"],
+      "properties": {
+        "sourceAssetId": { "type": ["string", "null"] },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/section" }
+        }
+      }
+    },
+    "melody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "notes"],
+      "properties": {
+        "source": { "enum": ["humming", "generated", "manual", "asset"] },
+        "notes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/note" }
+        }
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/track" },
+      "maxItems": 64
+    },
+    "assetRefs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "generationCandidates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/generationCandidate" },
+      "maxItems": 1000
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "startBar", "bars", "energyStart", "energyEnd"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["intro", "verse", "build", "drop", "break", "outro", "custom"] },
+        "label": { "type": "string", "maxLength": 80 },
+        "startBar": { "type": "integer", "minimum": 0 },
+        "bars": { "type": "integer", "minimum": 1, "maximum": 256 },
+        "energyStart": { "type": "number", "minimum": 0, "maximum": 1 },
+        "energyEnd": { "type": "number", "minimum": 0, "maximum": 1 },
+        "transitionAssetId": { "type": ["string", "null"] }
+      }
+    },
+    "note": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "pitch", "startTick", "durationTick", "velocity", "source", "userEdited"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "pitch": { "type": "integer", "minimum": 0, "maximum": 127 },
+        "startTick": { "type": "integer", "minimum": 0 },
+        "durationTick": { "type": "integer", "minimum": 1 },
+        "velocity": { "type": "integer", "minimum": 1, "maximum": 127 },
+        "source": { "enum": ["humming", "generated", "manual", "asset"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "userEdited": { "type": "boolean" },
+        "lockPitch": { "type": "boolean", "default": false },
+        "lockTiming": { "type": "boolean", "default": false }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "name", "blocks"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["melody", "chord", "drum", "bass", "synth", "fx", "reference"] },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "muted": { "type": "boolean", "default": false },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "assetId", "startTick", "durationTick", "granularity"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "assetId": { "type": "string", "minLength": 1 },
+              "startTick": { "type": "integer", "minimum": 0 },
+              "durationTick": { "type": "integer", "minimum": 1 },
+              "granularity": { "enum": ["draft", "shape", "detail"] },
+              "parentBlockId": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "generationCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "capability", "status", "intentTrace", "createdAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "capability": { "enum": ["humming-transcription", "accompaniment", "loop-fx", "asset-retrieval", "repaint"] },
+        "status": { "enum": ["queued", "running", "succeeded", "failed", "rejected", "expired"] },
+        "model": { "type": ["string", "null"], "maxLength": 160 },
+        "modelRevision": { "type": ["string", "null"], "maxLength": 160 },
+        "seed": { "type": ["integer", "null"] },
+        "outputAssetId": { "type": ["string", "null"] },
+        "inputAssetIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "intentTrace": { "type": "array", "items": { "type": "string", "maxLength": 160 }, "uniqueItems": true },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
+

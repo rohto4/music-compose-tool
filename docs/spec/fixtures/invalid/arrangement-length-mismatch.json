@@ -1,0 +1,12 @@
+{
+  "formatVersion": "0.1.0",
+  "assetId": "arr-invalid-length",
+  "label": "Invalid length fixture",
+  "genre": "cute-future-bass",
+  "lengthBars": 32,
+  "sections": [
+    { "role": "intro", "bars": 8, "energyStart": 0.1, "energyEnd": 0.3, "transition": "riser" },
+    { "role": "drop", "bars": 16, "energyStart": 0.9, "energyEnd": 0.8, "transition": "impact" }
+  ],
+  "slots": []
+}
