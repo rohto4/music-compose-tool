@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { SHORTCUT_COMMANDS, defaultShortcutBindings, isBrowserReservedShortcut, shortcutConflict, shortcutFromKeyboardEvent } from '../../application/shortcuts/shortcut-registry';
+import { SHORTCUT_COMMANDS, defaultShortcutBindings, formatShortcutForDisplay, isBrowserReservedShortcut, shortcutConflict, shortcutFromKeyboardEvent } from '../../application/shortcuts/shortcut-registry';
 import type { ShortcutBindings, ShortcutCommandId } from '../../application/shortcuts/shortcut-registry';
 
 interface ShortcutSettingsModalProps {
@@ -30,11 +30,11 @@ export function ShortcutSettingsModal({ open, bindings, onClose, onSave }: Short
     if (event.key === 'Escape') { setCapturing(null); setError(null); return; }
     const shortcut = shortcutFromKeyboardEvent(event.nativeEvent);
     if (!shortcut) return;
-    if (isBrowserReservedShortcut(shortcut)) { setError(`${shortcut} はブラウザー予約操作のため割り当てられません。`); return; }
+    if (isBrowserReservedShortcut(shortcut)) { setError(`${formatShortcutForDisplay(shortcut)} はブラウザー予約操作のため割り当てられません。`); return; }
     const conflict = shortcutConflict(draft, commandId, shortcut);
     if (conflict) {
       const label = SHORTCUT_COMMANDS.find((command) => command.id === conflict)?.label ?? conflict;
-      setError(`${shortcut} は「${label}」で使用中です。先に解除してください。`);
+      setError(`${formatShortcutForDisplay(shortcut)} は「${label}」で使用中です。先に解除してください。`);
       return;
     }
     setDraft((current) => ({ ...current, [commandId]: shortcut }));
@@ -66,8 +66,8 @@ export function ShortcutSettingsModal({ open, bindings, onClose, onSave }: Short
           <div className="shortcut-command-list">
             {SHORTCUT_COMMANDS.filter((command) => command.category === category).map((command) => <div className="shortcut-command-row" key={command.id}>
               <span>{command.label}</span>
-              <button type="button" className="shortcut-capture" data-capturing={capturing === command.id} onClick={() => { setCapturing(command.id); setError(null); }} onKeyDown={(event) => capture(command.id, event)} aria-label={`${command.label}のキー割り当て`}>
-                {capturing === command.id ? 'キーを入力…' : draft[command.id] ?? '未設定'}
+              <button type="button" className="shortcut-capture" data-capturing={capturing === command.id} onClick={() => { setCapturing((current) => current === command.id ? null : command.id); setError(null); }} onKeyDown={(event) => capture(command.id, event)} aria-label={`${command.label}のキー割り当て`}>
+                {capturing === command.id ? 'キーを入力…' : formatShortcutForDisplay(draft[command.id])}
               </button>
               <button type="button" className="shortcut-clear" disabled={draft[command.id] === null} onClick={() => { setDraft((current) => ({ ...current, [command.id]: null })); setCapturing(null); setError(null); }} aria-label={`${command.label}の割り当てを解除`}>解除</button>
             </div>)}

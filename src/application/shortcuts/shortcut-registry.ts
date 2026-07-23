@@ -80,6 +80,26 @@ export function shortcutFromKeyboardEvent(event: Pick<KeyboardEvent, 'key' | 'ct
   return parts.join('+');
 }
 
+export function formatShortcutForDisplay(shortcut: string | null): string {
+  if (shortcut === null) return '未設定';
+  let remaining = shortcut;
+  const parts: string[] = [];
+  for (const modifier of ['Ctrl', 'Alt', 'Shift']) {
+    const prefix = `${modifier}+`;
+    if (!remaining.startsWith(prefix)) continue;
+    parts.push(modifier);
+    remaining = remaining.slice(prefix.length);
+  }
+  const keyLabels: Readonly<Record<string, string>> = {
+    ArrowUp: '↑',
+    ArrowDown: '↓',
+    ArrowLeft: '←',
+    ArrowRight: '→',
+  };
+  parts.push(keyLabels[remaining] ?? remaining);
+  return parts.join(' + ');
+}
+
 export function commandForShortcut(bindings: ShortcutBindings, shortcut: string): ShortcutCommandId | null {
   return SHORTCUT_COMMANDS.find((command) => bindings[command.id] === shortcut)?.id ?? null;
 }

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { describe, expect, it } from 'vitest';
-import { SHORTCUT_STORAGE_KEY, commandForShortcut, defaultShortcutBindings, isBrowserReservedShortcut, loadShortcutBindings, saveShortcutBindings, shortcutConflict, shortcutFromKeyboardEvent } from './shortcut-registry';
+import { SHORTCUT_STORAGE_KEY, commandForShortcut, defaultShortcutBindings, formatShortcutForDisplay, isBrowserReservedShortcut, loadShortcutBindings, saveShortcutBindings, shortcutConflict, shortcutFromKeyboardEvent } from './shortcut-registry';
 
 describe('shortcut registry', () => {
   it('normalizes Windows and Meta keyboard events to the same configurable command', () => {
@@ -11,6 +11,14 @@ describe('shortcut registry', () => {
     expect(commandForShortcut(bindings, 'Ctrl+S')).toBe('project.save');
     expect(shortcutConflict(bindings, 'project.export', 'Ctrl+S')).toBe('project.save');
     expect(isBrowserReservedShortcut('Ctrl+L')).toBe(true);
+  });
+
+  it('formats canonical shortcuts for the settings screen without changing stored values', () => {
+    expect(formatShortcutForDisplay('ArrowUp')).toBe('↑');
+    expect(formatShortcutForDisplay('Shift+ArrowLeft')).toBe('Shift + ←');
+    expect(formatShortcutForDisplay('Ctrl+Shift+S')).toBe('Ctrl + Shift + S');
+    expect(formatShortcutForDisplay('Ctrl+=')).toBe('Ctrl + =');
+    expect(formatShortcutForDisplay(null)).toBe('未設定');
   });
 
   it('persists overrides while filling newly registered commands from defaults', () => {

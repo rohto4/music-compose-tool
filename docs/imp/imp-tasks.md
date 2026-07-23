@@ -84,7 +84,7 @@
 
 ## SHORTCUT-002: 設定画面のキー表記と入力解除を読みやすくする
 
-- 状態: 2026-07-24 ユーザー指摘を記録・次sessionで実装。
+- 状態: 2026-07-24 実装・型検査・対象test完了。canonical値とlocalStorage schemaを維持したまま、矢印glyph、space付き` + `、未設定、conflict / browser予約errorを同じdisplay formatterへ統一し、同button再click / Escapeでcaptureを中止できる。
 - 表示: 内部保存と照合に使う`ArrowUp` / `ArrowDown` / `ArrowLeft` / `ArrowRight`は変更せず、設定画面では`↑` / `↓` / `←` / `→`として表示する。複合keyは`Ctrl + S`、`Shift + ↑`のように`+`前後へ半角spaceを入れる。error / conflict表示にも同じformatterを使う。
 - 入力解除: `キーを入力…`状態の同じ割当buttonを再度clickしたらcaptureを中止し、元の割当表示へ戻す。Escapeでも中止できる既存挙動を保持し、capture中のclick自体を新shortcutとして誤取得しない。
 - 完了条件: default、変更済み、未設定、conflict、browser予約shortcutの全表示が同じformatになる。同button再clickとEscapeでcapture解除でき、解除・初期値・保存を壊さないunit / component testを追加する。
