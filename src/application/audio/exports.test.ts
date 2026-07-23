@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import JSZip from 'jszip';
 import { collectStemTracks, createMidiBlob, parseMidiFile, parseStemBundle, parseWavHeader } from './exports';
-import { createChordPatternBlock, createProject, generateRolePatternNotes } from '../../domain/music';
+import { chordPadCatalog, createChordPatternBlock, createProject, generateRolePatternNotes } from '../../domain/music';
 
 function wavFixture(durationSamples = 4_410): Uint8Array {
   const dataBytes = durationSamples * 2 * 2;
@@ -39,6 +39,19 @@ describe('audio exports', () => {
     const chordTrack = parsed.tracks.find((track) => track.name === 'Chords / Main');
     expect(chordTrack?.notes).toHaveLength(3);
     expect(chordTrack?.notes.every((note) => note.startTick === 0 && note.durationTick > 1_800)).toBe(true);
+  });
+
+  it('exports a dominant thirteenth with the same six pitches used by the chord pad', async () => {
+    const project = createProject({ projectId: 'quality-midi', title: 'Quality MIDI', now: '2026-07-24T00:00:00.000Z', entryMode: 'patchboard', bpm: 150, key: 'D major' });
+    const chordLane = project.tracks.find((track) => track.role === 'chord')?.lanes.find((lane) => lane.role === 'main');
+    if (!chordLane) throw new Error('Chord lane is missing.');
+    chordLane.blocks.push(createChordPatternBlock('quality-midi-13', 0, 'extension-5-dom13', 'hold'));
+
+    const parsed = parseMidiFile(new Uint8Array(await createMidiBlob(project).arrayBuffer()));
+    const actualPitches = parsed.tracks.find((track) => track.name === 'Chords / Main')?.notes.map((note) => note.pitch) ?? [];
+    const intervals = chordPadCatalog('D major').find((pad) => pad.id === 'extension-5-dom13')?.intervals;
+    if (!intervals) throw new Error('Dominant thirteenth is missing.');
+    expect(actualPitches.map((pitch) => pitch - actualPitches[0]!)).toEqual(intervals);
   });
 
   it('exports applied Bass, Arp, and Drum role patterns as ordinary MIDI tracks', async () => {

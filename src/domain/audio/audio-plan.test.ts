@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BUILT_IN_SOUND_CHUNKS, CHORD_PROGRESSION_TICKS, ROLE_PATTERN_CATALOG, applyProjectCommand, createChordPatternBlock, createProject, materializeSoundChunk } from '../music';
+import { BUILT_IN_SOUND_CHUNKS, CHORD_PROGRESSION_TICKS, ROLE_PATTERN_CATALOG, applyProjectCommand, chordPadCatalog, createChordPatternBlock, createProject, materializeSoundChunk } from '../music';
 import { buildAssetAuditionPlan, buildChordPadAuditionPlan, buildNoteBlockAuditionPlan, buildProjectAudioPlan, buildProjectPlaybackPlan, buildRolePatternAuditionPlan } from './audio-plan';
 import { BUILT_IN_AUDIO_ASSETS } from './built-in-assets';
 
@@ -139,6 +139,21 @@ describe('audio event planning', () => {
     expect(tones.every((event) => event.kind === 'tone' && event.timbreId === 'chord-glass-pluck')).toBe(true);
     expect(tones.every((event) => event.kind === 'tone' && event.synthesis?.layers.length === 2)).toBe(true);
     expect(plan.durationSeconds).toBeLessThanOrEqual(2.5);
+  });
+
+  it('auditions a dominant thirteenth with the same six pitches as its quality definition', () => {
+    const project = createProject({ projectId: 'audio-pad-13', title: 'Pad 13', now: NOW, entryMode: 'patchboard', bpm: 150, key: 'D major' });
+    const plan = buildChordPadAuditionPlan(project, 'extension-5-dom13');
+    const actualFrequencies = plan.events
+      .filter((event) => event.kind === 'tone')
+      .map((event) => event.frequency);
+    const intervals = chordPadCatalog('D major').find((pad) => pad.id === 'extension-5-dom13')?.intervals;
+    if (!intervals) throw new Error('Dominant thirteenth is missing.');
+
+    expect(actualFrequencies).toHaveLength(6);
+    for (const [index, interval] of intervals.entries()) {
+      expect(actualFrequencies[index]! / actualFrequencies[0]!).toBeCloseTo(2 ** (interval / 12), 10);
+    }
   });
 
   it('uses materialized chord blocks instead of the fallback progression', () => {

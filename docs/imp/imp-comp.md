@@ -1,5 +1,14 @@
 # 完了記録
 
+## 2026-07-24 HARMONY-001: 46 quality Harmonic Atlasの横断受入
+
+- Major / Minorで各46件のcatalogを決定論的に生成し、基本7 degree、彩り、意外にPower 5、sus2 / sus4、aug、dim / dim7 / half-diminished、6th、7th、add9 / 9th / 11th / 13th、minor-major 7thを関連degreeの縦方向へ配置する。`コードを鳴らす音色 · 60`と4小節の`音色割当`は別tab責務として区別する。
+- qualityは名称だけでなくintervalを正本に持つ。D major / A minorの全92 catalog itemを1件ずつ単独blockへmaterializeし、配置NoteEventの声数とrootからの半音差がquality intervalと一致することを固定した。
+- 代表的なV13はChord Pad試聴で6声の周波数比、Standard MIDI Type 1で6声のpitch差が同じ`[0, 4, 7, 10, 14, 21]`になる。中央音域へ収めるvoicingは絶対octaveを変えてよいが、構成音を変えない。
+- 旧14 pad IDをMajor / Minorそれぞれ列挙し、46件へ拡張後も既存Project / progression asset IDが解決できることを回帰へ固定した。WQHD / 375pxの46 card、長いsymbol、1 tap発音・配置、MIDI journeyは既存Chromium 15 / 15で確認済み。
+- 主語ファイル: [Chord catalog / materialize](G:\devwork\music-compose-tool\src\domain\music\chord-patterns.ts)、[domain受入test](G:\devwork\music-compose-tool\src\domain\music\chord-patterns.test.ts)、[audio plan test](G:\devwork\music-compose-tool\src\domain\audio\audio-plan.test.ts)、[MIDI export test](G:\devwork\music-compose-tool\src\application\audio\exports.test.ts)、[Harmonic Atlas WQHD証跡](G:\devwork\music-compose-tool\docs\imp\evidence\harmonic-atlas-wqhd-dark-2026-07-23.png)。
+- Proof: 対象4 files / 40 tests pass。全project checkは33 files / 150 tests、lint warning 0、typecheck、gateway smoke、build、progress、matrixをpass。コード選択の音楽的な分かりやすさと聴感は★3でユーザーレビュー待ち。
+
 ## 2026-07-24 FLOW-002: 曲の設計・展開・詳細編集の3段workflow
 
 - 旧`ラフ制作 / カスタマイズ`の二重切替を、`01 曲の設計 / 02 展開を整える / 03 詳細の編集`へ一本化した。01は設計完了indicator、Mood 1 / 2、Key、Tempo、曲の流れ、02は共有INSERT TARGETと5つのINSERT SOURCE tab、03は既存Projectを共有するpiano-roll DAWを担当する。

@@ -8,15 +8,6 @@
 - 完了条件: 対象6 categoryが各20、全tonal Voice DeckとAudio Paletteへ重複IDなく現れ、全assetに用途説明と音響profileがある。catalog test、audio plan test、全project checkをpassする。
 - 停止条件: license未確認sample、外部音源、依存追加、実WAV同梱へ広げない。既存asset IDと既存Project互換性を変更しない。
 
-## HARMONY-001: コードパッドを実用コードquality bankへ拡張する
-
-- 状態: 2026-07-24 着手。
-- 目的: 現状14 chordの不足を解消し、key内triadだけでなくPower 5、sus2 / sus4、aug、dim / dim7 / half-diminished、6th、7th、9th、11th、13th、major / minor extensionをHarmonic Atlasから即時発音・配置できるようにする。
-- UI要件: 既存のdegree位置と`基本 / 彩り / 意外`属性を保ちつつ、同じdegreeのqualityを縦方向へ関連付ける。全候補を同じ`コード・音色`面から確認でき、名称が長い場合はcard内で崩さない。`LIVE VOICE`は別機能に見えないよう`コードを鳴らす音色`へ改称し、4小節track配置用の`音色割当`と役割を区別する。
-- 音響要件: 各symbolはquality固有のintervalを持ち、Chord Pad長押し、HOLD / PULSE / SYNC、配置block、全曲再生、MIDI materializeで同じ構成音を使う。名称だけの候補を追加しない。
-- 完了条件: Major / Minorの両keyで実用quality catalogが決定論的・重複IDなしに生成され、Power / aug / dim7 / half-dim7 / 9 / 11 / 13を自動testで確認する。既存pad IDと進行templateの互換性を維持する。
-- 停止条件: 全12 root × 理論上可能な全voicingを無制限列挙しない。初版はKawaii Future Bass / Coreの伴奏で選択価値があるqualityに絞り、microtonal、polychord、slash-bass専用voicingは別scopeとする。
-
 ## START-002: 新規曲の入口を3つの制作経路として再構成する
 
 - 状態: 2026-07-24 要件確定。入口の文言、優先順位、未選択時field非表示、選択後の縦展開、route別field / submit labelはProject Homeへ先行実装しcomponent test済み。Patchboard完成後のAI prompt / Humming route本体は待機する。

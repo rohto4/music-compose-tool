@@ -48,6 +48,32 @@ describe('chord pattern foundation', () => {
     expect(new Set(minor.map((pad) => pad.id)).size).toBe(minor.length);
   });
 
+  it('keeps every major and minor quality interval identical from catalog to placed notes', () => {
+    for (const key of ['D major', 'A minor']) {
+      const catalog = chordPadCatalog(key);
+      expect(catalog).toHaveLength(46);
+      for (const pad of catalog) {
+        const project = createProject({ projectId: `quality-${key}-${pad.id}`, title: 'Quality bank', now: NOW, entryMode: 'patchboard', key });
+        const chordLane = project.tracks.find((track) => track.role === 'chord')?.lanes.find((lane) => lane.role === 'main');
+        if (!chordLane) throw new Error('Chord lane is missing.');
+        chordLane.blocks.push(createChordPatternBlock(`block-${pad.id}`, 0, pad.id, 'hold'));
+
+        const placedPitches = materializeChordPatternNotes(project).map((note) => note.pitch);
+        expect(placedPitches, `${key}/${pad.id} voice count`).toHaveLength(pad.intervals.length);
+        expect(placedPitches.map((pitch) => pitch - placedPitches[0]!), `${key}/${pad.id} intervals`).toEqual(pad.intervals);
+      }
+    }
+  });
+
+  it('retains the original fourteen pad IDs for existing major and minor projects', () => {
+    const stableIds = Array.from({ length: 7 }, (_, index) => `stable-${index + 1}`);
+    const majorLegacyIds = [...stableIds, 'color-1-add9', 'color-4-maj7', 'color-2-min7', 'color-5-7', 'surprise-borrowed-4', 'surprise-b7', 'surprise-secondary-6'];
+    const minorLegacyIds = [...stableIds, 'color-1-add9', 'color-4-min7', 'color-5-sus4', 'color-6-maj7', 'surprise-major-4', 'surprise-b2', 'surprise-major-5'];
+
+    expect(majorLegacyIds.every((id) => chordPadCatalog('D major').some((pad) => pad.id === id))).toBe(true);
+    expect(minorLegacyIds.every((id) => chordPadCatalog('A minor').some((pad) => pad.id === id))).toBe(true);
+  });
+
   it('materializes eighth-note and dotted-quarter steps without pulse notes escaping the block', () => {
     const project = createProject({ projectId: 'pattern-beats', title: 'Variable beats', now: NOW, entryMode: 'patchboard', key: 'D major' });
     const chordLane = project.tracks.find((track) => track.role === 'chord')?.lanes.find((lane) => lane.role === 'main');
