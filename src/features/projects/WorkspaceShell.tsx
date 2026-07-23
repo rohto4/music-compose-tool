@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { AudioEngine } from '../../domain/audio';
 import type { HummingAssetRepository, HummingTranscriber, MicrophoneRecorder } from '../../application/humming/humming-ports';
 import type { EntryMode, Project, ProjectCommand, SoundChunk } from '../../domain/music';
-import { chordPatternRanges, materializeChordPatternNotes, materializeSoundChunk, PPQ, SONG_STARTERS } from '../../domain/music';
+import { chordPatternRanges, materializeChordPatternNotes, materializeSoundChunk, PPQ } from '../../domain/music';
 import { CHORD_KEY_OPTIONS } from '../../domain/music/chord-progression-templates';
 import { MOOD_OPTIONS } from '../../domain/music/mood-options';
 import { ARRANGEMENT_TEMPLATES, materializeArrangementTemplate, SECTION_TEMPLATES } from '../arrangement/arrangement-templates';
@@ -12,6 +12,7 @@ import { audioBlobToWav } from '../../adapters/humming/basic-pitch-transcriber';
 import { DawMelodyEditor } from '../melody/DawMelodyEditor';
 import { ChordPatternBoard } from '../patterns/ChordPatternBoard';
 import { CreativeBriefPanel } from './CreativeBriefPanel';
+import { SongStarterBrowser } from './SongStarterBrowser';
 import { createMidiBlob, createStemBundle, createWavBlob } from '../../application/audio/exports';
 import { downloadBlob } from '../../application/projects/project-bundle';
 import { buildMisskeyShareUrl, buildXShareUrl, postMisskeyNote } from '../../application/share/share-intent';
@@ -384,27 +385,6 @@ function QuickArrangementRail({ project, now, onCommand }: { project: Project; n
   );
 }
 
-function SongStarterBrowser({ project, now, onCommand }: { project: Project; now: () => string; onCommand: (command: ProjectCommand) => void }) {
-  return (
-    <section className="song-starter-browser" aria-label="編集可能な既製曲スターター">
-      <p className="starter-replace-scope">適用すると Melody · Chords · 流れ · Key · BPM を置換します。現在の音色は保持します。</p>
-      <div>
-        {SONG_STARTERS.map((starter) => {
-          const active = project.arrangement.sourceAssetId === `song-starter:${starter.id}`;
-          return <article data-active={active} key={starter.id}>
-            <div><strong>{starter.title}</strong><span>{starter.bars} bars · {starter.bpm} BPM</span></div>
-            <small>{starter.composer} · {starter.key} · {starter.difficulty}</small>
-            <p>{starter.summary}</p>
-            <div className="starter-flow">{starter.sections.map((section) => <span key={`${starter.id}-${section.label}`}>{section.label}<small>{section.bars}</small></span>)}</div>
-            <footer><a href={starter.sourceUrl} target="_blank" rel="noreferrer">{starter.sourceLabel} · {starter.license}</a><button type="button" disabled={active} onClick={() => onCommand({ type: 'project/starter-apply', starterId: starter.id, at: now() })}>{active ? '編集中' : 'この曲を編集する'}</button></footer>
-            <details><summary>出典・表記</summary><p>{starter.attribution}</p></details>
-          </article>;
-        })}
-      </div>
-    </section>
-  );
-}
-
 function PatchboardStart({ project, engine, now, onCommand, onProjectExport, initialDetail, playing, playbackMessage, playbackStartTick, playbackStartedAt, onTogglePlayback, onAuditionAsset, onAuditionNotes, onAuditionSoundChunk }: { project: Project; engine: AudioEngine; now: () => string; onCommand: (command: ProjectCommand) => void; onProjectExport: () => void; initialDetail: boolean; playing: boolean; playbackMessage: string | null; playbackStartTick: number; playbackStartedAt: number | null; onTogglePlayback: (startTick?: number) => void; onAuditionAsset: (assetId: string, label: string) => Promise<void>; onAuditionNotes: (trackId: string, noteIds: string[], label: string) => Promise<void>; onAuditionSoundChunk: (chunk: SoundChunk) => Promise<void> }) {
   const [activeTab, setActiveTab] = useState(initialDetail ? 2 : 0);
   useEffect(() => {
@@ -443,7 +423,7 @@ function PatchboardStart({ project, engine, now, onCommand, onProjectExport, ini
           <article data-complete={project.musicalGrid.bpm >= 30}><label><span className="condition-label">TEMPO<i aria-label="入力済み">✓</i></span><input aria-label="曲のBPM" type="number" min={30} max={300} value={project.musicalGrid.bpm} onChange={(event) => updateSettings({ bpm: Number(event.target.value) })} /><small>BPM</small></label></article>
         </div>
         <DesignImpactBoard project={project} now={now} onCommand={onCommand} />
-        <SongStarterBrowser project={project} now={now} onCommand={onCommand} />
+        <SongStarterBrowser project={project} audioEngine={engine} now={now} onCommand={onCommand} />
         <QuickArrangementRail project={project} now={now} onCommand={onCommand} />
         <CreativeBriefPanel project={project} scope="song" onProjectExport={onProjectExport} />
       </>}

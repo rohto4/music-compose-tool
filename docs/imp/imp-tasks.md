@@ -49,7 +49,7 @@
 
 ## HOME-003: スターターとProject Homeを曲のpreview入口にする
 
-- 状態: 2026-07-24 着手。
+- 状態: 2026-07-24 component実装・型検査・対象test完了。Project Homeの先頭／±30秒／任意位置preview、別曲切替、終了、unmount停止、starter適用前試聴、`.mctproj`専用表示まで追加した。必須実装完了後のWQHD / smartphone browser QA待ち。
 - 目的: 既製スターターを選ぶ前と、保存済みProjectを開く前に、その曲がどんな音かを確認できるようにする。情報量の少ないProject cardは再生を主操作にし、BPM、Key、長さ、小節数と曲構造を同じ視野へ置く。
 - 操作: 各starterに`聴く / 停止`を追加し、選択中Projectを変更せずdeterministicなpreview ProjectをWeb Audioで鳴らす。Project Homeは再生／停止、先頭、前後30秒、click / keyboardで途中位置を選べるsequence barを持ち、選んだ位置からProjectを再生する。
 - 共通化: 詳細編集と同じ`AudioEngine.playProject(project, startTick)`を使い、WAVの事前生成や外部streaming playerを増やさない。別曲の試聴開始時は既存再生を停止し、unmount時にもsourceを停止する。
@@ -58,7 +58,7 @@
 
 ## START-002: 新規曲の入口を3つの制作経路として再構成する
 
-- 状態: 2026-07-24 要件確定・パッチボード完成後の実装待ち。入口の文言と段階表示だけはProject Home改善unitで先行する。
+- 状態: 2026-07-24 要件確定。入口の文言、優先順位、未選択時field非表示、選択後の縦展開、route別field / submit labelはProject Homeへ先行実装しcomponent test済み。Patchboard完成後のAI prompt / Humming route本体は待機する。
 - 優先順位: `パッチボードで組む`を現在のprimary implementationとし、蓄積済みのコード、音色、伴奏、FX、DAW、試聴要件を先に閉じる。その後に`AIで土台を作る → 鼻歌でメロディを追加する`、最後に`鼻歌をもとに曲を作る`を作り込む。
 - 入口: 横並びの独立機能名ではなく、(1) 手でパッチボードから組む、(2) AIの編集可能な土台へ鼻歌メロディを追加する、(3) 最初の鼻歌をseedに一曲を組む、という3つの制作経路として示す。どの経路も同じProject / Track / Lane / NoteEventと03詳細編集へ合流する。
 - 段階表示: 新しい曲を開いた直後は入口選択を主役にし、選択後だけ必要項目を縦方向へ滑らかに展開する。Patchboard / AIは曲名、genre、Mood、Key、BPM、曲の流れ等を扱い、鼻歌先行は録音前に不要な項目を強制せず、推定値または後編集可能な初期値として扱う。

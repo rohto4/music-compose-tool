@@ -20,6 +20,8 @@ describe('Project Home', () => {
 
     await user.click(screen.getByRole('button', { name: '新しい曲' }));
     expect(screen.queryByLabelText('長さ')).toBeNull();
+    expect(screen.queryByRole('textbox', { name: '曲の名前' })).toBeNull();
+    expect(screen.getAllByRole('radio')).toHaveLength(3);
     await user.click(screen.getByRole('radio', { name: /AIで土台 → 鼻歌を追加/ }));
     await user.selectOptions(screen.getByLabelText('新しい曲のムード1'), '幻想的');
     await user.selectOptions(screen.getByLabelText('新しい曲のムード2'), '切ない');

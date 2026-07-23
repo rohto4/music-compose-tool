@@ -145,10 +145,6 @@ export function ProjectHome({ projects, audioEngine, creating, draft, busy, onCr
     if (stopTimer.current !== null) window.clearTimeout(stopTimer.current);
   }, [audioEngine]);
 
-  useEffect(() => {
-    if (!creating) setRouteConfirmed(false);
-  }, [creating]);
-
   return (
     <main id="main" className="project-home">
       <section className="home-intro" aria-labelledby="home-title">
@@ -156,11 +152,14 @@ export function ProjectHome({ projects, audioEngine, creating, draft, busy, onCr
           <h1 id="home-title"><span>どこから曲を</span><span>始めますか？</span></h1>
         </div>
         <div className="home-actions">
-          <button className="button button-primary" type="button" onClick={() => onCreatingChange(!creating)} aria-expanded={creating}>
+          <button className="button button-primary" type="button" onClick={() => {
+            if (creating) setRouteConfirmed(false);
+            onCreatingChange(!creating);
+          }} aria-expanded={creating}>
             {creating ? '作成を閉じる' : '新しい曲'}
           </button>
-          <button className="button" type="button" onClick={() => fileInput.current?.click()}>projectを読み込む</button>
-          <input ref={fileInput} className="visually-hidden" type="file" accept=".mctproj,application/zip" aria-label="project fileを読み込む" onChange={handleFile} />
+          <button className="button" type="button" onClick={() => fileInput.current?.click()}>Projectを読み込む <small>.mctproj 専用</small></button>
+          <input ref={fileInput} className="visually-hidden" type="file" accept=".mctproj" aria-label=".mctproj Project fileを読み込む" onChange={handleFile} />
         </div>
       </section>
 
