@@ -3,14 +3,14 @@
 ## ASSET-004: Bass / Lead / Synth / Pad / Arp / Percussionを各20音色へ増強する
 
 - 状態: 2026-07-24 着手。
-- 目的: 現状のBass 5 / Lead 10 / Synth 12 / Pad 11 / Arp 11 / Percussion 8を各20へ増やし、Chord Pattern Boardのfamily filterと音のピース棚から選べる物量を揃える。
+- 目的: 現状のBass 5 / Lead 10 / Synth 12 / Pad 11 / Arp 11 / Percussion 8を各20へ増やし、Chord Pattern Boardのfamily filterと音のピース棚から選べる物量を揃える。不足は順に15 / 10 / 8 / 9 / 9 / 12、合計63 profileで、完了時は全asset 199、tonal Voice Deck 111になる。
 - 品質要件: familyごとにsub / pluck / reese / acid、mono / saw / bell / brass、keys / stab / mallet、air / dark / choir、pluck / gate / octave、metal / wood / shaker等の用途を分け、layer、waveform、ADSR、filter、stereo、characterを変える。名称差だけの複製にしない。
-- 完了条件: 対象6 categoryが各20、全tonal Voice DeckとAudio Paletteへ重複IDなく現れ、全assetに用途説明と音響profileがある。catalog test、audio plan test、全project checkをpassする。
+- 完了条件: 対象6 categoryが各20、全asset 199 / tonal 111としてVoice DeckとAudio Paletteへ重複IDなく現れ、全assetに用途説明と音響profileがある。synthesis fingerprint 111件重複0、category件数、全audition non-empty / 2.5秒以下、主要role tagをcatalog / audio plan testへ固定し、全project checkをpassする。
 - 停止条件: license未確認sample、外部音源、依存追加、実WAV同梱へ広げない。既存asset IDと既存Project互換性を変更しない。
 
 ## START-002: 新規曲の入口を3つの制作経路として再構成する
 
-- 状態: 2026-07-24 要件確定。入口の文言、優先順位、未選択時field非表示、選択後の縦展開、route別field / submit labelはProject Homeへ先行実装しcomponent test済み。Patchboard完成後のAI prompt / Humming route本体は待機する。
+- 状態: 2026-07-24 入口local slice完了。入口の文言、優先順位、未選択時field非表示、選択後の縦展開、route別field / submit label、既存Project互換をcomponent / WQHD / 375px Chromiumで確認した。AI promptは`AI-FOUNDATION-002`、Humming route本体はその後の残作業として待機する。
 - 優先順位: `パッチボードで組む`を現在のprimary implementationとし、蓄積済みのコード、音色、伴奏、FX、DAW、試聴要件を先に閉じる。その後に`AIで土台を作る → 鼻歌でメロディを追加する`、最後に`鼻歌をもとに曲を作る`を作り込む。
 - 入口: 横並びの独立機能名ではなく、(1) 手でパッチボードから組む、(2) AIの編集可能な土台へ鼻歌メロディを追加する、(3) 最初の鼻歌をseedに一曲を組む、という3つの制作経路として示す。どの経路も同じProject / Track / Lane / NoteEventと03詳細編集へ合流する。
 - 段階表示: 新しい曲を開いた直後は入口選択を主役にし、選択後だけ必要項目を縦方向へ滑らかに展開する。Patchboard / AIは曲名、genre、Mood、Key、BPM、曲の流れ等を扱い、鼻歌先行は録音前に不要な項目を強制せず、推定値または後編集可能な初期値として扱う。

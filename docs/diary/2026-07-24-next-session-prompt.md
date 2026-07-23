@@ -1,5 +1,7 @@
 # 次sessionへ貼るprompt
 
+> 2026-07-24実行済み。HOME-003、SHORTCUT-002、FLOW-002、DAW-012 / 013、INTEROP-001、HARMONY-001とbrowser QAを完了し、結果と次の順序は`docs/diary/2026-07-24-autonomous-session-handoff.md`へ移した。次sessionはこの古い実行順を再実行せず、最新handoffと`docs/imp/imp-tasks.md`を読む。
+
 `G:\devwork\music-compose-tool`のMusic Compose Tool Phase 1を、最大4時間を目安に自律的に継続してください。現在の最優先は`パッチボードで組む`の完成度向上です。これまでの指摘を閉じる前にAI / 鼻歌を主作業へ切り替えないでください。
 
 これはsession移動・コンテキスト圧縮からの復帰です。通常回答、編集、外部書き込みより前に、次をUTF-8のfile実体から順に読み直してください。
@@ -46,4 +48,3 @@ npm.cmd run test -- src/domain/audio/audio-plan.test.ts src/features/melody/DawM
 UI作業では`frontend-design`の既存方針を継続し、genericなcard列へ戻さず、dark pastel、全幅、楽譜主役、少ない常設文章を守ってください。browser確認時はbrowser QAの手順を読み、実際のscreenshotと操作結果を証拠にしてください。
 
 外部AI、実microphone、secret、課金、Cloudflare resource / deploy、license未確認音源、commit / pushは別の明示承認なしに行いません。`.song`完全互換や実音源品質を未検証で表現しないでください。
-
