@@ -1,5 +1,37 @@
 # 完了記録
 
+## 2026-07-24 FLOW-002: 曲の設計・展開・詳細編集の3段workflow
+
+- 旧`ラフ制作 / カスタマイズ`の二重切替を、`01 曲の設計 / 02 展開を整える / 03 詳細の編集`へ一本化した。01は設計完了indicator、Mood 1 / 2、Key、Tempo、曲の流れ、02は共有INSERT TARGETと5つのINSERT SOURCE tab、03は既存Projectを共有するpiano-roll DAWを担当する。
+- 02は選択PHRASEとコード譜を上部へ固定し、`コード・音色 / コードセット / 伴奏 / FX・Fill / 音色割当`だけを切り替える。4 / 8 STEPは8分音符の左右矢印で長さを変え、AUTOが残り拍を吸収する。source tabを切り替えても対象PHRASEを失わない。
+- 伴奏は対象section、Mood、現在コード進行、コード音色を決定論的にscoreし、上位2件と一致理由を表示する。Melody、手編集音、他phraseを保護したまま、click / dragの同じProject commandで4小節へ適用する。
+- 主語ファイル: [Workspace](G:\devwork\music-compose-tool\src\features\projects\WorkspaceShell.tsx)、[Chord Pattern Board](G:\devwork\music-compose-tool\src\features\patterns\ChordPatternBoard.tsx)、[Project commands](G:\devwork\music-compose-tool\src\domain\music\project-commands.ts)、[styles](G:\devwork\music-compose-tool\src\styles.css)、[FLOW WQHD証跡](G:\devwork\music-compose-tool\docs\imp\evidence\flow-recommendations-wqhd-2026-07-24.png)。
+- Proof: component / domain testとChromium journeyで3 tab、5 source tab、共有target、上位2推薦・理由、4 / 8 STEP矢印、click / drag、save / reload、WQHD / 375px横overflow 0を確認した。UI、操作感、音楽的fitは★3でユーザーレビュー待ち。
+
+## 2026-07-24 DAW-012 / DAW-013: piano-roll firstとplayhead位置再生
+
+- `03 詳細の編集`からMIDI接続状態、音符inspector、Sound Chunk棚、選択statusの常設面を外し、上部transport / tool、timeline、最初のviewportにpiano roll、track、下部Mixerへ整理した。任意の`?` guideはtransport、timeline、piano roll、track / mixerをspotlight表示し、Escapeで閉じる。
+- ruler pointer / keyboard、縦playhead、先頭・section seek、停止位置保持を追加した。`AudioEngine.playProject(project, startTick)`は開始位置より前のeventをskipし、開始位置をまたぐNoteEvent / AudioClipを残り時間だけscheduleする。
+- WQHD 2560×1440の最初のviewportでpiano rollが高さ320px以上見え、transport、timeline、track、Mixerが重ならないことを実画像確認した。375pxでは88鍵wheel scroll、表示外pitchへのnote追加、横overflow 0を確認した。
+- 主語ファイル: [DAW editor](G:\devwork\music-compose-tool\src\features\melody\DawMelodyEditor.tsx)、[audio plan](G:\devwork\music-compose-tool\src\domain\audio\audio-plan.ts)、[Web Audio engine](G:\devwork\music-compose-tool\src\adapters\audio\web-audio-engine.ts)、[styles](G:\devwork\music-compose-tool\src\styles.css)、[WQHD証跡](G:\devwork\music-compose-tool\docs\imp\evidence\daw-first-viewport-wqhd-2026-07-24.png)。
+- Proof: audio plan、DAW component、Chromium E2Eで途中note / clip、ruler、playhead、停止、先頭・section seek、88鍵、Mixerを確認した。Studio Oneの固有画面・iconは複製していない。実MIDI機器と実耳の操作感は外部／ユーザーgate。
+
+## 2026-07-24 HOME-003 / START-002 / SHORTCUT-002: 開始前preview・3経路・設定表示
+
+- Project Homeの保存Projectへ再生／停止、先頭、±30秒、任意位置range、現在時間／全長を追加した。別曲試聴時とunmount時は前のsourceを停止する。6曲starterも適用せず一時Projectとして試聴でき、選択中Projectや永続保存を暗黙変更しない。
+- 新規曲は`パッチボードで組む`、`AIで土台を作る → 鼻歌でメロディを追加する`、`鼻歌をもとに曲を作る`の順序付き3経路とした。未選択時はfieldを隠し、選択後だけroute別fieldとsubmit labelを展開する。Project importは現時点で`.mctproj専用`と表示する。
+- Shortcutはcanonical値と表示を分離し、`Ctrl + S`、`Shift + ↑`、未設定、conflict / browser予約errorを同じformatterへ統一した。入力待ちの同button再clickまたはEscapeでcaptureを中止し、localStorage schemaとcommand matchingを維持する。
+- 主語ファイル: [Project Home](G:\devwork\music-compose-tool\src\features\projects\ProjectHome.tsx)、[App](G:\devwork\music-compose-tool\src\App.tsx)、[Shortcut registry](G:\devwork\music-compose-tool\src\application\shortcuts\shortcut-registry.ts)、[Shortcut modal](G:\devwork\music-compose-tool\src\features\settings\ShortcutSettingsModal.tsx)、[mobile route証跡](G:\devwork\music-compose-tool\docs\imp\evidence\project-home-route-mobile-2026-07-24.png)、[WQHD preview証跡](G:\devwork\music-compose-tool\docs\imp\evidence\project-home-preview-wqhd-2026-07-24.png)、[mobile preview証跡](G:\devwork\music-compose-tool\docs\imp\evidence\project-home-preview-mobile-2026-07-24.png)。
+- Proof: component / Chromiumで未選択field非表示、3経路、別曲、seek、±30秒、終了、starter preview、`.mctproj専用`、shortcut表示・中止を確認した。375pxの新規作成detailsと長いProject名による横overflowも0へ修正した。
+
+## 2026-07-24 INTEROP-001 / browser回帰: Studio One境界と全画面proof
+
+- Studio Oneとの現在の交換線を、アプリ内完全保存`.mctproj`、編集可能なStandard MIDI Type 1、確定音のmaster WAV / track stemsに分けた。native `.song`は第三者向け公開schemaを確認できないため推測parserを作らず、openな`.dawproject`は将来の段階的export / import候補として分離した。
+- 一次資料からformat別に渡せるdata、欠落data、plugin / Sound Set / media / EULA境界、推奨Stage 0〜3、ZIP / XML import時のfail-closed要件を記録した。Studio One installation、commercial plug-in、third-party converter、外部uploadは要求していない。
+- 主語ファイル: [相互運用調査](G:\devwork\music-compose-tool\docs\research\studio-one-interoperability-2026-07-24.md)、[機能マトリクス](G:\devwork\music-compose-tool\docs\imp\phase1-feature-progress-matrix.html)、[browser journeys](G:\devwork\music-compose-tool\tests\e2e)、[dark QA](G:\devwork\music-compose-tool\scripts\qa_dark_theme.mjs)。
+- Proof: `npm.cmd run check`はlint warning 0、typecheck、Vitest 33 files / 146 tests、gateway smoke、production build、進捗16 / 100、matrix 44 rows / 102 local linksをpass。`http://127.0.0.1:4173/`でChromium FHD 15 / 15 journeyを単一runでpass（5.2分）。WQHD 2560×1440と375×812を含むjourneyでconsole error、page error、request failure 0。`npm.cmd run test:dark`は1440 / 768 / 375 / editor、`npm.cmd run test:pwa`はmanifest / service worker / controller / cache / registrationをpassした。
+- Accessibility proofはsemantic role、accessible name、unnamed button 0、keyboard操作の回帰であり、axe等による完全なWCAG監査の代替ではない。実Studio One import、実MIDI、PWA install prompt、実SNS、実耳音質は引き続き外部／ユーザーgate。
+
 ## 2026-07-23 PRJ-003: 新規Project名の自動採番
 
 - 新規作成panelを開くたび、保存済みProject数から`新しい曲 1`、`新しい曲 2`…を編集可能な既定名として設定する。任意名への上書き、既存Project名、manual save境界は変更していない。

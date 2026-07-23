@@ -83,10 +83,10 @@ try {
   page.on('requestfailed', (request) => requestFailures.push(`${request.method()} ${request.url()}`));
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
   await page.getByRole('button', { name: '新しい曲' }).click();
-  await page.getByLabel('曲の名前').fill('Night Grid QA');
   await page.locator('input[name="startMode"][value="patchboard"]').check();
-  await page.getByRole('button', { name: 'パッチボードから始める' }).click();
-  await page.getByRole('button', { name: /^カスタマイズ/ }).click();
+  await page.getByLabel('曲の名前').fill('Night Grid QA');
+  await page.getByRole('button', { name: 'パッチボードで始める' }).click();
+  await page.getByRole('button', { name: '詳細の編集' }).click();
   const canvas = page.getByLabel('メロディピアノロール');
   await canvas.waitFor();
   await page.screenshot({ path: resolve(evidenceDir, 'dark-theme-editor-1440.png'), fullPage: true });
@@ -95,8 +95,8 @@ try {
     const canvasNode = doc.querySelector('[aria-label="メロディピアノロール"]');
     const roll = doc.querySelector('.piano-roll-wrap');
     const rootStyle = globalThis.getComputedStyle(doc.body);
-    const trackAdd = [...doc.querySelectorAll('.daw-tools .button')].find((control) => control.textContent?.includes('トラック追加'));
-    const deleteButton = [...doc.querySelectorAll('.daw-tools .button')].find((control) => control.textContent?.includes('Delete'));
+    const trackAdd = doc.querySelector('.daw-tools [aria-label="トラックを追加"]');
+    const deleteButton = doc.querySelector('.daw-tools [aria-label="選択音符を削除"]');
     return {
       canvasBackground: canvasNode ? globalThis.getComputedStyle(canvasNode).backgroundColor : null,
       rollBackground: roll ? globalThis.getComputedStyle(roll).backgroundColor : null,
@@ -130,5 +130,5 @@ const failures = results.flatMap((result) => [
   ...(result.editor && !result.editor.actionToken ? ['1440px editor action token missing'] : []),
 ]);
 if (failures.length > 0) throw new Error(failures.join('\n'));
-await writeFile(resolve(evidenceDir, 'dark-theme-qa-2026-07-23.json'), `${JSON.stringify({ baseUrl, results, failures }, null, 2)}\n`, 'utf8');
+await writeFile(resolve(evidenceDir, 'dark-theme-qa-2026-07-24.json'), `${JSON.stringify({ baseUrl, results, failures }, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify({ baseUrl, results, failures }, null, 2));

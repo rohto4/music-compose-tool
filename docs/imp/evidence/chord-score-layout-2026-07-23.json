@@ -5,62 +5,62 @@
   },
   "documentOverflowX": 0,
   "board": {
-    "top": 308,
+    "top": 257,
     "right": 2048,
-    "bottom": 9671,
+    "bottom": 1815,
     "left": 512,
     "width": 1536,
-    "height": 9363
+    "height": 1559
   },
   "harmonicMap": {
-    "top": 829,
+    "top": 1145,
     "right": 2046,
-    "bottom": 1073,
+    "bottom": 1781,
     "left": 514,
     "width": 1532,
-    "height": 244
+    "height": 636
   },
   "score": {
-    "top": 310,
+    "top": 320,
     "right": 2046,
-    "bottom": 768,
+    "bottom": 799,
     "left": 514,
     "width": 1532,
-    "height": 458
+    "height": 479
   },
   "sourceShelf": {
-    "top": 1275,
-    "right": 2046,
-    "bottom": 1797,
-    "left": 514,
-    "width": 1532,
-    "height": 522
+    "top": 0,
+    "right": 0,
+    "bottom": 0,
+    "left": 0,
+    "width": 0,
+    "height": 0
   },
   "firstPad": {
-    "top": 943,
+    "top": 1253,
     "right": 734,
-    "bottom": 1001,
+    "bottom": 1306,
     "left": 525,
     "width": 209,
-    "height": 58
+    "height": 54
   },
   "lastPad": {
-    "top": 1007,
+    "top": 1311,
     "right": 1167,
-    "bottom": 1065,
+    "bottom": 1365,
     "left": 959,
     "width": 209,
-    "height": 58
+    "height": 54
   },
-  "chordPads": 14,
+  "chordPads": 46,
   "scoreRows": 2,
   "scorePhrases": 4,
   "rolePatterns": 42,
   "voiceSelectors": 11,
   "voiceFamilies": 6,
   "soundBlocks": 24,
-  "insertableCount": 216,
-  "draggableInsertableCount": 216,
+  "insertableCount": 91,
+  "draggableInsertableCount": 91,
   "surface": {
     "paper": "oklch(19% 0.04 276)",
     "paper2": "oklch(23% 0.045 270)",

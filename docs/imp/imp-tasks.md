@@ -1,17 +1,5 @@
 # 実装待ち
 
-## FLOW-002: 制作画面を曲・展開・詳細編集の3段へ一本化する
-
-- 状態: 2026-07-24 component実装・型検査・対象test完了。`01 曲の設計 / 02 展開を整える / 03 詳細の編集`、設計完了indicator、2 Mood / Key / Tempo、曲の流れ、共有INSERT TARGET、5つのINSERT SOURCE tab、8分音符矢印、role別Audio Paletteを同じProjectへ接続した。02の伴奏候補は対象section、Mood、現在コード進行、コード音色を決定論的にscoreし、上位2件と一致理由を表示する。必須実装完了後のChromium / responsive screenshot待ち。
-- 目的: `ラフ制作 / カスタマイズ`の二重切替を撤去し、`01 曲の設計 → 02 展開を整える → 03 詳細の編集`の順序が一目で分かる単一navigationへする。02には現在のコードパッド・音色・コード進行・音のピースを置き、旧Arrangement専用tabは外して既存DAWを03へ置く。
-- 02内の情報設計: 全sectionを縦へ積み、section自体を上へ並べ替える方式から変更する。`PHRASE 01`等の挿入先stripとコード譜はINSERT TARGETとして常時上部へ表示する。その下のINSERT SOURCEだけを`コード・音色 / コードセット / 伴奏 / FX・Fill / 音色割当`の横並びtabで一面ずつ切り替える。コードpadと「コードを鳴らす音色」は同じ面へ置く。Audio Paletteの`ALL`は外し、role別tabだけで高さを抑える。
-- コード長UI: 4 / 8は4小節内のコード数であることを明示して横並びにする。各コード長のselectを左右矢印による8分音符単位の伸縮へ置き換え、AUTOが残りを吸収して4小節を維持する。短いstepはコード名をellipsisで省略し、拍数変更でcardを崩さない。
-- 設計UI: 01へrequired-stateの小さな完了indicatorを置き、警告modalではなく入力済み状態を点灯で示す。曲の長さ入力は外し、Mood 1 / Mood 2を各10候補のselect、KeyとTempoを選択／入力項目として残す。
-- 曲の流れ: `音を組む`末尾のcompactな曲の流れを`曲の設計`末尾へ移す。section追加・長さ・前後移動は保持し、旧詳細ArrangementEditorを別tabとして重複表示しない。
-- 02の完成線: Melodyを自動生成しなくても、コード、選択中instrument、Mood、sectionを材料に、特徴的なBass / Arp / Drum / Pad / Synth伴奏を候補から選び、4小節へ一括適用できる。候補は一致理由を短く示し、02までで曲の展開と伴奏の骨格を全曲試聴できる。03は通常の次工程として表示し、`任意`labelは付けない。
-- 完了条件: 3 tabだけで設計、Chord Pattern Board、DAWへ移動でき、設計indicator、2つのMood select、Key、Tempo、曲の流れが同じProject commandを更新する。02の横tab、共有挿入先、4小節コード長、伴奏推薦、role別Audio Paletteが同じProject commandへ接続される。shortcutと既存browser journeyを新navigationへ更新し、unit / Chromium / responsive screenshotで確認する。
-- 停止条件: Arrangement data、既存Project、Humming Studio、DAW機能を削除しない。入力不足をblockする警告や強制作成順は追加しない。
-
 ## ASSET-004: Bass / Lead / Synth / Pad / Arp / Percussionを各20音色へ増強する
 
 - 状態: 2026-07-24 着手。
@@ -28,33 +16,6 @@
 - 音響要件: 各symbolはquality固有のintervalを持ち、Chord Pad長押し、HOLD / PULSE / SYNC、配置block、全曲再生、MIDI materializeで同じ構成音を使う。名称だけの候補を追加しない。
 - 完了条件: Major / Minorの両keyで実用quality catalogが決定論的・重複IDなしに生成され、Power / aug / dim7 / half-dim7 / 9 / 11 / 13を自動testで確認する。既存pad IDと進行templateの互換性を維持する。
 - 停止条件: 全12 root × 理論上可能な全voicingを無制限列挙しない。初版はKawaii Future Bass / Coreの伴奏で選択価値があるqualityに絞り、microtonal、polychord、slash-bass専用voicingは別scopeとする。
-
-## DAW-012: 詳細編集をpiano-roll firstにし、playhead位置から再生する
-
-- 状態: 2026-07-24 component実装・型検査・対象test完了。途中tickのnote / clip再生、ruler pointer / keyboard、縦playhead、先頭・section seek、停止時の位置保持まで追加した。必須実装完了後のWQHD Chromium screenshot待ち。
-- 目的: `03 詳細の編集`では楽譜を主役として、WQHD 2560×1440の最初のviewport内へpiano rollを常時表示する。MIDI接続状態、音符inspector、Sound Chunk棚を楽譜より上へ常設せず、音符操作はCanvas上のdrag、keyboard shortcut、選択時だけ到達できる操作へ集約する。
-- Timeline要件: 小節／拍のrulerをpiano roll直上へ置き、pointerで任意tickへplayheadを移動できる。現在位置をrulerとCanvasの縦線で同期表示し、詳細編集の再生はそのplayheadから全Projectを開始する。停止後も位置を保持し、先頭へ戻す操作を別に持つ。
-- Audio要件: WAVへ事前renderしてから再生する方式へ変えず、ProjectのNoteEventとAudioClipをWeb Audioへscheduleする際に開始tickより前をskip／clipする。開始位置をまたぐnote / clipは残り時間だけ鳴らし、終了位置とreceipt durationをProject全長からの残時間に合わせる。
-- 完了条件: 不要な常設3面が詳細編集のDOMから外れ、piano rollがWQHD first viewportへ収まる。ruler click、縦playhead、途中tickからのnote / clip再生、先頭戻し、停止をunit / audio plan test / Chromium screenshotで確認する。
-- 停止条件: MIDI入力機能、Sound ChunkのProject data・02での挿入、複数音選択、copy / paste、undo / redo、exportを削除しない。再生のための一時WAV生成、外部audio dependency追加、Project schema破壊へ広げない。
-
-## DAW-013: DAW面の常設文章を撤去し、compact controlとguided helpへ分離する
-
-- 状態: 2026-07-24 component実装・lint・対象test完了。通常面からMIDI接続状態、音符inspector、Sound Chunk棚、選択statusと旧responsive CSSを外し、上部transport、timeline、piano roll、track、mixerへ整理した。任意guideとEscape closeを保持し、必須実装完了後のWQHD Chromium screenshot待ち。
-- 目的: 詳細編集では文章を読ませず、楽譜、icon、選択色、playhead、短いrole名で操作状態を理解できるようにする。選択件数や操作方法の常設status、説明文、冗長subtitleを撤去し、WQHDの横幅全体を中央piano rollと左右／下部のcompact controlへ使う。
-- 構成: 公開されている一般的なDAW構成を参考に、上部transport / tool、中央timeline + editor、周辺track / parameter、下部mixerへ責務を分ける。Studio One固有の画像、icon、trade dressは複製せず、一般的な編集概念と効率的な操作導線だけを採用する。
-- Help要件: `?`から開く任意のguided helpを用意し、画面を暗転して現在説明する領域だけをspotlight表示する。短い説明、前へ／次へ／閉じる、keyboard Escapeを持ち、通常編集時のDAW DOMへ長文を常設しない。
-- 完了条件: 通常の詳細編集面に説明文・選択statusが常設されず、compact icon controlへaccessible name / tooltipがある。guided helpでtransport、timeline、piano roll、track / mixerを順に案内でき、WQHD first viewportで横幅と楽譜面積が有効利用される。unit / keyboard / screenshotで確認する。
-- 停止条件: iconだけにしてaccessible nameを失わない。初回強制tour、外部tutorial asset、Studio Oneの画面画像や固有iconの複製、mobileへdesktopの全controlを強制しない。
-
-## HOME-003: スターターとProject Homeを曲のpreview入口にする
-
-- 状態: 2026-07-24 component実装・型検査・対象test完了。Project Homeの先頭／±30秒／任意位置preview、別曲切替、終了、unmount停止、starter適用前試聴、`.mctproj`専用表示まで追加した。必須実装完了後のWQHD / smartphone browser QA待ち。
-- 目的: 既製スターターを選ぶ前と、保存済みProjectを開く前に、その曲がどんな音かを確認できるようにする。情報量の少ないProject cardは再生を主操作にし、BPM、Key、長さ、小節数と曲構造を同じ視野へ置く。
-- 操作: 各starterに`聴く / 停止`を追加し、選択中Projectを変更せずdeterministicなpreview ProjectをWeb Audioで鳴らす。Project Homeは再生／停止、先頭、前後30秒、click / keyboardで途中位置を選べるsequence barを持ち、選んだ位置からProjectを再生する。
-- 共通化: 詳細編集と同じ`AudioEngine.playProject(project, startTick)`を使い、WAVの事前生成や外部streaming playerを増やさない。別曲の試聴開始時は既存再生を停止し、unmount時にもsourceを停止する。
-- 完了条件: starterを適用せず試聴でき、保存済みProject cardを開かず先頭／途中から再生できる。30秒移動をBPMからtickへ換算し、duration、小節表示、active card、終了状態をunit / Chromiumで確認する。
-- 停止条件: autoplay、一覧全曲の同時再生、外部音源download、Projectの暗黙変更、previewのための永続保存を行わない。
 
 ## START-002: 新規曲の入口を3つの制作経路として再構成する
 
@@ -73,22 +34,6 @@
 - 結果: local rule / fake routeでもChord、Bass、Drum、Pad、Arp、sectionを別laneのsymbolic foundationとして作り、03で編集できる。将来providerを接続する場合もflat audioだけをProject正本にしない。
 - 完了条件: 選択変更でprompt / JSON previewが決定論的に更新され、作成commandへ同じ条件が渡る。成功、provider unavailable、malformed response、partial trackのfallbackをtestし、外部送信なしでもrule foundationを完成できる。
 - 停止条件: secret、外部API、home server job、課金、network送信を暗黙に有効化しない。PatchboardのUI・Project dataを別実装で複製しない。
-
-## INTEROP-001: Studio OneとのProject交換境界を明文化する
-
-- 状態: 2026-07-24 公式資料調査中。実装はStandard MIDI / WAVの現行線を維持し、`.dawproject`を将来候補として分離する。
-- 目的: Studio One native `.song`を直接読み込めるか、Standard MIDI Type 1、WAV / stems、DAWprojectのどこまでを安全に交換できるかを一次資料と公開specで確認する。
-- 判断線: proprietaryな`.song` parserを推測実装しない。現行は`.mctproj`をアプリ内の完全保存形式、Standard MIDI Type 1とWAV / stemsをStudio One handoffとする。openな`.dawproject`はnote、audio、tempo、marker、mixer等の共通部分を対象に別unitでimport / exportを検討し、plugin stateや未対応featureは警告付きで欠落を可視化する。
-- 完了条件: 公式資料link、formatごとの交換可能data、欠落data、license / plugin境界、推奨実装順をresearch documentへ残し、Project Homeの`読み込む`が現時点では`.mctproj`専用であることを誤認なく表示する。
-- 停止条件: `.song`互換を未検証のまま謳わない。Studio One installation、commercial plugin、third-party converter、外部uploadを要求しない。
-
-## SHORTCUT-002: 設定画面のキー表記と入力解除を読みやすくする
-
-- 状態: 2026-07-24 実装・型検査・対象test完了。canonical値とlocalStorage schemaを維持したまま、矢印glyph、space付き` + `、未設定、conflict / browser予約errorを同じdisplay formatterへ統一し、同button再click / Escapeでcaptureを中止できる。
-- 表示: 内部保存と照合に使う`ArrowUp` / `ArrowDown` / `ArrowLeft` / `ArrowRight`は変更せず、設定画面では`↑` / `↓` / `←` / `→`として表示する。複合keyは`Ctrl + S`、`Shift + ↑`のように`+`前後へ半角spaceを入れる。error / conflict表示にも同じformatterを使う。
-- 入力解除: `キーを入力…`状態の同じ割当buttonを再度clickしたらcaptureを中止し、元の割当表示へ戻す。Escapeでも中止できる既存挙動を保持し、capture中のclick自体を新shortcutとして誤取得しない。
-- 完了条件: default、変更済み、未設定、conflict、browser予約shortcutの全表示が同じformatになる。同button再clickとEscapeでcapture解除でき、解除・初期値・保存を壊さないunit / component testを追加する。
-- 停止条件: shortcut canonical string、localStorage schema、既存keyboard command matchingを表示改善のために変更しない。
 
 ## DES-006: 1行見出しと制作優先の情報密度へ全画面を整理する
 

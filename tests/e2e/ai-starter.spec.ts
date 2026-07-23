@@ -10,20 +10,21 @@ test('AI Starterから多数音色を試し、同じMIDI譜面へ進める', asy
 
   await page.goto('/');
   await page.getByRole('button', { name: '新しい曲' }).click();
+  await page.getByRole('radio', { name: /AIで土台/ }).check();
   await page.getByRole('textbox', { name: '曲の名前' }).fill('AI Starter Journey');
-  await expect(page.getByRole('radio', { name: /AIで土台を作る/ })).toBeChecked();
+  await expect(page.getByRole('radio', { name: /AIで土台/ })).toBeChecked();
   await page.screenshot({ path: 'docs/imp/evidence/ai-starter-home-desktop-2026-07-22.png', fullPage: false });
   await page.getByRole('button', { name: 'AIで土台を作る' }).click();
   await expect(page.getByText(/AI Starterの音を、コード・ベース・ドラム等のtrack別に保持/)).toBeVisible();
 
-  await page.getByRole('button', { name: '音を組む' }).click();
+  await page.getByRole('button', { name: '展開を整える' }).click();
   await expect(page.getByText('AI Starterの土台を編集中')).toBeVisible();
-  await expect(page.getByText('LIVE VOICE · 60')).toBeVisible();
+  await expect(page.getByText('コードを鳴らす音色 · 60')).toBeVisible();
   await expect(page.locator('.voice-family-tabs button')).toHaveCount(6);
-  await expect(page.locator('.chord-pad')).toHaveCount(14);
+  await expect(page.locator('.chord-pad')).toHaveCount(46);
   await page.getByRole('button', { name: /Hyper Prism Saw/ }).click();
   await expect(page.locator('.voice-keys button[aria-pressed="true"]')).toContainText('Hyper Prism Saw');
-  await expect(page.getByRole('button', { name: /^ALL 136$/ })).toBeVisible();
+  await page.getByRole('button', { name: '音色割当' }).click();
   await page.locator('.asset-category-filter').getByRole('button', { name: /^PAD 11$/ }).click();
   await expect(page.locator('.asset-card')).toHaveCount(11);
   await expect(page.getByText('Frozen Glass')).toBeVisible();
@@ -31,10 +32,12 @@ test('AI Starterから多数音色を試し、同じMIDI譜面へ進める', asy
   await page.screenshot({ path: 'docs/imp/evidence/ai-starter-timbre-bank-desktop-2026-07-22.png', fullPage: false });
 
   await page.getByRole('button', { name: 'MIDI譜面を編集' }).click();
-  await expect(page.getByRole('heading', { name: 'MIDI譜面を編集', level: 2 })).toBeVisible();
-  await page.getByLabel('編集トラック').selectOption('track-chord');
-  await expect(page.locator('.daw-edit-target')).toContainText('Chords · Main');
-  await expect(page.getByText(/空白dragで矩形選択/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Melody', level: 2 })).toBeVisible();
+  await page.getByLabel('編集トラック', { exact: true }).selectOption('track-chord');
+  await expect(page.getByRole('heading', { name: 'Chords', level: 2 })).toBeVisible();
+  await expect(page.locator('.daw-edit-target')).toContainText('Main');
+  await expect(page.getByRole('slider', { name: '再生位置' })).toBeVisible();
+  await expect(page.getByRole('region', { name: '音程範囲。マウスホイールで上下にスクロール' })).toBeVisible();
 
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'MIDI', exact: true }).click();

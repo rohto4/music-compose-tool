@@ -10,34 +10,34 @@
         "x": 512,
         "y": 0,
         "width": 1536,
-        "height": 9363
+        "height": 1559
       },
       "score": {
         "x": 514,
-        "y": 2,
+        "y": 63,
         "width": 1532,
-        "height": 458
+        "height": 479
       },
       "atlas": {
         "x": 514,
-        "y": 521,
+        "y": 888,
         "width": 1532,
-        "height": 244
+        "height": 636
       },
       "prompt": {
         "x": 514,
-        "y": 9258,
+        "y": 554,
         "width": 1532,
         "height": 103
       },
       "rolePatterns": {
-        "x": 514,
-        "y": 2812,
-        "width": 1532,
-        "height": 944
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
       },
       "phraseCount": 4,
-      "chordCount": 14,
+      "chordCount": 46,
       "rolePatternCount": 42,
       "minChordWidth": 209,
       "atlasOverflowX": 0,
@@ -56,34 +56,34 @@
         "x": 512,
         "y": 0,
         "width": 1536,
-        "height": 9363
+        "height": 1559
       },
       "score": {
         "x": 514,
-        "y": 2,
+        "y": 63,
         "width": 1532,
-        "height": 458
+        "height": 479
       },
       "atlas": {
         "x": 514,
-        "y": 521,
+        "y": 888,
         "width": 1532,
-        "height": 244
+        "height": 636
       },
       "prompt": {
         "x": 514,
-        "y": 9258,
+        "y": 554,
         "width": 1532,
         "height": 103
       },
       "rolePatterns": {
-        "x": 514,
-        "y": 2812,
-        "width": 1532,
-        "height": 944
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
       },
       "phraseCount": 4,
-      "chordCount": 14,
+      "chordCount": 46,
       "rolePatternCount": 42,
       "minChordWidth": 209,
       "atlasOverflowX": 0,
@@ -102,34 +102,34 @@
         "x": 512,
         "y": 0,
         "width": 1536,
-        "height": 9363
+        "height": 1559
       },
       "score": {
         "x": 514,
-        "y": 2,
+        "y": 63,
         "width": 1532,
-        "height": 458
+        "height": 479
       },
       "atlas": {
         "x": 514,
-        "y": 521,
+        "y": 888,
         "width": 1532,
-        "height": 244
+        "height": 636
       },
       "prompt": {
         "x": 514,
-        "y": 9258,
+        "y": 554,
         "width": 1532,
         "height": 103
       },
       "rolePatterns": {
-        "x": 514,
-        "y": 2812,
-        "width": 1532,
-        "height": 944
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
       },
       "phraseCount": 4,
-      "chordCount": 14,
+      "chordCount": 46,
       "rolePatternCount": 42,
       "minChordWidth": 209,
       "atlasOverflowX": 0,
