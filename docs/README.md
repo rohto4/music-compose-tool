@@ -20,6 +20,7 @@
 | Pattern Board基盤・data / interaction境界 | `arch/pattern-board-foundation.md` |
 | RTX 5080 local generation実測 | `research/rtx5080-local-music-generation-spike-2026-07-21.md` |
 | Audio format・Studio One / BOOTH / generated asset境界 | `research/audio-asset-format-and-license-boundaries-2026-07-21.md` |
+| Studio Oneとの`.mctproj` / MIDI / WAV / `.dawproject`交換境界 | `research/studio-one-interoperability-2026-07-24.md` |
 | Home model server・Cloudflare中継候補 | `arch/home-model-serving-topology.md` |
 | Hallmark案と独自案の比較 | `design/design-directions.md` |
 | 2案のlocal prototype入口 | `design/prototypes/README.md` |
@@ -31,6 +32,6 @@
 | 実装待ち | `imp/imp-tasks.md` |
 | 完了証拠 | `imp/imp-comp.md` |
 | Phase 1機能別進捗マトリクス（UI・実装・動作・テスト・外部gate） | `imp/phase1-feature-progress-matrix.html` |
-| 最新handoff | `diary/2026-07-23-chord-score-theme-handoff.md` |
+| 最新handoff | `diary/2026-07-24-autonomous-session-handoff.md` |
 
 現時点の要件・Architecture・デザインは、明記がない限り仮説であり採用済みではありません。
