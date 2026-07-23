@@ -1,5 +1,13 @@
 # 完了記録
 
+## 2026-07-24 QA-001: Windows Playwright server lifecycle
+
+- Playwright `webServer`がWindowsでshell-owned Vite process groupを終了するとき、test完了後に`Terminating the WebServer`で待ち続ける問題を再現した。`npm.cmd`をdirect Node serverへ置換するだけでは解消せず、`pw:webserver` debugでURL ready、test約3秒完了、server terminate開始後の停止だと分離した。
+- Playwright `globalSetup`からBasic Pitch model同期を有限child processで実行し、Vite APIの`createServer()`をPlaywright本体process内で起動する。setupが返すasync teardownで`server.close()`をawaitする。既に4173が利用可能なlocal開発時は再利用し、所有していないserverを閉じない。
+- productionの`npm.cmd run dev`、PWA、browser journey、外部networkは変更していない。全Node process kill、固定sleep、timeout延長で症状を隠していない。
+- 主語ファイル: [Playwright config](G:\devwork\music-compose-tool\playwright.config.ts)、[global setup](G:\devwork\music-compose-tool\tests\e2e\global-setup.ts)。
+- Proof: lint / typecheck pass。server未起動状態からAI Starter 1 / 1は3.3秒、Pattern Board 2 / 2は10.5秒でpassし、各commandが自力終了した。終了後と重いspecのshell timeout後もport 4173 listener 0。重いexport journeyはこのlifecycle変更前の全15 / 15 runでpass済みであり、今回の120秒shell timeoutを機能passとは数えない。
+
 ## 2026-07-24 HARMONY-001: 46 quality Harmonic Atlasの横断受入
 
 - Major / Minorで各46件のcatalogを決定論的に生成し、基本7 degree、彩り、意外にPower 5、sus2 / sus4、aug、dim / dim7 / half-diminished、6th、7th、add9 / 9th / 11th / 13th、minor-major 7thを関連degreeの縦方向へ配置する。`コードを鳴らす音色 · 60`と4小節の`音色割当`は別tab責務として区別する。

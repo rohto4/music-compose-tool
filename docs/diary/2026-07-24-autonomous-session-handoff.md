@@ -169,7 +169,7 @@ Bass / Lead / Synth / Pad / Arp / Percussionを各20へ増強する。
 - `DES-006`の冗長文削減と制作面積改善
 - 実耳で6 phrase kit、42 role pattern、60 tonal、46 chord、24 Sound Chunkをレビュー
 - 完全なaccessibility auditは必要になった時に別unit化
-- PlaywrightがWindowsで自前webServer停止時に長く残る場合、手動Viteを先に起動する回避を使う。機能failureとは混同しない
+- Playwrightは`globalSetup`内のVite APIでserverを所有・終了する。focused standalone runでcommand終了とport 4173 listener 0を確認済み。重いOfflineAudio exportはspec自体が120秒を超える場合があるため、server lifecycle failureと分離する
 
 ## 5. ユーザー／外部gate
 
