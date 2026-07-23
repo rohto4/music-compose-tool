@@ -31,7 +31,7 @@
 
 ## DAW-012: 詳細編集をpiano-roll firstにし、playhead位置から再生する
 
-- 状態: 2026-07-24 着手。
+- 状態: 2026-07-24 component実装・型検査・対象test完了。途中tickのnote / clip再生、ruler pointer / keyboard、縦playhead、先頭・section seek、停止時の位置保持まで追加した。必須実装完了後のWQHD Chromium screenshot待ち。
 - 目的: `03 詳細の編集`では楽譜を主役として、WQHD 2560×1440の最初のviewport内へpiano rollを常時表示する。MIDI接続状態、音符inspector、Sound Chunk棚を楽譜より上へ常設せず、音符操作はCanvas上のdrag、keyboard shortcut、選択時だけ到達できる操作へ集約する。
 - Timeline要件: 小節／拍のrulerをpiano roll直上へ置き、pointerで任意tickへplayheadを移動できる。現在位置をrulerとCanvasの縦線で同期表示し、詳細編集の再生はそのplayheadから全Projectを開始する。停止後も位置を保持し、先頭へ戻す操作を別に持つ。
 - Audio要件: WAVへ事前renderしてから再生する方式へ変えず、ProjectのNoteEventとAudioClipをWeb Audioへscheduleする際に開始tickより前をskip／clipする。開始位置をまたぐnote / clipは残り時間だけ鳴らし、終了位置とreceipt durationをProject全長からの残時間に合わせる。
@@ -40,7 +40,7 @@
 
 ## DAW-013: DAW面の常設文章を撤去し、compact controlとguided helpへ分離する
 
-- 状態: 2026-07-24 着手。
+- 状態: 2026-07-24 component実装・lint・対象test完了。通常面からMIDI接続状態、音符inspector、Sound Chunk棚、選択statusと旧responsive CSSを外し、上部transport、timeline、piano roll、track、mixerへ整理した。任意guideとEscape closeを保持し、必須実装完了後のWQHD Chromium screenshot待ち。
 - 目的: 詳細編集では文章を読ませず、楽譜、icon、選択色、playhead、短いrole名で操作状態を理解できるようにする。選択件数や操作方法の常設status、説明文、冗長subtitleを撤去し、WQHDの横幅全体を中央piano rollと左右／下部のcompact controlへ使う。
 - 構成: 公開されている一般的なDAW構成を参考に、上部transport / tool、中央timeline + editor、周辺track / parameter、下部mixerへ責務を分ける。Studio One固有の画像、icon、trade dressは複製せず、一般的な編集概念と効率的な操作導線だけを採用する。
 - Help要件: `?`から開く任意のguided helpを用意し、画面を暗転して現在説明する領域だけをspotlight表示する。短い説明、前へ／次へ／閉じる、keyboard Escapeを持ち、通常編集時のDAW DOMへ長文を常設しない。

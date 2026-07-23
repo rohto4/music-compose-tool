@@ -95,6 +95,14 @@ describe('DawMelodyEditor mix controls', () => {
     expect(ruler.getAttribute('aria-valuenow')).toBe('1920');
     fireEvent.click(screen.getByRole('button', { name: /BAR 2.*から曲全体を再生/ }));
     expect(onTogglePlayback).toHaveBeenCalledWith(1_920);
+    fireEvent.keyDown(ruler, { key: 'End' });
+    expect(ruler.getAttribute('aria-valuetext')).toBe('END');
+    fireEvent.keyDown(ruler, { key: 'Home' });
+    expect(ruler.getAttribute('aria-valuenow')).toBe('0');
+    fireEvent.click(screen.getByRole('button', { name: 'Verseから表示' }));
+    const verse = project.arrangement.sections.find((section) => section.label === 'Verse');
+    if (!verse) throw new Error('Verse section missing');
+    expect(ruler.getAttribute('aria-valuenow')).toBe(String(verse.startBar * 4 * 480));
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(screen.queryByText(/空白をドラッグして範囲選択/)).toBeNull();
 
@@ -104,6 +112,17 @@ describe('DawMelodyEditor mix controls', () => {
     expect(screen.getByRole('dialog', { name: 'タイムライン' })).toBeTruthy();
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('stops project playback without moving the retained playhead', () => {
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
+    const project = createProject({ projectId: 'daw-stop', title: 'DAW Stop', now: '2026-07-24T00:00:00.000Z', entryMode: 'patchboard' });
+    const onTogglePlayback = vi.fn();
+    render(<DawMelodyEditor {...transportProps()} project={project} now={() => '2026-07-24T00:01:00.000Z'} onCommand={vi.fn()} playing onTogglePlayback={onTogglePlayback} />);
+
+    fireEvent.click(screen.getByRole('button', { name: '編集中の曲を停止' }));
+    expect(onTogglePlayback).toHaveBeenCalledWith(undefined);
+    expect(screen.getByRole('slider', { name: '再生位置' }).getAttribute('aria-valuenow')).toBe('0');
   });
 
   it('selects notes with a blank-area marquee and moves the group in one command', () => {

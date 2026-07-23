@@ -105,10 +105,11 @@ export function DawMelodyEditor({ project, now, onCommand, playing, playbackMess
   const visibleStartBar = Math.min(durationBars, Math.floor(scrollPosition / pixelsPerBar) + 1);
   const visibleEndBar = Math.min(durationBars, visibleStartBar + visibleBars);
   const chordRanges = chordPatternRanges(project);
-  const playheadX = playheadTick / PPQ * BEAT_WIDTH * zoom;
-  const playheadLabel = playheadTick >= durationTick
+  const boundedPlayheadTick = clamp(playheadTick, 0, durationTick);
+  const playheadX = boundedPlayheadTick / PPQ * BEAT_WIDTH * zoom;
+  const playheadLabel = boundedPlayheadTick >= durationTick
     ? 'END'
-    : `BAR ${Math.floor(playheadTick / (4 * PPQ)) + 1} · ${Math.floor(playheadTick % (4 * PPQ) / PPQ) + 1}.${Math.floor(playheadTick % PPQ / Math.max(1, grid)) + 1}`;
+    : `BAR ${Math.floor(boundedPlayheadTick / (4 * PPQ)) + 1} · ${Math.floor(boundedPlayheadTick % (4 * PPQ) / PPQ) + 1}.${Math.floor(boundedPlayheadTick % PPQ / Math.max(1, grid)) + 1}`;
 
   const noteById = new Map(notes.map((note) => [note.id, note]));
   const selectedNotes = selected.map((id) => noteById.get(id)).filter((note): note is NoteEvent => Boolean(note));
@@ -238,7 +239,7 @@ export function DawMelodyEditor({ project, now, onCommand, playing, playbackMess
 
   // draw is intentionally recreated with the current canvas model; the effect redraws on model changes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { draw(); }, [canvasWidth, canvasHeight, durationTick, grid, notes, selected, hoveredId, dragPreview, marquee, playheadTick]);
+  useEffect(() => { draw(); }, [canvasWidth, canvasHeight, durationTick, grid, notes, selected, hoveredId, dragPreview, marquee, boundedPlayheadTick]);
 
   useEffect(() => {
     if (!playing || playbackStartedAt === null) return undefined;
@@ -251,10 +252,6 @@ export function DawMelodyEditor({ project, now, onCommand, playing, playbackMess
     const interval = window.setInterval(update, 50);
     return () => window.clearInterval(interval);
   }, [durationTick, playbackStartTick, playbackStartedAt, playing, project.musicalGrid.bpm]);
-
-  useEffect(() => {
-    setPlayheadTick((current) => clamp(current, 0, durationTick));
-  }, [durationTick]);
 
   useEffect(() => {
     if (guideStep === null) return undefined;
@@ -722,7 +719,7 @@ export function DawMelodyEditor({ project, now, onCommand, playing, playbackMess
         <div className="customize-transport" data-guide="transport">
           <div className="customize-transport-actions">
             <button className="customize-return-button" type="button" aria-label="先頭へ戻る" title="先頭へ戻る" onClick={() => seekPlayhead(0)}>↤</button>
-            <button className="customize-play-button" type="button" aria-label={playing ? '編集中の曲を停止' : `${playheadLabel}から曲全体を再生`} title={playing ? '停止' : '再生'} aria-pressed={playing} onClick={() => onTogglePlayback(playing ? undefined : playheadTick >= durationTick ? 0 : playheadTick)}><span aria-hidden="true">{playing ? '■' : '▶'}</span></button>
+            <button className="customize-play-button" type="button" aria-label={playing ? '編集中の曲を停止' : `${playheadLabel}から曲全体を再生`} title={playing ? '停止' : '再生'} aria-pressed={playing} onClick={() => onTogglePlayback(playing ? undefined : boundedPlayheadTick >= durationTick ? 0 : boundedPlayheadTick)}><span aria-hidden="true">{playing ? '■' : '▶'}</span></button>
             <button className="customize-block-play-button" type="button" aria-label="選択音符だけ再生" title="選択音符だけ再生" disabled={selectedNotes.length === 0} onClick={() => void onAuditionNotes(track.id, selectedNotes.map((note) => note.id), `${track.name} ${selectedNotes.length}音`)}><span aria-hidden="true">▣▶</span></button>
           </div>
           <output aria-live="off">{playheadLabel}</output>
@@ -738,11 +735,11 @@ export function DawMelodyEditor({ project, now, onCommand, playing, playbackMess
       </div>
       <div className="editor-playhead-ruler" data-guide="timeline">
         <button type="button" aria-label="先頭へ戻る" title="先頭へ戻る" onClick={() => seekPlayhead(0)}>↤</button>
-        <div className="editor-ruler-window" role="slider" tabIndex={0} aria-label="再生位置" aria-valuemin={0} aria-valuemax={durationTick} aria-valuenow={playheadTick} aria-valuetext={playheadLabel} onPointerDown={seekPlayheadFromRuler} onKeyDown={(event) => {
+        <div className="editor-ruler-window" role="slider" tabIndex={0} aria-label="再生位置" aria-valuemin={0} aria-valuemax={durationTick} aria-valuenow={boundedPlayheadTick} aria-valuetext={playheadLabel} onPointerDown={seekPlayheadFromRuler} onKeyDown={(event) => {
           if (event.key === 'Home') seekPlayhead(0);
           else if (event.key === 'End') seekPlayhead(durationTick);
-          else if (event.key === 'ArrowLeft') seekPlayhead(playheadTick - grid);
-          else if (event.key === 'ArrowRight') seekPlayhead(playheadTick + grid);
+          else if (event.key === 'ArrowLeft') seekPlayhead(boundedPlayheadTick - grid);
+          else if (event.key === 'ArrowRight') seekPlayhead(boundedPlayheadTick + grid);
           else return;
           event.preventDefault();
         }}>
