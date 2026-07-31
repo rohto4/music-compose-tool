@@ -1,6 +1,8 @@
 # KASANE AI Change Contract
 
-Status: candidate / user presentation pending
+> 2026-08-01 V2 boundary: このcontractは将来のoptional AI adapter用であり、Composition Desk local Proof Aの実装経路・Product promise・受入条件には含めない。
+
+Status: optional future adapter contract / not in Proof A
 
 ## 1. Principle
 

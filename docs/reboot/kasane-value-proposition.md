@@ -1,6 +1,8 @@
 # KASANE Value Proposition
 
-Status: candidate / user presentation pending
+> 2026-08-01 V2 decision: 鼻歌と生成AIを主価値から外す。現在のappeal pointは、調律済みHero Kit、洗練された1画面UI、予測できるScene Move、同位置A/B、DAWへ続く編集可能な出口である。
+
+Status: V2 direction adopted
 
 ## One-line pitch
 

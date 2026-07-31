@@ -2,7 +2,7 @@
 
 ## 目的
 
-DTMのように一音ずつ入力しなくても、まとまった音のセットをクリック中心でパズルのように組み合わせ、少量のボイス入力も使いながら短時間で曲を作れるツールを提供する。
+音楽理論やDAW操作を熟知していなくても、調律済みの音楽セットと曲の流れをクリック中心で組み替え、短時間で「自分で展開を作った」と感じられるinstrumental / BGMを完成し、必要ならDAWへ編集可能な形で渡せるツールを提供する。
 
 ## 現在の対象
 
@@ -10,25 +10,35 @@ DTMのように一音ずつ入力しなくても、まとまった音のセッ�
 - PCではクリック中心、スマートフォンではタッチ中心で操作できることを目指す。
 - ドラム、FX、和音、シンセ等の音セットを切り替え、まとまり単位で配置・交換できる体験を中心にする。
 - 音のピースはコード、ドラム、ベース、リード、シンセ、パッド、アルペジオ、パーカッション、FX、transition等へ広げる。
-- 制作surfaceは、`01 曲の設計`、`02 展開を整える`、`03 詳細の編集`の3段に一本化する。02はコード・音色・4小節素材、03は既存DAW-like editorの音符・mixを担当する。
+- 新しいprimary surfaceは、Hero Kit、scene、Lead / Harmony / Bass / Rhythm / Texture、決定論的Scene Moveを1枚に置く`Composition Desk`とする。
 - 最初の配布surfaceはWeb / PWAとし、smartphoneでも新規作成、途中編集、試聴、共有を行えるようにする。
 - vocal / lyricsではなくinstrumental / BGMを対象にする。
-- 本人のhummingをmelodyのseedにし、理論知識を補うchord・asset推薦、伴奏、加工、FX候補へつなげる。
-- 生成assetとuser uploadを扱い、manual save、project file、undo / redo、audio exportを提供する。
+- 3つの調律済みHero Kitから始め、scene単位の`LIFT / STRIP / BOUNCE / ANSWER / BREAK`をbeforeと同じ位置で試聴し、commit / undoする。
+- 鼻歌と生成AIはprimary workflow、main navigation、Product promise、最初のproofから外す。将来採用する場合も任意補助であり、core loopの完了条件にしない。
+- license未確認assetを量のために追加せず、既存built-in synthesisと編集可能なProject dataから少数の完成度を磨く。
 
 ## 現在のPhase
 
-`Reboot 0: failure review / new product proposal`
+`Reboot 1: Composition Desk local Proof A`
 
 2026-07-31にユーザーが現行Projectを一旦失敗と判断した。旧Phase 1の実装は比較・再利用候補としてworktreeとGit履歴に凍結し、継続改善を停止する。改変前の設計・判断・prompt生成源は`docs/archive/2026-07-31-phase1-design-prompt-snapshot/`へSHA-256付きで退避した。
 
-新しいWeb Compose構想は`docs/reboot/`で提案する。これはユーザープレゼン前のcandidateであり、採用済みProduct仕様でもproduction実装開始許可でもない。旧Phase 1の件数、画面構造、操作導線を新案の前提にしない。
+2026-08-01のユーザー判断`JUDGE-023`により、鼻歌依存を攻めず、UIとasset品質を主戦場にする方針へ更新した。報告HTML V2の再出力・検証後、旧Phase 1とは別entrypointでComposition Deskのlocal実装を開始する。仕様正本は`docs/spec/kasane-composition-desk-capability.md`、実装開始判定は`docs/imp/implementation-readiness.md`とする。
+
+## Reboot 1採用済み方針
+
+- Core loopは`KIT → PLAY → SHAPE → KEEP`。白紙、prompt、録音から始めない。
+- 勝ち筋は、磨いたinteraction、少数精鋭のcoherent sound、予測可能な音楽変形の順である。機能数やasset件数を完成度の代理にしない。
+- Scene Moveは現在のsceneとroleだけへ作用し、同じ開始位置・同じ基準音量でbefore / variationを比較する。採用は1 atomic command、undoは1回で戻る。
+- UI正本はV2 reportのComposition Desk方向。旧Pastel Patchboardや旧3入口は凍結履歴であり、新画面へ自動継承しない。
+- 最初のproofはlocal built-in synthesisのみ。microphone、外部AI、license不明sample、secret、課金、deployを含めない。
+- 旧Project / Track / Lane / NoteEvent、Web Audio、MIDI / WAV / stems / `.mctproj`は、体験を支える範囲だけ再利用候補にする。
 
 ## Repository
 
 - remote: `https://github.com/rohto4/music-compose-tool.git`
 - local branch: `main`
-- remote状態: 2026-07-24までのbaselineとPhase 1機能unitは`main`へpush済み。Reboot 0のcandidate文書は2026-07-31時点でlocal review中であり、stage / commit / pushしていない。
+- remote状態: 旧Phase 1とReboot V2 baseline `cb589aa`まで`main`へpush済み。Composition Desk実装は機能unitごとにcommit / pushする。
 
 ## 正本
 

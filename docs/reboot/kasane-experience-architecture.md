@@ -1,6 +1,8 @@
 # KASANE Experience Architecture
 
-Status: candidate / user presentation pending
+> 2026-08-01 V2 boundary: 最初のlocal Proof AはHero Kit、Living Score、決定論的Scene Move、same-point A/B、commit / undoだけを実装する。AI proposalとhumming inputは将来のoptional adapterであり、primary dependencyではない。受入正本は[`kasane-composition-desk-capability.md`](../spec/kasane-composition-desk-capability.md)。
+
+Status: V1 architecture reference / V2 boundary above takes precedence
 
 ## 1. Surface model
 

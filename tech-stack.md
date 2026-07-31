@@ -1,6 +1,17 @@
 # Tech Stack
 
-> Status 2026-07-31: 以下は失敗判断前の旧Phase 1 stackを凍結記録したもの。新構想`KASANE`のArchitectureは[`docs/reboot/kasane-experience-architecture.md`](docs/reboot/kasane-experience-architecture.md)にcandidateとして置き、ユーザー判断前に採用済みへ混ぜない。
+> Status 2026-08-01: Reboot 1のComposition Desk local Proof Aを採用。以下の`Reboot 1 adopted slice`を現在の実装判断とし、その後の旧Phase 1 stackは凍結参照として扱う。
+
+## Reboot 1 adopted slice
+
+- entrypoint: Vite SPAの`/kasane`で新しいReact surfaceを分離し、旧Phase 1の`/`を保持する。
+- domain: versioned `HeroKit` catalog、`CompositionState`、`SceneMoveRecipe`。scene / role scope、determinism、before preservation、atomic commitをpure TypeScriptで固定する。
+- audio: 既存Web Audio境界を再利用し、user gesture後だけbuilt-in oscillator / noise profileで現在sceneまたは全体を鳴らす。外部sampleとnetworkを必要条件にしない。
+- UI: CSS custom propertiesとscoped KASANE componentで構成し、最初のviewportへKit、scene、role weave、Move Deck、transport、undoを置く。AI / microphone controlを置かない。
+- testing: domain / componentはVitest + Testing Library、実browserはsystem Chrome / PlaywrightでWQHD、1440、mobileを確認する。音楽品質の主観評価と完全なWCAG監査は別gate。
+- no new dependency: 現在のReact / TypeScript / Vite / Vitest / Playwrightだけを使用する。
+
+## 旧Phase 1 frozen stack
 
 ## 採用済み
 

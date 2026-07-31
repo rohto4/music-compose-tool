@@ -4,9 +4,10 @@
 
 | 目的 | 正本 |
 | --- | --- |
-| Reboot 0の読込入口・state boundary | `reboot/README.md` |
+| Reboot 1の読込入口・state boundary | `reboot/README.md` |
 | KASANE判断用の単体HTMLプレゼン | `reboot/kasane-presentation.html` |
-| KASANE Product設計・体験Architecture・AI変更contract | `reboot/kasane-product-design.md` / `reboot/kasane-experience-architecture.md` / `reboot/kasane-ai-change-contract.md` |
+| KASANE V2報告・設計資料 | `reboot/kasane-presentation.html` / `reboot/README.md` |
+| Composition Desk採用済みcapability contract | `spec/kasane-composition-desk-capability.md` |
 | 旧Phase 1の設計・prompt生成源snapshot | `archive/2026-07-31-phase1-design-prompt-snapshot/README.md` |
 | 発見セッションの回答・仮説・未決 | `discovery/project-discovery.md` |
 | コア20問・条件付き深掘りと進行 | `discovery/question-backlog.md` |
@@ -38,4 +39,4 @@
 | Phase 1機能別進捗マトリクス（UI・実装・動作・テスト・外部gate） | `imp/phase1-feature-progress-matrix.html` |
 | 最新handoff | `diary/2026-07-31-reboot-presentation-handoff.md` |
 
-KASANEはユーザープレゼン前のcandidateであり、現時点では採用済み仕様ではありません。旧Phase 1文書はsnapshotとGit履歴に残すが、新構想へ自動継承しません。
+KASANEのうち`Composition Desk local Proof A`は`JUDGE-023`で実装許可済みです。鼻歌・生成AIはprimaryから外し、旧Phase 1文書はsnapshotとGit履歴に残すが新構想へ自動継承しません。

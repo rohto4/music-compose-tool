@@ -1,12 +1,15 @@
 # music-compose-tool
 
-クリック中心で音のセットを組み合わせ、少量のボイス入力も使って短時間で曲を作るツールの準備PJです。
+調律済みの音楽セットとsceneの流れをクリック中心で組み替え、短時間でinstrumental / BGMを形にするWeb Compose PJです。
 
-現在は `Reboot 0: failure review / new product proposal` です。旧Phase 1は2026-07-31のユーザー判断で凍結し、改変前の設計・判断・prompt生成源をSHA-256付きsnapshotへ保全しました。新しいWeb composer候補`KASANE`は、1枚のLiving Score上でAI・鼻歌・手操作を音付き差分として比較し、編集可能なままDAWへ渡す構想です。まだ採用済み仕様でもproduction実装でもありません。
+現在は `Reboot 1: Composition Desk local Proof A` です。旧Phase 1は凍結し、改変前の設計・判断・prompt生成源をSHA-256付きsnapshotへ保全しました。KASANEは鼻歌・生成AIを主軸にせず、3つのHero Kit、scene / role、決定論的Scene Move、同位置A/B、commit / undoを1枚の制作面へまとめます。
 
-- 判断用プレゼン: [`docs/reboot/kasane-presentation.html`](docs/reboot/kasane-presentation.html)
+- V2報告プレゼン: [`docs/reboot/kasane-presentation.html`](docs/reboot/kasane-presentation.html)
+- 採用済みProof A契約: [`docs/spec/kasane-composition-desk-capability.md`](docs/spec/kasane-composition-desk-capability.md)
 - 設計資料入口: [`docs/reboot/README.md`](docs/reboot/README.md)
 - 旧Phase 1 snapshot: [`docs/archive/2026-07-31-phase1-design-prompt-snapshot/README.md`](docs/archive/2026-07-31-phase1-design-prompt-snapshot/README.md)
+
+新しいlocal entrypointは`http://127.0.0.1:4173/kasane`。旧Phase 1は`/`に残す。Proof Aは外部sample、microphone、外部AIを使わず、built-in synthesisと決定論的Project dataだけで動かす。
 
 ## 旧Phase 1 frozen implementation
 

@@ -1,10 +1,14 @@
 # KASANE Product Design
 
-Status: candidate / user presentation pending
+Status: V2 direction adopted / local Proof A in progress
 
 Codename: `KASANE`
 
 Tagline: **曲の流れを触って、音にする。**
+
+## 2026-08-01 V2 decision
+
+鼻歌と生成AIはprimary workflow、main navigation、Product promise、最初のproofから外す。KASANEの最初の製品仮説は、少数精鋭のHero Kitを選び、scene / roleを見ながら決定論的なScene Moveをsame-point A/Bし、commit / undoする`Composition Desk`である。本書の後段に残るAI / humming記述はV1検討履歴であり、V2実装要件ではない。現在の受入正本は[`kasane-composition-desk-capability.md`](../spec/kasane-composition-desk-capability.md)。
 
 ## 1. Product statement
 
