@@ -2,7 +2,15 @@
 
 クリック中心で音のセットを組み合わせ、少量のボイス入力も使って短時間で曲を作るツールの準備PJです。
 
-現在は `Phase 1: local production implementation / pattern-first refocus` です。Project Homeには、primaryの`パッチボードで組む`、次の`AIで土台を作る → 鼻歌でメロディを追加する`、experimentalな`鼻歌をもとに曲を作る`の3経路があり、選んだ後だけ必要項目を展開します。保存Projectと6曲starterは開く／適用する前に再生、停止、先頭、±30秒、任意位置から試聴できます。
+現在は `Reboot 0: failure review / new product proposal` です。旧Phase 1は2026-07-31のユーザー判断で凍結し、改変前の設計・判断・prompt生成源をSHA-256付きsnapshotへ保全しました。新しいWeb composer候補`KASANE`は、1枚のLiving Score上でAI・鼻歌・手操作を音付き差分として比較し、編集可能なままDAWへ渡す構想です。まだ採用済み仕様でもproduction実装でもありません。
+
+- 判断用プレゼン: [`docs/reboot/kasane-presentation.html`](docs/reboot/kasane-presentation.html)
+- 設計資料入口: [`docs/reboot/README.md`](docs/reboot/README.md)
+- 旧Phase 1 snapshot: [`docs/archive/2026-07-31-phase1-design-prompt-snapshot/README.md`](docs/archive/2026-07-31-phase1-design-prompt-snapshot/README.md)
+
+## 旧Phase 1 frozen implementation
+
+旧Phase 1では、Project Homeにprimaryの`パッチボードで組む`、次の`AIで土台を作る → 鼻歌でメロディを追加する`、experimentalな`鼻歌をもとに曲を作る`の3経路があり、選んだ後だけ必要項目を展開します。保存Projectと6曲starterは開く／適用する前に再生、停止、先頭、±30秒、任意位置から試聴できます。
 
 制作画面は`01 曲の設計 → 02 展開を整える → 03 詳細の編集`の3段です。02は4小節の共有INSERT TARGETを常時表示し、`コード・音色 / コードセット / 伴奏 / FX・Fill / 音色割当`の5 source tabを切り替えます。Pattern Boardは60 tonal音色、46コードの`Harmonic Atlas`、用途タグ付き9進行、対象section・Mood・コード・音色に基づく上位2伴奏推薦、8分音符矢印でAUTO配分する4 / 8 STEP、上限なく追加できる4小節phraseを持ちます。音のピースは合計136 profile（Drum 20、Percussion 8、FX 24、Transition 24）、role patternはBass / Arp各10種とDrum 22種です。コード進行、伴奏、role pattern、音のピース、24種類のFX / Fillをclickまたはdragで同じ4小節へ挿入できます。03はWQHD最初のviewportへpiano rollを置き、ruler / playhead、途中位置再生、先頭・section seek、88鍵wheel scroll、Mixerへ同じProjectのNoteEventを渡します。色は`Dark Pastel Studio`、`Vanilla Pastel`、`Friendly Signal`を切替でき、Standard MIDI Type 1、WAV / stems、`.mctproj`へ持ち出せます。
 

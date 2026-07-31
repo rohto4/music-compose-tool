@@ -1,5 +1,16 @@
 # 完了記録
 
+## 2026-07-31 REBOOT-001: Phase 1保全とKASANE新構想プレゼン
+
+- ユーザーの失敗判断を受け、旧Phase 1のproduction sourceとGit履歴を削除せず凍結した。改変前commit `35416702926ebdea93ed465ef7590092e150e845`から、恒久目的、要件、data / fake contract、Architecture、design判断、prompt生成源、license / AI調査を18 fileだけcurateし、[`Phase 1 design / prompt source snapshot`](../archive/2026-07-31-phase1-design-prompt-snapshot/README.md)へ退避した。manifestのbytes / SHA-256と実fileを再計算し18 / 18一致した。
+- BandLab Studio、Soundtrap、Ableton Learning Music、MDN AudioWorklet / OPFS、DAWproject 1.0の一次資料とrepository evidenceを分離して監査した。旧案の失敗を「技術proofと音楽的価値の混同」「入口・分類の増殖」「Web内DAW完結」「AIの別surface化」「音質よりcatalog量を先行」と整理し、編集可能data、undo / scope / provenance、portable handoff、安全境界だけを再利用候補へ残した。
+- 新構想`KASANE`を、1枚のLiving Scoreで`PLAY → POINT → PROPOSE → COMMIT`するWeb composerとして設計した。SONG / PHRASE / NOTEのsemantic zoom、Scene / Role / Clip / VariationBranch、Change Proposalのimmutable差分、same-point audition、OPFS + portable snapshot、MIDI / WAV / stems / DAWproject、desktop / phone責務、negative failureを相互同期した。
+- AIはProjectを直接変更せず、`ChangeRequest → ChangeProposal → validation → audition → commit`を通す。selection外変更、preserve違反、stale revision、malformed、partial、license unknownをfail-closedにし、text / humming / tapを同じproposal contractへ収束させた。
+- 判断用の[`KASANE単体HTMLプレゼン`](../reboot/kasane-presentation.html)を作成した。JavaScriptなしでも結論、失敗認識、主体験、価値、Architecture、再利用判断、実装proof、判断項目を読める。concept mockではscene、SONG / PHRASE / NOTE、before / A / B / C、採用 / 棄却、clip scope、snapshot、DAW handoffを操作できるが、音源付きprototypeやfile生成とは表現していない。
+- Browser proof: local `file:///G:/devwork/music-compose-tool/docs/reboot/kasane-presentation.html`をsystem Chromeで1440×1000、768×1024、375×812へ表示した。8 / 8 anchor、各concept interaction、skip linkの最初のkeyboard focus、button accessible name、document横overflow 0、console error 0、page error 0、request failure 0を確認した。小画面のLiving Scoreはdocumentを広げず内部scrollと明示スワイプ案内を使う。画像は[`desktop`](../reboot/evidence/kasane-presentation-desktop-2026-07-31.png)、[`tablet`](../reboot/evidence/kasane-presentation-tablet-2026-07-31.png)、[`mobile`](../reboot/evidence/kasane-presentation-mobile-2026-07-31.png)。axe等の完全なWCAG監査と実音質評価は行っていない。
+- Repository回帰: `npm.cmd run check`はESLint、typecheck、Vitest 33 files / 150 tests、home AI gateway smoke、production build、Phase 1 progress 16 units / weight 100、feature matrix 44 rows / 102 linksをpassした。jsdom Canvas warningとVite large chunk warningは既知であり、今回のdocs failureではない。`git diff --check`はerror 0。
+- State boundary: KASANEはcandidate / user presentation pending。旧Phase 1 sourceの削除、production実装、外部AI、microphone、secret、課金、deploy、外部resource、license未確認素材、stage / commit / pushは行っていない。
+
 ## 2026-07-24 QA-001: Windows Playwright server lifecycle
 
 - Playwright `webServer`がWindowsでshell-owned Vite process groupを終了するとき、test完了後に`Terminating the WebServer`で待ち続ける問題を再現した。`npm.cmd`をdirect Node serverへ置換するだけでは解消せず、`pw:webserver` debugでURL ready、test約3秒完了、server terminate開始後の停止だと分離した。

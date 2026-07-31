@@ -1,7 +1,5 @@
 # Tech Stack
 
-> Status 2026-07-31: 以下は失敗判断前の旧Phase 1 stackを凍結記録したもの。新構想`KASANE`のArchitectureは[`docs/reboot/kasane-experience-architecture.md`](docs/reboot/kasane-experience-architecture.md)にcandidateとして置き、ユーザー判断前に採用済みへ混ぜない。
-
 ## 採用済み
 
 - OS・標準shell: Windows / PowerShell

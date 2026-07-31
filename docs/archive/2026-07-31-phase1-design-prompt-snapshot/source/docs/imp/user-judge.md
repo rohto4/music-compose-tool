@@ -1,22 +1,5 @@
 # ユーザー判断
 
-## JUDGE-023: 鼻歌を主軸から外し、UIとasset品質を攻める
-
-- 状態: 決定（2026-08-01）
-- ユーザー判断: 鼻歌はかなり明確に歌う必要があり、現状AI構成では良い曲を作る再現性を担保しにくい。鼻歌方針をそのまま攻めず、UIとassetを徹底的に洗練する方針を再検討する。
-- 実装許可: 再検討後、報告用HTMLだけを先に再出力してから、その方針のlocal実装へ着手してよい。
-- 解釈: 鼻歌と生成AIを削除する判断ではないが、primary workflow、main navigation、Product promise、最初のproofから外す。将来追加する場合も、明示選択した補助inputとして扱い、core loopの完了条件にしない。
-- 外部境界: license未確認asset、外部AI、microphone実動作、secret、課金、deployは今回の許可に含めない。
-
-## JUDGE-022: 現行Projectを失敗として凍結し、新構想をプレゼンから始める
-
-- 状態: 決定（2026-07-31）
-- ユーザー判断: 現行Projectを一旦失敗とする。設計書やpromptの元となる良質な部分だけを先にbackupし、その後は既存画面の部分修正ではなく、AIが考える最強のWeb Composeアプリを新しく設計する。
-- 保存境界: 旧sourceとGit履歴は削除しない。改変前の設計・ユーザー判断・Architecture・prompt生成源だけを`docs/archive/2026-07-31-phase1-design-prompt-snapshot/`へcurated snapshotとして退避する。
-- 新案の最初のdeliverable: Product設計書、体験Architecture、AI prompt / change contract、アピールポイント資料、ユーザー向け単体HTMLプレゼン。
-- 未決定: 新案の名称、主体験、visual、Architecture、実装開始。HTMLプレゼンを確認するまではcandidateであり、採用済み要件へしない。
-- 停止線: 旧実装の削除、外部provider接続、secret、課金、deploy、license未確認素材、production実装は別判断まで行わない。
-
 ## JUDGE-001: 最初の配布surface
 
 - 状態: 決定（2026-07-21）

@@ -18,17 +18,15 @@ DTMのように一音ずつ入力しなくても、まとまった音のセッ�
 
 ## 現在のPhase
 
-`Reboot 0: failure review / new product proposal`
+`Phase 1: local production implementation / pattern-first refocus`
 
-2026-07-31にユーザーが現行Projectを一旦失敗と判断した。旧Phase 1の実装は比較・再利用候補としてworktreeとGit履歴に凍結し、継続改善を停止する。改変前の設計・判断・prompt生成源は`docs/archive/2026-07-31-phase1-design-prompt-snapshot/`へSHA-256付きで退避した。
-
-新しいWeb Compose構想は`docs/reboot/`で提案する。これはユーザープレゼン前のcandidateであり、採用済みProduct仕様でもproduction実装開始許可でもない。旧Phase 1の件数、画面構造、操作導線を新案の前提にしない。
+Phase 0で要件、data contract、System Context、local model feasibility、Pastel Patchboardの操作prototypeを整え、local Web / PWAの実装を一巡した。2026-07-22の実使用ではHumming Studioの生成品質の振れ幅が大きく、制作基盤として未達と判断した。Phase 1のprimary完成線を、選択中の音色で即時発音するchord padと1小節patternを組み、Standard MIDI / WAVでStudio Oneへ渡せるpattern-first workflowへ移す。Humming / ACEは削除せずexperimental secondary surfaceとして保留する。X / Misskey等の資格情報が必要なlive確認は別gate、Cloudflare公開とpublic deployは対象外とする。
 
 ## Repository
 
 - remote: `https://github.com/rohto4/music-compose-tool.git`
 - local branch: `main`
-- remote状態: 2026-07-24までのbaselineとPhase 1機能unitは`main`へpush済み。Reboot 0のcandidate文書は2026-07-31時点でlocal review中であり、stage / commit / pushしていない。
+- remote状態: 2026-07-24にbaselineとPhase 1機能unitを`main`へpush済み。このsessionも機能単位でcommit / pushしている。
 
 ## 正本
 
@@ -45,9 +43,7 @@ DTMのように一音ずつ入力しなくても、まとまった音のセッ�
 - 実装待ち: `docs/imp/imp-tasks.md`
 - 完了証拠: `docs/imp/imp-comp.md`
 
-## 旧Phase 1採用済み方針（凍結）
-
-以下は失敗判断前に採用していた方針の履歴である。新構想へ自動継承せず、`docs/reboot/`の再利用監査で明示的に残したものだけを候補として扱う。
+## 恒久方針
 
 - 「速く曲を作れること」を機能数より優先し、最初の反復作業を短くする。
 - 画面の最初のviewportに実際の作曲workbenchを置き、一般的なmarketing heroで隠さない。

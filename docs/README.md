@@ -4,6 +4,10 @@
 
 | 目的 | 正本 |
 | --- | --- |
+| Reboot 0の読込入口・state boundary | `reboot/README.md` |
+| KASANE判断用の単体HTMLプレゼン | `reboot/kasane-presentation.html` |
+| KASANE Product設計・体験Architecture・AI変更contract | `reboot/kasane-product-design.md` / `reboot/kasane-experience-architecture.md` / `reboot/kasane-ai-change-contract.md` |
+| 旧Phase 1の設計・prompt生成源snapshot | `archive/2026-07-31-phase1-design-prompt-snapshot/README.md` |
 | 発見セッションの回答・仮説・未決 | `discovery/project-discovery.md` |
 | コア20問・条件付き深掘りと進行 | `discovery/question-backlog.md` |
 | コア質問への正規化済み回答 | `discovery/core-question-answers.md` |
@@ -32,6 +36,6 @@
 | 実装待ち | `imp/imp-tasks.md` |
 | 完了証拠 | `imp/imp-comp.md` |
 | Phase 1機能別進捗マトリクス（UI・実装・動作・テスト・外部gate） | `imp/phase1-feature-progress-matrix.html` |
-| 最新handoff | `diary/2026-07-24-autonomous-session-handoff.md` |
+| 最新handoff | `diary/2026-07-31-reboot-presentation-handoff.md` |
 
-現時点の要件・Architecture・デザインは、明記がない限り仮説であり採用済みではありません。
+KASANEはユーザープレゼン前のcandidateであり、現時点では採用済み仕様ではありません。旧Phase 1文書はsnapshotとGit履歴に残すが、新構想へ自動継承しません。

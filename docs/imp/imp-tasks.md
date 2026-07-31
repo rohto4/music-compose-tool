@@ -1,5 +1,14 @@
 # 実装待ち
 
+## REBOOT-002: 鼻歌を主軸から外し、Composition Desk V2を実装する
+
+- 状態: 2026-08-01 着手。最初に方針再検討と報告用HTML V2だけを再出力し、HTMLの構文・interaction・responsive確認後にproduction sourceへ入る。
+- Product判断: 鼻歌は入力精度と生成結果の再現性をProduct promiseにできないため、primary workflow、main navigation、初回説明から外す。AIも完成曲生成を主価値にせず、将来の任意補助へ降格する。勝ち筋は、少数精鋭のgenre kit、曲の流れが分かるscene UI、同じ場所での即時試聴、役割macro、洗練されたvisual / motion、Studio One handoffとする。
+- 最初の実装unit: 旧Phase 1とは別のKASANE entrypointに、`Composition Desk`を作る。Curated Kitを選ぶと最初から一曲が鳴り、scene列とLead / Harmony / Bass / Rhythm / Textureのrole weaveを同じ画面で見て、`LIFT / STRIP / BOUNCE / ANSWER / BREAK`等の決定論的macroから少数候補を試聴・採用できるようにする。
+- Asset品質境界: 外部sampleを件数目的で追加しない。最初はlicense問題のない既存Project data / built-in synthesisから、曲中の役割差と前後contextを実演できる少数のHero Kitだけを選び、同じloudness / start positionで比較する。音色名やcatalog件数を品質証拠にしない。
+- 完了条件: 報告用HTMLが鼻歌非主軸、UI / asset-firstの攻め方、非目標、最初のproofを明示する。その後の実装で、primary viewportにmicrophone / AI routeを出さず、curated kit、scene / role selection、macro候補、before / variation、commit / undo、Web Audio previewが同じ画面で動く。focused test、全project check、WQHD / 1440 / mobile browserでconsole / page / request failureとdocument overflow 0を確認する。
+- 停止条件: license不明sample、外部AI、microphone、secret、課金、deploy、外部resourceへ進まない。旧Phase 1 sourceを削除せず、KASANEの新entrypointと共有可能なdomain / audio contractだけを追加する。報告HTMLの再出力・検証前にproduction sourceを変更しない。
+
 ## ASSET-004: Bass / Lead / Synth / Pad / Arp / Percussionを各20音色へ増強する
 
 - 状態: 2026-07-24 着手。

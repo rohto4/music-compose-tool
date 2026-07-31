@@ -2,6 +2,22 @@
 
 現時点で実行が必要なaccount作成、secret登録、外部resource作成、deploy等のユーザー作業はありません。
 
+## Reboot 0 presentation decision
+
+判断用HTML: [`docs/reboot/kasane-presentation.html`](../reboot/kasane-presentation.html)
+
+プレゼン確認後、次の3点だけを判断する。これは実装操作や外部service設定ではない。
+
+1. `Living Score + Change Proposal`を次のProduct正本候補にするか。
+2. Webの完成線を`DAW replacement`ではなく`composition + handoff`に置くか。
+3. 旧Phase 1 sourceを保持したまま、別entrypointで`Proof A: Living Score`へ進むか。
+
+回答前はKASANEを採用済みにせず、production実装、外部AI、microphone、secret、deployへ進まない。
+
+## 旧Phase 1 external / local verification（凍結参照）
+
+以下は失敗判断前の旧Phase 1に残っていた確認項目であり、Reboot 0の現在作業ではない。
+
 Home inferenceのlive E2Eへ進むときだけ、次を別承認・確認する。
 
 - 利用するCloudflare accountとactive domain。

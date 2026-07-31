@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>KASANE — Web Compose Reboot Proposal</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --review-bg: #050c10;
+      --review-panel: #0d1d24;
+      --review-panel-alt: #081820;
+      --review-table-bg: #061218;
+      --review-header: #28505e;
+      --review-filter-header: #12323d;
+      --review-ink: #f7fbff;
+      --review-muted: #c5d5dc;
+      --review-line: #668895;
+      --review-link: #ffd166;
+      --review-link-hover: #fff1ad;
+      --review-focus: #7ee8ff;
+      --review-active: #ffd166;
+      --review-active-ink: #172027;
+      --review-progress: #4a3c17;
+      --review-complete: #263238;
+      --signal-cyan: #7ee8ff;
+      --signal-coral: #ff7d7d;
+      --signal-mint: #91f2c3;
+      --signal-violet: #c9b6ff;
+      --signal-amber: #ffd166;
+      --ink-deep: #041016;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body.review-shell {
+      margin: 0;
+      background:
+        linear-gradient(rgb(126 232 255 / 3%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(126 232 255 / 3%) 1px, transparent 1px),
+        linear-gradient(135deg, #050c10, #10252d 58%, #07151b);
+      background-size: 32px 32px, 32px 32px, auto;
+      color: var(--review-ink);
+      font-family: Inter, "Noto Sans JP", "Yu Gothic UI", system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.38;
+    }
+    .review-shell a {
+      color: var(--review-link);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    .review-shell a:hover { color: var(--review-link-hover); background: #3b3216; }
+    .review-shell a:visited { color: #f5b7ff; }
+    .review-shell code { color: #b9f6d7; font-size: 11px; }
+    .review-shell small, .review-muted { color: var(--review-muted); }
+    .review-header {
+      padding: 20px 24px 14px;
+      background: #081c24;
+      border-bottom: 1px solid var(--review-line);
+    }
+    .review-header h1 {
+      margin: 2px 0 4px;
+      color: #fff;
+      font-family: "BIZ UDPGothic", "Yu Gothic UI", sans-serif;
+      font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    .review-header p { max-width: 1100px; margin: 4px 0; color: #e0edf2; font-size: 12px; }
+    .review-main { max-width: none; padding: 12px 14px 36px; }
+    .review-panel {
+      margin: 0 0 10px;
+      padding: 12px;
+      border: 1px solid var(--review-line);
+      border-radius: 0;
+      box-shadow: none;
+      background: rgb(13 29 36 / 96%);
+    }
+    .review-panel h2 { margin: 0 0 6px; color: #fff; font-size: 1.1rem; }
+    .review-panel > p { margin: 4px 0 8px; color: #d9e8ed; }
+    .review-summary-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .review-metric-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--review-metric-columns, 4), minmax(0, 1fr));
+      gap: 6px;
+    }
+    .review-guidance-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--review-guidance-columns, 3), minmax(0, 1fr));
+      gap: 6px;
+    }
+    .review-compact-unit {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid var(--review-line);
+      border-radius: 0;
+      background: var(--review-panel-alt);
+    }
+    .review-table-wrap {
+      overflow: auto;
+      border: 1px solid var(--review-line);
+      border-radius: 0;
+      background: var(--review-table-bg);
+    }
+    .review-table { width: 100%; border-collapse: collapse; border-spacing: 0; }
+    .review-equal-peer-table { table-layout: fixed; }
+    .review-equal-peer-table col.review-key { width: var(--review-key-width, 10%); }
+    .review-equal-peer-table col.review-total { width: var(--review-total-width, 12%); }
+    .review-equal-peer-table col.review-peer { width: var(--review-peer-width, 26%); }
+    .review-table th, .review-table td {
+      padding: 6px 7px;
+      border-right: 1px solid rgb(102 136 149 / 80%);
+      border-bottom: 1px solid rgb(102 136 149 / 80%);
+      font-size: 12px;
+      line-height: 1.3;
+      text-align: left;
+      vertical-align: top;
+    }
+    .review-table th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--review-header);
+      color: #fff;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .review-table tbody tr:nth-child(even) { background: #091a21; }
+    .review-table tbody tr:hover { background: #18404c; }
+    .review-table .categorical-cell { white-space: nowrap; }
+    .review-shell details { margin: 0; }
+    .review-shell details summary { color: var(--review-link); font-weight: 700; cursor: pointer; }
+    .review-sort:focus-visible,
+    .review-shell button:focus-visible,
+    .review-shell a:focus-visible,
+    .review-shell summary:focus-visible {
+      outline: 2px solid var(--review-focus);
+      outline-offset: 2px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      left: 8px;
+      top: 8px;
+      transform: translateY(-160%);
+      padding: 7px 10px;
+      color: var(--ink-deep);
+      background: var(--review-focus);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .pitch-header {
+      display: grid;
+      grid-template-columns: minmax(300px, 1.5fr) minmax(320px, 1fr);
+      align-items: end;
+      gap: 20px;
+      min-height: 190px;
+      padding-top: 30px;
+      background:
+        linear-gradient(90deg, rgb(126 232 255 / 8%), transparent 34%),
+        linear-gradient(155deg, #07151b, #0c2730);
+    }
+    .proposal-state {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      padding: 4px 8px;
+      border: 1px solid var(--signal-amber);
+      color: var(--signal-amber);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .brand {
+      margin: 10px 0 0;
+      font-size: clamp(3rem, 9vw, 8.5rem);
+      line-height: .8;
+      letter-spacing: -.07em;
+      color: #fff;
+    }
+    .brand span { color: var(--signal-amber); }
+    .tagline {
+      margin-top: 17px;
+      font-size: clamp(1rem, 2.3vw, 1.7rem);
+      font-weight: 800;
+      color: #fff;
+    }
+    .pitch-summary {
+      padding: 14px;
+      border-left: 5px solid var(--signal-cyan);
+      background: #06161d;
+    }
+    .pitch-summary strong { display: block; margin-bottom: 6px; color: var(--signal-cyan); font-size: 1.05rem; }
+    .pitch-summary p { margin: 0; font-size: 13px; }
+    .anchor-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      gap: 3px;
+      overflow-x: auto;
+      padding: 6px 14px;
+      border-bottom: 1px solid var(--review-line);
+      background: rgb(5 12 16 / 96%);
+      backdrop-filter: blur(10px);
+    }
+    .anchor-nav a {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      border: 1px solid #395d69;
+      color: #eaf7fb;
+      text-decoration: none;
+      font-size: 11px;
+    }
+    .anchor-nav a:hover { border-color: var(--signal-amber); background: #302814; }
+    .section-kicker {
+      margin: 0 0 2px;
+      color: var(--signal-cyan);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .metric-number {
+      display: block;
+      color: var(--signal-amber);
+      font-size: 1.7rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .metric-label { display: block; margin-top: 4px; color: #e6f0f3; font-weight: 750; }
+    .metric-copy { display: block; margin-top: 2px; color: var(--review-muted); font-size: 11px; }
+    .verdict {
+      display: grid;
+      grid-template-columns: minmax(180px, .65fr) minmax(0, 1.8fr);
+      gap: 10px;
+      border-color: var(--signal-coral);
+    }
+    .verdict-mark {
+      display: grid;
+      place-items: center;
+      min-height: 120px;
+      border: 1px solid var(--signal-coral);
+      color: var(--signal-coral);
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -.06em;
+    }
+    .verdict ul { margin: 8px 0 0; padding-left: 18px; }
+    .verdict li { margin: 3px 0; }
+    .kept { color: var(--signal-mint); font-weight: 800; }
+    .retired { color: #ffb1b1; font-weight: 800; }
+
+    .demo-frame {
+      display: grid;
+      grid-template-columns: 92px minmax(620px, 1fr) 260px;
+      grid-template-rows: auto auto minmax(310px, auto) auto;
+      border: 1px solid #86a3ad;
+      background: #03090c;
+      overflow: hidden;
+    }
+    .demo-transport {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      min-height: 42px;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--review-line);
+      background: #0a2028;
+    }
+    .demo-title {
+      margin-right: auto;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .03em;
+    }
+    .demo-button {
+      min-height: 29px;
+      padding: 4px 8px;
+      border: 1px solid #688793;
+      border-radius: 0;
+      color: #f7fbff;
+      background: #06151b;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .demo-button:hover { border-color: var(--signal-amber); color: var(--signal-amber); }
+    .demo-button[aria-pressed="true"], .demo-button.primary {
+      border-color: var(--signal-amber);
+      background: var(--signal-amber);
+      color: var(--ink-deep);
+    }
+    .demo-button.danger { border-color: var(--signal-coral); color: #ffd2d2; }
+    .scene-spine {
+      grid-column: 2 / 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr .9fr 1.15fr;
+      min-height: 52px;
+      border-bottom: 1px solid var(--review-line);
+    }
+    .scene-button {
+      position: relative;
+      border: 0;
+      border-right: 1px solid #526e79;
+      color: #dcecf1;
+      background: #0c1b21;
+      font: inherit;
+      cursor: pointer;
+    }
+    .scene-button::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 7px;
+      height: var(--energy, 3px);
+      background: var(--scene-color, var(--signal-cyan));
+    }
+    .scene-button[aria-pressed="true"] {
+      color: #fff;
+      background: #16323c;
+      box-shadow: inset 0 0 0 2px var(--signal-amber);
+    }
+    .role-labels {
+      grid-column: 1;
+      grid-row: 2 / 4;
+      padding-top: 52px;
+      border-right: 1px solid var(--review-line);
+      background: #071218;
+    }
+    .role-label {
+      display: flex;
+      align-items: center;
+      height: 50px;
+      padding: 0 8px;
+      border-bottom: 1px solid #2f4d57;
+      color: var(--role-color);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .living-score {
+      position: relative;
+      grid-column: 2;
+      grid-row: 3;
+      min-height: 310px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgb(126 232 255 / 8%) 1px, transparent 1px),
+        linear-gradient(rgb(126 232 255 / 5%) 1px, transparent 1px),
+        #050d11;
+      background-size: 6.25% 100%, 100% 25px;
+    }
+    .score-row {
+      position: relative;
+      height: 50px;
+      border-bottom: 1px solid #2f4d57;
+    }
+    .clip {
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: var(--left);
+      width: var(--width);
+      border: 1px solid var(--clip-color);
+      background: color-mix(in srgb, var(--clip-color) 18%, #071219);
+      color: #fff;
+      cursor: pointer;
+    }
+    .clip::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      opacity: .55;
+      background: repeating-linear-gradient(90deg, var(--clip-color) 0 5px, transparent 5px 12px);
+      clip-path: polygon(0 65%, 8% 25%, 17% 70%, 25% 40%, 34% 80%, 45% 15%, 54% 55%, 63% 32%, 72% 74%, 83% 20%, 100% 58%, 100% 75%, 0 75%);
+    }
+    .clip span {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      margin: 4px;
+      padding: 1px 3px;
+      background: rgb(2 9 12 / 78%);
+      font-size: 9px;
+      font-weight: 850;
+    }
+    .clip.selected {
+      box-shadow: 0 0 0 2px var(--signal-amber);
+      background: color-mix(in srgb, var(--clip-color) 28%, #071219);
+    }
+    .playhead {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      bottom: 0;
+      left: 12%;
+      width: 2px;
+      background: var(--signal-cyan);
+      box-shadow: 0 0 10px var(--signal-cyan);
+      transition: left 6s linear;
+    }
+    .demo-frame.is-playing .playhead { left: 88%; }
+    .change-deck {
+      grid-column: 3;
+      grid-row: 2 / 4;
+      padding: 8px;
+      border-left: 1px solid var(--review-line);
+      background: #0a1a21;
+    }
+    .change-deck h3 { margin: 0 0 2px; color: #fff; font-size: 13px; }
+    .selection-readout { margin: 0 0 8px; color: var(--signal-cyan); font-size: 11px; }
+    .preserve-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 6px 0 9px; }
+    .preserve-list span {
+      padding: 3px 4px;
+      border: 1px solid #52727c;
+      color: var(--signal-mint);
+      font-size: 9px;
+    }
+    .candidate-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+    .candidate-grid .demo-button { min-width: 0; padding-inline: 3px; }
+    .candidate-copy {
+      min-height: 88px;
+      margin: 8px 0;
+      padding: 7px;
+      border: 1px solid #4d6b75;
+      background: #061319;
+      color: #dbe9ed;
+      font-size: 11px;
+    }
+    .candidate-copy strong { display: block; margin-bottom: 4px; color: var(--signal-amber); }
+    .commit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .deep-lane {
+      grid-column: 1 / -1;
+      min-height: 74px;
+      padding: 8px;
+      border-top: 1px solid var(--review-line);
+      background: #07151b;
+    }
+    .deep-lane-head { display: flex; justify-content: space-between; gap: 8px; color: var(--review-muted); font-size: 10px; }
+    .note-strip {
+      position: relative;
+      height: 42px;
+      margin-top: 5px;
+      background:
+        repeating-linear-gradient(90deg, #24434d 0 1px, transparent 1px 6.25%),
+        repeating-linear-gradient(#24434d 0 1px, transparent 1px 10px),
+        #040c10;
+      overflow: hidden;
+    }
+    .note {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--w);
+      height: 7px;
+      border: 1px solid var(--signal-violet);
+      background: #6b56a6;
+    }
+    .demo-frame[data-depth="song"] .note-strip::after {
+      content: "SONG depth — note detail is folded";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #aebfc5;
+      background: #06151b;
+    }
+    .demo-frame[data-depth="phrase"] .note { height: 10px; opacity: .72; }
+    .demo-status {
+      grid-column: 1 / -1;
+      padding: 5px 8px;
+      border-top: 1px solid #365a65;
+      color: #dcecf1;
+      background: #0a2028;
+      font-size: 10px;
+    }
+    .demo-scroll-hint {
+      display: none;
+      margin: 6px 0;
+      color: var(--signal-amber);
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .no-js-note { margin: 7px 0 0; color: var(--review-muted); font-size: 10px; }
+    .flow-line {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(110px, 1fr));
+      align-items: stretch;
+      overflow-x: auto;
+      border: 1px solid var(--review-line);
+      background: #061218;
+    }
+    .flow-step {
+      position: relative;
+      min-height: 90px;
+      padding: 8px 13px 8px 8px;
+      border-right: 1px solid var(--review-line);
+    }
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      right: 3px;
+      top: 31px;
+      color: var(--signal-amber);
+      font-size: 18px;
+    }
+    .flow-step:last-child::after { content: ""; }
+    .flow-step b { display: block; color: var(--signal-cyan); }
+    .flow-step span { display: block; margin-top: 4px; color: var(--review-muted); font-size: 10px; }
+    .principle-list { display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 5px; overflow-x: auto; }
+    .principle {
+      min-height: 112px;
+      padding: 9px;
+      border-top: 4px solid var(--principle-color);
+      background: #06151b;
+    }
+    .principle b { display: block; margin-bottom: 4px; color: #fff; }
+    .principle span { color: var(--review-muted); font-size: 11px; }
+    .decision-box {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(260px, .8fr);
+      gap: 10px;
+      border: 2px solid var(--signal-amber);
+      background: #161808;
+    }
+    .decision-box ol { margin: 7px 0 0; padding-left: 20px; }
+    .decision-box li { margin: 5px 0; }
+    .decision-mark {
+      display: grid;
+      place-items: center;
+      min-height: 140px;
+      border: 1px solid #8d7934;
+      color: var(--signal-amber);
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+    .source-list { columns: 2; column-gap: 28px; padding-left: 18px; }
+    .source-list li { margin-bottom: 5px; break-inside: avoid; }
+
+    .attack-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .attack-lane {
+      position: relative;
+      min-height: 118px;
+      padding: 12px;
+      overflow: hidden;
+      border: 1px solid var(--review-line);
+      background: #06151b;
+    }
+    .attack-lane::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: var(--attack-weight);
+      opacity: .22;
+      background: var(--attack-color);
+    }
+    .attack-lane b, .attack-lane span { position: relative; z-index: 1; display: block; }
+    .attack-lane b { color: var(--attack-color); font-size: 1.1rem; }
+    .attack-lane .attack-weight { margin: 5px 0; color: #fff; font-size: 2.2rem; line-height: 1; }
+    .attack-lane span:last-child { color: var(--review-muted); }
+
+    .hero-kit-rack {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin: 8px 0 10px;
+    }
+    .hero-kit {
+      display: grid;
+      gap: 5px;
+      min-height: 120px;
+      padding: 10px;
+      color: var(--review-text);
+      text-align: left;
+      border: 1px solid var(--review-line);
+      border-top: 4px solid var(--kit-color);
+      background: #07171d;
+      cursor: pointer;
+    }
+    .hero-kit:hover, .hero-kit:focus-visible { border-color: var(--kit-color); outline: 2px solid color-mix(in srgb, var(--kit-color), transparent 45%); outline-offset: 2px; }
+    .hero-kit[aria-pressed="true"] { background: color-mix(in srgb, var(--kit-color) 14%, #07171d); box-shadow: inset 0 0 0 1px var(--kit-color); }
+    .hero-kit strong { color: #fff; font-size: 1rem; }
+    .hero-kit small { color: var(--review-muted); }
+    .hero-kit .kit-traits { color: var(--kit-color); font-weight: 800; }
+
+    @media (max-width: 1250px) {
+      .review-summary-split { grid-template-columns: 1fr; }
+      .demo-frame { grid-template-columns: 82px minmax(560px, 1fr) 240px; overflow-x: auto; }
+      .demo-scroll-hint { display: block; }
+      .pitch-header { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 800px) {
+      .review-metric-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+      .review-guidance-grid { grid-template-columns: 1fr; }
+      .verdict, .decision-box { grid-template-columns: 1fr; }
+      .principle-list { grid-template-columns: repeat(5, minmax(180px, 1fr)); }
+      .source-list { columns: 1; }
+      .attack-map, .hero-kit-rack { grid-template-columns: 1fr; }
+      .brand { font-size: clamp(3rem, 19vw, 6rem); }
+    }
+    @media (max-width: 650px) {
+      .review-header { padding: 14px 10px 10px; }
+      .review-header h1 { font-size: 1.15rem; }
+      .review-main { padding: 8px; }
+      .review-panel { padding: 8px; }
+      .pitch-header { min-height: 0; padding-top: 18px; }
+      .anchor-nav { padding-inline: 8px; }
+      .review-metric-grid { grid-template-columns: 1fr 1fr; }
+      .demo-frame { grid-template-columns: 72px 540px 225px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .playhead { transition: none; }
+      .demo-frame.is-playing .playhead { left: 52%; }
+    }
+    @media print {
+      .anchor-nav, .demo-transport button { display: none; }
+      body.review-shell { color: #111; background: #fff; }
+      .review-panel, .review-header { break-inside: avoid; color: #111; background: #fff; }
+    }
+  </style>
+</head>
+<body class="review-shell">
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <header class="review-header pitch-header">
+    <div>
+      <span class="proposal-state">Reboot proposal V2 · asset-first · 2026-08-01</span>
+      <h1 class="brand">KASA<span>NE</span></h1>
+      <p class="tagline">曲の流れを触って、音にする。</p>
+    </div>
+    <div class="pitch-summary">
+      <strong>結論：鼻歌AIではなく、洗練された「作曲楽器」を作る。</strong>
+      <p>少数精鋭のHero Kitを最初から曲として鳴らし、sceneを選び、音楽的なmoveを同じ位置で比較する。AIと鼻歌は主画面・初回導線・完成条件から外す。</p>
+    </div>
+  </header>
+
+  <nav class="anchor-nav" aria-label="プレゼン内ナビゲーション">
+    <a href="#overview">30秒概要</a>
+    <a href="#failure">失敗の認識</a>
+    <a href="#strategy">攻める場所</a>
+    <a href="#experience">主体験</a>
+    <a href="#demo">操作モック</a>
+    <a href="#value">魅力</a>
+    <a href="#architecture">設計</a>
+    <a href="#reuse">残すもの</a>
+    <a href="#decision">判断</a>
+  </nav>
+
+  <main id="main" class="review-main">
+    <section id="overview" class="review-panel">
+      <p class="section-kicker">30-second overview</p>
+      <h2>新しい中心は「入力方法」ではなく、4つの確実な制作loop</h2>
+      <div class="review-metric-grid" style="--review-metric-columns:4">
+        <div class="review-compact-unit"><span class="metric-number">KIT</span><span class="metric-label">完成感のある音世界を選ぶ</span><span class="metric-copy">大量presetでなく、曲として調律済みの少数。</span></div>
+        <div class="review-compact-unit"><span class="metric-number">PLAY</span><span class="metric-label">最初から一曲を鳴らす</span><span class="metric-copy">白紙、録音、promptから始めない。</span></div>
+        <div class="review-compact-unit"><span class="metric-number">SHAPE</span><span class="metric-label">sceneを音楽的に変える</span><span class="metric-copy">LIFT / STRIP / BOUNCE等の決定論的move。</span></div>
+        <div class="review-compact-unit"><span class="metric-number">KEEP</span><span class="metric-label">聴いて残す</span><span class="metric-copy">beforeとvariationを同じ位置で比較、commit / undo。</span></div>
+      </div>
+    </section>
+
+    <section id="failure" class="review-panel verdict">
+      <div class="verdict-mark">FAIL<br>→ LEARN</div>
+      <div>
+        <p class="section-kicker">honest diagnosis</p>
+        <h2>旧Phase 1は、壊れにくいが「曲を作り続けたくなる中心」が弱かった</h2>
+        <ul>
+          <li>150 tests、15 browser journey、136 sound、46 chord、42 patternは、技術proofであって音楽的な喜びのproofではなかった。</li>
+          <li>3入口、3制作段階、5 source tab、多数catalogが、曲より先にProductの分類を学ばせた。</li>
+          <li>鼻歌は明確に歌えないと意図どおりのsymbolic melodyになりにくく、生成AIまでつないでも良い曲の再現性をProduct promiseにできなかった。</li>
+          <li>Web内でDAWを完成させようとし、Webが強い比較・capture・handoffへ集中できなかった。</li>
+        </ul>
+        <p><span class="kept">残す：</span>編集可能data、undo、即時試聴、portable handoff、安全境界。 <span class="retired">捨てる：</span>鼻歌前提、AI品質待ち、旧screen構成、件数競争。</p>
+      </div>
+    </section>
+
+    <section id="strategy" class="review-panel">
+      <p class="section-kicker">where we attack</p>
+      <h2>攻める場所を3つに絞る。鼻歌と生成AIは0%のprimary dependency</h2>
+      <div class="attack-map">
+        <div class="attack-lane" style="--attack-weight:48%;--attack-color:var(--signal-cyan)"><b>INTERACTION</b><span class="attack-weight">48</span><span>曲の全体、現在位置、次の操作、結果が同じ視野にある。説明より直接操作。</span></div>
+        <div class="attack-lane" style="--attack-weight:37%;--attack-color:var(--signal-amber)"><b>CURATED SOUND</b><span class="attack-weight">37</span><span>役割、voicing、groove、transition、mixを一つのHero Kitとして調律する。</span></div>
+        <div class="attack-lane" style="--attack-weight:15%;--attack-color:var(--signal-mint)"><b>DETERMINISTIC MUSIC</b><span class="attack-weight">15</span><span>選んだmoveが毎回同じ範囲だけを変え、音楽的に成立する。</span></div>
+      </div>
+      <p class="review-muted">48 / 37 / 15はKPIではなく、初版で労力を配分する設計比重です。Humming / generative AIは将来optionであり、core loop・navigation・acceptance gateには含めません。</p>
+      <div class="review-summary-split">
+        <div class="review-compact-unit"><b>WHO</b><br><span class="review-muted">白紙DAWでは止まるが、loopを並べるだけでなく展開とmelodyへ自分の判断を残したい人。</span></div>
+        <div class="review-compact-unit"><b>PAIN</b><br><span class="review-muted">音色・patternを大量に探しても一曲として噛み合わず、鼻歌／AIは入力・出力の当たり外れが大きい。</span></div>
+        <div class="review-compact-unit"><b>SUCCESS</b><br><span class="review-muted">説明なしでKitを鳴らし、sceneを選び、moveを比較・採用して「良くなった」と耳で判断できる。</span></div>
+        <div class="review-compact-unit"><b>ANTI-GOAL</b><br><span class="review-muted">full DAW、prompt生成器、鼻歌精度競争、preset件数競争、AIによる自動完成。</span></div>
+      </div>
+    </section>
+
+    <section id="experience" class="review-panel">
+      <p class="section-kicker">one canvas · three depths</p>
+      <h2>Living Score：曲全体を見失わないsemantic zoom</h2>
+      <div class="principle-list">
+        <div class="principle" style="--principle-color:var(--signal-cyan)"><b>SONG</b><span>scene、energy、役割の出入りを見る。曲のどこで何が起きるかを触る。</span></div>
+        <div class="principle" style="--principle-color:var(--signal-violet)"><b>PHRASE</b><span>harmony、groove、motif、soundの候補を数小節単位で比較する。</span></div>
+        <div class="principle" style="--principle-color:var(--signal-mint)"><b>NOTE</b><span>pitch、timing、length、velocity、automationを必要な時だけ開く。</span></div>
+        <div class="principle" style="--principle-color:var(--signal-amber)"><b>MOVE DECK</b><span>Hero Kitごとの音楽的moveを、beforeと同じ位置から試聴する。</span></div>
+        <div class="principle" style="--principle-color:var(--signal-coral)"><b>OPEN EXIT</b><span>snapshot、MIDI、WAV / stems、DAWprojectで仕上げ環境へ渡す。</span></div>
+      </div>
+    </section>
+
+    <section id="demo" class="review-panel">
+      <p class="section-kicker">concept interaction</p>
+      <h2>触って判断する：Hero Kit × Living Score</h2>
+      <p>Kit、scene、depth、moveを切り替えられます。鼻歌やAI生成を待たず、最初から音楽として成立する選択肢を磨く方針のconcept modelです。</p>
+      <div class="hero-kit-rack" aria-label="Hero Kit">
+        <button class="hero-kit" type="button" data-kit="candy" aria-pressed="true" style="--kit-color:var(--signal-amber)"><strong>CANDY SKYLINE</strong><span class="kit-traits">sparkle · elastic · wide</span><small>Glass lead / open chord / offbeat bass / candy impact</small></button>
+        <button class="hero-kit" type="button" data-kit="prism" aria-pressed="false" style="--kit-color:var(--signal-coral)"><strong>PRISM RUSH</strong><span class="kit-traits">sharp · fast · kinetic</span><small>Needle lead / power stack / drive bass / prism fill</small></button>
+        <button class="hero-kit" type="button" data-kit="moon" aria-pressed="false" style="--kit-color:var(--signal-cyan)"><strong>MOON SODA</strong><span class="kit-traits">soft · floating · bittersweet</span><small>Music box / suspended pad / round sub / reverse bloom</small></button>
+      </div>
+      <p class="demo-scroll-hint">横へスワイプ → Move Deckまで同じ制作面として確認できます。</p>
+
+      <div class="demo-frame" id="concept-demo" data-depth="phrase">
+        <div class="demo-transport">
+          <button class="demo-button primary" type="button" id="play-toggle" aria-pressed="false">▶ PLAY</button>
+          <button class="demo-button" type="button" data-depth-button="song" aria-pressed="false">SONG</button>
+          <button class="demo-button" type="button" data-depth-button="phrase" aria-pressed="true">PHRASE</button>
+          <button class="demo-button" type="button" data-depth-button="note" aria-pressed="false">NOTE</button>
+          <span class="demo-title" id="demo-title">Candy Skyline · 142 BPM · D major</span>
+          <button class="demo-button" id="snapshot-button" type="button">Snapshot</button>
+          <button class="demo-button" id="handoff-button" type="button">仕上げる ↗</button>
+        </div>
+
+        <div class="role-labels" aria-hidden="true">
+          <div class="role-label" style="--role-color:var(--signal-violet)">Lead</div>
+          <div class="role-label" style="--role-color:var(--signal-cyan)">Harmony</div>
+          <div class="role-label" style="--role-color:var(--signal-mint)">Bass</div>
+          <div class="role-label" style="--role-color:var(--signal-coral)">Rhythm</div>
+          <div class="role-label" style="--role-color:var(--signal-amber)">Texture</div>
+        </div>
+
+        <div class="scene-spine" aria-label="Scene Spine">
+          <button class="scene-button" type="button" data-scene="Intro" aria-pressed="false" style="--energy:3px;--scene-color:#789aa6">Intro</button>
+          <button class="scene-button" type="button" data-scene="Lift" aria-pressed="false" style="--energy:6px;--scene-color:var(--signal-violet)">Lift</button>
+          <button class="scene-button" type="button" data-scene="Drop" aria-pressed="true" style="--energy:11px;--scene-color:var(--signal-amber)">Drop</button>
+          <button class="scene-button" type="button" data-scene="Air" aria-pressed="false" style="--energy:4px;--scene-color:var(--signal-cyan)">Air</button>
+          <button class="scene-button" type="button" data-scene="Final" aria-pressed="false" style="--energy:9px;--scene-color:var(--signal-coral)">Final</button>
+        </div>
+
+        <div class="living-score" aria-label="Living Score">
+          <div class="playhead" aria-hidden="true"></div>
+          <div class="score-row">
+            <button class="clip" type="button" style="--left:4%;--width:26%;--clip-color:var(--signal-violet)"><span>glass motif</span></button>
+            <button class="clip selected" type="button" style="--left:31%;--width:35%;--clip-color:var(--signal-violet)"><span>signature lead · selected</span></button>
+            <button class="clip" type="button" style="--left:70%;--width:26%;--clip-color:var(--signal-violet)"><span>final answer</span></button>
+          </div>
+          <div class="score-row">
+            <button class="clip" type="button" style="--left:2%;--width:29%;--clip-color:var(--signal-cyan)"><span>open voicing</span></button>
+            <button class="clip" type="button" style="--left:31%;--width:36%;--clip-color:var(--signal-cyan)"><span>D · A · Bm · G</span></button>
+            <button class="clip" type="button" style="--left:68%;--width:30%;--clip-color:var(--signal-cyan)"><span>wide resolve</span></button>
+          </div>
+          <div class="score-row">
+            <button class="clip" type="button" style="--left:9%;--width:21%;--clip-color:var(--signal-mint)"><span>soft pulse</span></button>
+            <button class="clip" type="button" style="--left:31%;--width:36%;--clip-color:var(--signal-mint)"><span>elastic offbeat</span></button>
+            <button class="clip" type="button" style="--left:68%;--width:30%;--clip-color:var(--signal-mint)"><span>octave drive</span></button>
+          </div>
+          <div class="score-row">
+            <button class="clip" type="button" style="--left:1%;--width:30%;--clip-color:var(--signal-coral)"><span>half-time lift</span></button>
+            <button class="clip" type="button" style="--left:31%;--width:36%;--clip-color:var(--signal-coral)"><span>bounce + fill</span></button>
+            <button class="clip" type="button" style="--left:68%;--width:31%;--clip-color:var(--signal-coral)"><span>full drive</span></button>
+          </div>
+          <div class="score-row">
+            <button class="clip" type="button" style="--left:18%;--width:13%;--clip-color:var(--signal-amber)"><span>rise</span></button>
+            <button class="clip" type="button" style="--left:31%;--width:36%;--clip-color:var(--signal-amber)"><span>air + sparkle</span></button>
+            <button class="clip" type="button" style="--left:64%;--width:4%;--clip-color:var(--signal-amber)"><span>hit</span></button>
+          </div>
+        </div>
+
+        <aside class="change-deck" aria-label="Move Deck">
+          <h3>MOVE DECK</h3>
+          <p class="selection-readout" id="selection-readout">Drop · Lead · 8 bars</p>
+          <div class="preserve-list">
+            <span>✓ lead identity</span>
+            <span>✓ chord identity</span>
+            <span>✓ scene length</span>
+            <span>✓ loudness match</span>
+          </div>
+          <div class="candidate-grid" aria-label="候補">
+            <button class="demo-button" type="button" data-candidate="before" aria-pressed="true">KEEP</button>
+            <button class="demo-button" type="button" data-candidate="a" aria-pressed="false">BOUNCE</button>
+            <button class="demo-button" type="button" data-candidate="b" aria-pressed="false">STRIP</button>
+            <button class="demo-button" type="button" data-candidate="c" aria-pressed="false">LIFT</button>
+          </div>
+          <div class="candidate-copy" id="candidate-copy">
+            <strong>KEEP · 現在のscene</strong>
+            Candy Skylineの基準Drop。signature lead、open chord、offbeat bassをHero Kitの基準mixで鳴らす。
+          </div>
+          <div class="commit-row">
+            <button class="demo-button primary" id="commit-button" type="button">この差分を採用</button>
+            <button class="demo-button danger" id="reject-button" type="button">棄却</button>
+          </div>
+        </aside>
+
+        <div class="deep-lane">
+          <div class="deep-lane-head"><span id="depth-readout">PHRASE depth · signature lead</span><span>kit voicing · groove · 1/16</span></div>
+          <div class="note-strip" aria-label="選択phraseのnote preview">
+            <span class="note" style="--x:3%;--y:24px;--w:9%"></span>
+            <span class="note" style="--x:14%;--y:14px;--w:5%"></span>
+            <span class="note" style="--x:21%;--y:6px;--w:12%"></span>
+            <span class="note" style="--x:36%;--y:18px;--w:6%"></span>
+            <span class="note" style="--x:44%;--y:9px;--w:14%"></span>
+            <span class="note" style="--x:62%;--y:27px;--w:8%"></span>
+            <span class="note" style="--x:73%;--y:14px;--w:10%"></span>
+            <span class="note" style="--x:86%;--y:5px;--w:9%"></span>
+          </div>
+        </div>
+
+        <div class="demo-status" id="demo-status" role="status" aria-live="polite">DropのLeadを選択中。候補はProjectをまだ変更していません。</div>
+      </div>
+      <p class="no-js-note">JavaScript無効時もプレゼン本文はすべて読めます。上の概念モックだけが固定表示になります。</p>
+    </section>
+
+    <section id="value" class="review-panel">
+      <p class="section-kicker">why it wins</p>
+      <h2>「洗練」と「自分で変えた」を同時にする5つの魅力</h2>
+      <div class="review-guidance-grid" style="--review-guidance-columns:5">
+        <div class="review-compact-unit"><b>白紙から始めない</b><br><span class="review-muted">最初から鳴る曲の流れを直す。</span></div>
+        <div class="review-compact-unit"><b>一式で音が合う</b><br><span class="review-muted">Kit内のrole、groove、FX、mixを調律済み。</span></div>
+        <div class="review-compact-unit"><b>音楽的な動詞で変える</b><br><span class="review-muted">LIFT / STRIP / BOUNCEでsceneを造形。</span></div>
+        <div class="review-compact-unit"><b>候補数で迷わせない</b><br><span class="review-muted">現在sceneに合う少数だけをA/B。</span></div>
+        <div class="review-compact-unit"><b>DAWへ正しく渡す</b><br><span class="review-muted">Webから出ることも完成工程。</span></div>
+      </div>
+    </section>
+
+    <section id="architecture" class="review-panel">
+      <p class="section-kicker">deterministic composition contract</p>
+      <h2>Hero Kitを選び、sceneへ確実なmoveを適用する。AI routeは通らない</h2>
+      <div class="flow-line" aria-label="決定論的な音楽変更フロー">
+        <div class="flow-step"><b>CURATE</b><span>role / groove / voicing / FXをKit化</span></div>
+        <div class="flow-step"><b>SELECT</b><span>scene / role / ticksを固定</span></div>
+        <div class="flow-step"><b>MOVE</b><span>LIFT / STRIP / BOUNCE / BREAK</span></div>
+        <div class="flow-step"><b>MATERIALIZE</b><span>versioned recipeをNote / Eventへ</span></div>
+        <div class="flow-step"><b>AUDITION</b><span>同じ位置・同じ音量でA/B</span></div>
+        <div class="flow-step"><b>COMMIT</b><span>atomic command + provenance</span></div>
+        <div class="flow-step"><b>BRANCH</b><span>beforeを消さず別案を残す</span></div>
+      </div>
+      <details>
+        <summary>技術基盤と、誇張しない境界</summary>
+        <ul>
+          <li>AudioWorkletをtransport / DSP候補とし、UI threadから音を分離する。</li>
+          <li>OPFSをworking setに使う候補とするが、site data消去に備えてportable snapshotを必須にする。</li>
+          <li>Project / HeroKit / Scene / Role / Clip / MoveRecipeを共通truthにする。</li>
+          <li>MIDI、WAV / stems、DAWprojectを同じsnapshotから生成する。</li>
+          <li>実音質、browser latency、DAW importは実測前に完成と表現しない。AI品質をcore proofへ混ぜない。</li>
+        </ul>
+      </details>
+    </section>
+
+    <section id="reuse" class="review-panel">
+      <p class="section-kicker">preserve value, retire baggage</p>
+      <h2>バックアップした価値と、持ち込まない構造</h2>
+      <div class="review-table-wrap">
+        <table class="review-table">
+          <thead><tr><th>対象</th><th>判断</th><th>新案での扱い</th></tr></thead>
+          <tbody>
+            <tr><td>編集可能なProject / Note / Automation</td><td class="kept">KEEP</td><td>Kit、move、手編集、exportの共通truth。</td></tr>
+            <tr><td>scope / undo / provenance / license境界</td><td class="kept">KEEP</td><td>Move Recipeの安全契約へ昇格。</td></tr>
+            <tr><td>MIDI / WAV / stems / project bundle</td><td class="kept">ELEVATE</td><td>DAWprojectを加え、Productの主要出口にする。</td></tr>
+            <tr><td>Pattern / timbre / Phrase Kitの知見</td><td class="kept">REDESIGN</td><td>件数棚から、調律済みHero Kitとscene moveへ。</td></tr>
+            <tr><td>3 start routes / 3 stages / 5 source tabs</td><td class="retired">RETIRE</td><td>1つのLiving Scoreとsemantic zoomへ置換。</td></tr>
+            <tr><td>大量catalogを完成度の代理にする</td><td class="retired">RETIRE</td><td>現在曲に合う少数候補のsame-point A/Bへ。</td></tr>
+            <tr><td>AI / HummingをProduct promiseにする</td><td class="retired">RETIRE</td><td>primary navigationと最初のproofから外す。</td></tr>
+            <tr><td>browserでfull DAWを置換する発想</td><td class="retired">RETIRE</td><td>作曲判断 + portable handoffへ集中。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><a href="../archive/2026-07-31-phase1-design-prompt-snapshot/README.md">改変前snapshot manifestを見る</a></p>
+    </section>
+
+    <section class="review-panel">
+      <p class="section-kicker">build without repeating the failure</p>
+      <h2>実装するなら、画面ではなくproofを順番に作る</h2>
+      <div class="review-summary-split">
+        <div class="review-compact-unit"><b>Proof A · Composition Desk</b><br><span class="review-muted">3 Hero Kit、Living Score、scene / role、playback。primary UIにAI・microphoneなし。</span></div>
+        <div class="review-compact-unit"><b>Proof B · Scene Moves</b><br><span class="review-muted">決定論的BOUNCE / STRIP / LIFT、同位置試聴、commit / reject / undo。</span></div>
+        <div class="review-compact-unit"><b>Proof C · Sound Finish</b><br><span class="review-muted">role差、voicing、groove、transition、gainを実耳で磨く。</span></div>
+        <div class="review-compact-unit"><b>Proof D · Durable Handoff</b><br><span class="review-muted">portable bundle、MIDI、stems、minimal DAWproject。</span></div>
+      </div>
+    </section>
+
+    <section id="decision" class="review-panel decision-box">
+      <div>
+        <p class="section-kicker">your decision</p>
+        <h2>再検討の結論：この方針でComposition Deskの実装へ入る</h2>
+        <ol>
+          <li><b>鼻歌 / generative AIをprimaryから外す。</b></li>
+          <li><b>UI 48 / curated sound 37 / deterministic music 15</b>の比重で攻める。</li>
+          <li>旧Phase 1を残した別entrypointへ<b>Proof A · Composition Desk</b>を作る。</li>
+        </ol>
+      </div>
+      <div class="decision-mark">決定<br>HTML確認後<br>実装開始</div>
+    </section>
+
+    <section class="review-panel">
+      <p class="section-kicker">source boundary</p>
+      <h2>今回確認した一次資料</h2>
+      <ul class="source-list">
+        <li><a href="https://help.bandlab.com/hc/en-us/articles/115002945153-Getting-Started-with-the-BandLab-Studio">BandLab Studio — browser / mobile DAW workflow</a></li>
+        <li><a href="https://www.soundtrap.com/content/features">Soundtrap — loops, instruments, effects, desktop latency claim</a></li>
+        <li><a href="https://learningmusic.ableton.com/">Ableton Learning Music — small ideasを直接組み合わせる学習体験</a></li>
+        <li><a href="https://github.com/spotify/basic-pitch">Spotify Basic Pitch — 1 instrumentで最も良く動く転写境界</a></li>
+        <li><a href="https://support.splice.com/en/articles/8652645-what-is-create-how-do-i-use-it">Splice Create — compatible loop stackとDAW handoff</a></li>
+        <li><a href="https://support.output.com/en/articles/10297577-lines-kits-and-samples">Output Arcade — theme別Line / curated Kit / Macro</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioWorklet">MDN AudioWorklet — separate audio thread</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system">MDN OPFS — local working storageと消去境界</a></li>
+        <li><a href="https://github.com/bitwig/dawproject">DAWproject 1.0 — open ZIP / XML exchange format</a></li>
+      </ul>
+      <p class="review-muted">再調査日 2026-08-01。製品機能はsource記載の事実、鼻歌の不採用判断はユーザー提供の結論とrepository実測、UI / asset-first方針はそこから導いた提案です。</p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const demo = document.getElementById('concept-demo');
+      const play = document.getElementById('play-toggle');
+      const status = document.getElementById('demo-status');
+      const selection = document.getElementById('selection-readout');
+      const depthReadout = document.getElementById('depth-readout');
+      const candidateCopy = document.getElementById('candidate-copy');
+      const demoTitle = document.getElementById('demo-title');
+      const candidateContent = {
+        before: ['KEEP · 現在のscene', 'Hero Kitの基準voicing、groove、transition、gainで鳴らす。'],
+        a: ['BOUNCE · 裏拍を強める', 'scene長とLead identityを守り、BassとRhythmだけをKit既定の裏拍recipeへ切り替える。'],
+        b: ['STRIP · 余白を作る', 'コードを保ち、Rhythmをhalf-timeへ。Harmonyを開き、Textureを一段引く。'],
+        c: ['LIFT · 上向きにする', 'Lead rhythmを守り、Harmony top note、Bass octave、transitionだけをKit内で上げる。']
+      };
+      const kitContent = {
+        candy: {
+          title: 'Candy Skyline · 142 BPM · D major',
+          name: 'Candy Skyline',
+          roles: ['signature lead · selected', 'D · A · Bm · G', 'elastic offbeat', 'bounce + fill', 'air + sparkle']
+        },
+        prism: {
+          title: 'Prism Rush · 176 BPM · F# minor',
+          name: 'Prism Rush',
+          roles: ['needle lead · selected', 'F#m · D · A · E', 'drive octave', 'core rush + fill', 'prism shard']
+        },
+        moon: {
+          title: 'Moon Soda · 128 BPM · A major',
+          name: 'Moon Soda',
+          roles: ['music box lead · selected', 'A · E/G# · F#m · D', 'round sub pulse', 'soft two-step', 'reverse bloom']
+        }
+      };
+
+      document.querySelectorAll('[data-kit]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          document.querySelectorAll('[data-kit]').forEach(function (peer) {
+            peer.setAttribute('aria-pressed', String(peer === button));
+          });
+          const key = button.getAttribute('data-kit');
+          const content = kitContent[key];
+          demoTitle.textContent = content.title;
+          document.querySelectorAll('.score-row').forEach(function (row, index) {
+            const centerClip = row.querySelectorAll('.clip')[1];
+            if (centerClip && content.roles[index]) centerClip.querySelector('span').textContent = content.roles[index];
+          });
+          candidateContent.before[1] = content.name + 'の基準voicing、groove、transition、gainで鳴らす。';
+          document.querySelector('[data-candidate="before"]').click();
+          status.textContent = content.name + 'へ切替。role、groove、FX、mixを調律済みの一式として比較します。';
+        });
+      });
+
+      play.addEventListener('click', function () {
+        const playing = play.getAttribute('aria-pressed') !== 'true';
+        play.setAttribute('aria-pressed', String(playing));
+        play.textContent = playing ? '■ STOP' : '▶ PLAY';
+        demo.classList.remove('is-playing');
+        if (playing) {
+          void demo.offsetWidth;
+          demo.classList.add('is-playing');
+          status.textContent = '同じplayheadから現在の曲を再生中。概念モックのため音声は出ません。';
+        } else {
+          status.textContent = '停止位置を保持。候補比較はProjectをまだ変更していません。';
+        }
+      });
+
+      document.querySelectorAll('[data-depth-button]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const depth = button.getAttribute('data-depth-button');
+          demo.setAttribute('data-depth', depth);
+          document.querySelectorAll('[data-depth-button]').forEach(function (peer) {
+            peer.setAttribute('aria-pressed', String(peer === button));
+          });
+          depthReadout.textContent = depth.toUpperCase() + ' depth · signature lead';
+          status.textContent = depth.toUpperCase() + 'へsemantic zoom。Project、selection、playheadは同じです。';
+        });
+      });
+
+      document.querySelectorAll('[data-scene]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          document.querySelectorAll('[data-scene]').forEach(function (peer) {
+            peer.setAttribute('aria-pressed', String(peer === button));
+          });
+          const scene = button.getAttribute('data-scene');
+          selection.textContent = scene + ' · Lead · 8 bars';
+          status.textContent = scene + 'のLeadを選択。Move Deckはこの範囲だけへ作用します。';
+        });
+      });
+
+      document.querySelectorAll('[data-candidate]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          document.querySelectorAll('[data-candidate]').forEach(function (peer) {
+            peer.setAttribute('aria-pressed', String(peer === button));
+          });
+          const candidate = button.getAttribute('data-candidate');
+          const content = candidateContent[candidate];
+          candidateCopy.innerHTML = '<strong>' + content[0] + '</strong>' + content[1];
+          status.textContent = content[0] + 'を同じ位置からpreview。Project revisionは未変更です。';
+        });
+      });
+
+      document.getElementById('commit-button').addEventListener('click', function () {
+        const active = document.querySelector('[data-candidate][aria-pressed="true"]');
+        const key = active ? active.getAttribute('data-candidate') : 'before';
+        if (key === 'before') {
+          status.textContent = 'KEEPは現在のProjectです。BOUNCE / STRIP / LIFTを選んでからcommitします。';
+          return;
+        }
+        status.textContent = candidateContent[key][0] + 'を採用し、1つのatomic commandとしてcommit。BEFOREはbranchに残ります。';
+      });
+
+      document.getElementById('reject-button').addEventListener('click', function () {
+        document.querySelector('[data-candidate="before"]').click();
+        status.textContent = '候補を棄却。Projectは変更せず、BEFOREへ戻りました。';
+      });
+
+      document.getElementById('snapshot-button').addEventListener('click', function () {
+        status.textContent = 'Portable snapshotの境界を確認。概念モックのためfileは生成しません。';
+      });
+
+      document.getElementById('handoff-button').addEventListener('click', function () {
+        status.textContent = '仕上げる出口：同じProject truthからMIDI、WAV / stems、DAWproject candidateを生成します。';
+      });
+
+      const roleNames = ['Lead', 'Harmony', 'Bass', 'Rhythm', 'Texture'];
+      document.querySelectorAll('.clip').forEach(function (clip) {
+        clip.addEventListener('click', function () {
+          document.querySelectorAll('.clip').forEach(function (peer) {
+            peer.classList.toggle('selected', peer === clip);
+          });
+          const rows = Array.from(document.querySelectorAll('.score-row'));
+          const role = roleNames[rows.indexOf(clip.closest('.score-row'))] || 'Role';
+          const sceneButton = document.querySelector('[data-scene][aria-pressed="true"]');
+          const scene = sceneButton ? sceneButton.getAttribute('data-scene') : 'Scene';
+          selection.textContent = scene + ' · ' + role + ' · selected clip';
+          status.textContent = role + 'の「' + clip.textContent.trim() + '」を選択。Move Deckのscopeがこのclipへ狭まりました。';
+        });
+      });
+    }());
+  </script>
+</body>
+</html>
