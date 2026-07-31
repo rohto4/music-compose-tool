@@ -2,7 +2,7 @@
 
 ## REBOOT-002: 鼻歌を主軸から外し、Composition Desk V2を実装する
 
-- 状態: 2026-08-01 着手。最初に方針再検討と報告用HTML V2だけを再出力し、HTMLの構文・interaction・responsive確認後にproduction sourceへ入る。
+- 状態: 2026-08-01 実装unit完了・最終回帰中。報告用HTML V2を先に再出力・検証し、baseline `cb589aa`、capability contract `09af423`をpushした。`/kasane`へ3 Hero Kit、5 scene、5 role、5 Scene Move、before / variation、commit / reject / undo、built-in Web Audioを追加し、domain 75組合せ、component、system Chrome WQHD / 1440 / mobileの非スクリーンショットproofをpassした。次は全project check、文書完了記録、必須実装後のvisual QAを閉じる。
 - Product判断: 鼻歌は入力精度と生成結果の再現性をProduct promiseにできないため、primary workflow、main navigation、初回説明から外す。AIも完成曲生成を主価値にせず、将来の任意補助へ降格する。勝ち筋は、少数精鋭のgenre kit、曲の流れが分かるscene UI、同じ場所での即時試聴、役割macro、洗練されたvisual / motion、Studio One handoffとする。
 - 最初の実装unit: 旧Phase 1とは別のKASANE entrypointに、`Composition Desk`を作る。Curated Kitを選ぶと最初から一曲が鳴り、scene列とLead / Harmony / Bass / Rhythm / Textureのrole weaveを同じ画面で見て、`LIFT / STRIP / BOUNCE / ANSWER / BREAK`等の決定論的macroから少数候補を試聴・採用できるようにする。
 - Asset品質境界: 外部sampleを件数目的で追加しない。最初はlicense問題のない既存Project data / built-in synthesisから、曲中の役割差と前後contextを実演できる少数のHero Kitだけを選び、同じloudness / start positionで比較する。音色名やcatalog件数を品質証拠にしない。

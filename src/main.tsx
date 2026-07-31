@@ -1,6 +1,5 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
 import './styles.css';
 
 const root = document.getElementById('root');
@@ -13,8 +12,16 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
   void navigator.serviceWorker.register('/sw.js').catch(() => undefined);
 }
 
-createRoot(root).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+async function mountSurface(): Promise<void> {
+  const kasaneRoute = window.location.pathname === '/kasane' || window.location.pathname.startsWith('/kasane/');
+  const Surface = kasaneRoute
+    ? (await import('./features/kasane/KasaneCompositionDesk')).KasaneCompositionDesk
+    : (await import('./App')).App;
+  createRoot(root as HTMLElement).render(
+    <StrictMode>
+      <Surface />
+    </StrictMode>,
+  );
+}
+
+void mountSurface();
